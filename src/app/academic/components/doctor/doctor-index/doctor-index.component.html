@@ -1,0 +1,67 @@
+<div class="container">
+
+<div class="w3-block">
+  <div class="w3-white material-shadow safe-box">
+    <div class="safe-box-header w3-large" style="padding: 5px!important" >
+      {{ "doctors" | trans }}
+    </div>
+    <div class="border-bottom-dashed" ></div>
+    <br>
+
+          <!-- course categories panel -->
+          <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+            <div class="custom-panel-body table-responsive w3-padding"  >
+              <button mat-raised-button color="primary" (click)="showAddForm()" style="margin: 5px" ><i class="fa fa-send-o"></i> {{ "create doctor" | trans }} </button>
+            </div>
+          </div>
+
+          <!-- course categories panel -->
+          <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+            <div class="custom-panel-body table-responsive w3-padding"  >
+
+              <table   class="table table-bordered ">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>{{ "name" | trans }}</th>
+                    <th>{{ "phone" | trans }}</th>
+                    <th>{{ "username" | trans }}</th>
+                    <th>{{ "gender" | trans }}</th>
+                    <th>{{ "levels" | trans }}</th>
+                    <th>{{ "active" | trans }}</th>
+                    <th>{{ "description" | trans }}</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of doctors index as i">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.phone }}</td>
+                    <td>{{ item.username }}</td>
+                    <td>{{ item.gender | trans }}</td>
+                    <td>{{ item.level_names }}</td>
+                    <td>
+                      <i *ngIf="item.active" class="fa fa-check-square w3-text-green" ></i>
+                      <i *ngIf="!item.active" class="fa fa-check-square w3-text-red" ></i>
+                    </td>
+                    <td>{{ item.description }}</td>
+                    <td>
+                      <div style="width: 100px" >
+                        <i class="fa fa-edit w3-text-orange btn" (click)="showUpdateDoctorForm(item)" ></i>
+                        <i *ngIf="item.can_delete" (click)="remove(item, i)" class="fa fa-trash w3-text-red btn" ></i>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+
+  </div>
+</div>
+</div>
+
+
+<app-doctor-form [doctor]="doctor" [updateView]="updateView" ></app-doctor-form>

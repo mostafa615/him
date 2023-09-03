@@ -1,0 +1,515 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-12">
+            <div class="w3-white material-shadow safe-box">
+                <div class="safe-box-header w3-xlarge">
+                    {{ "get money from safe" | trans }}
+                </div>
+                <br>
+                <div class="border-bottom-dashed"></div>
+                <br>
+
+                <div class="safe-box-body row">
+
+                    <div class="col-lg-3 col-md-3 col-sm-12">
+                        <!--
+            current_balance_total
+            current_balance
+          -->
+          <div permission="safe_student_payment" style="padding: 4px;margin-bottom: 7px ;background-color: #f7f73087 !important;"  class="w3-pale-red w3-round">
+            يرجى ملاحظة ان الطالب عليه اجمالى مستحق للمعهد مبلغ
+            : {{ NotPaied?.value}}
+             جنيه
+        </div>
+                        <div permission="safe_student_payment" style="padding: 4px;margin-bottom: 7px" class="w3-pale-red w3-round">
+                            اجمالى الرسوم المستحقة : {{ safeObject.current_balance | number}}
+                            <span *ngIf="safeObject.payment_type == 'service' && safeObject.paid_value > 0">
+              + {{ safeObject.paid_value }}
+              = {{ safeObject.paid_value + safeObject.current_balance }}
+            </span> جنيه
+                        </div>
+                        <div permission="safe_student_payment" style="padding: 4px;margin-bottom: 7px" class="w3-pale-red w3-round">
+                          اجمالى الرسوم المستحقة للفصل الصيفى:
+                          <span>
+                            <a style="cursor: pointer" (click)="openmodel(studentDataSummer?.material_remainder,1)">{{studentDataSummer?.material_remainder}}</a></span>
+                          من المواد
+                          <span >
+            +
+            <span>
+              <a style="cursor: pointer" (click)="openmodel(studentDataSummer?.book_remainder,2)">{{studentDataSummer?.book_remainder}}</a></span>
+
+            من الكتاب
+
+            =
+            <span>
+              <a style="cursor: pointer" (click)="openmodel(studentDataSummer?.remainder_price,3)">{{studentDataSummer?.remainder_price}}</a></span>
+
+          </span> جنيه
+                      </div>
+                        <img class="w3-block" src="/assets/img/safe.png">
+                        <br>
+
+                        <div class="custom-panel w3-display-container w3-round" style="padding: 5px">
+
+                            <div *ngIf="studentSearchId" class="alert alert-danger w3-block btn-margin-bottom text-center" [innerHTML]="safeObject.notes">
+
+                            </div>
+                            <button class="btn btn-default w3-block small-shadow btn-margin-bottom" permission="safe_student_payment" [disabled]="!studentSearchId" (click)="doc.jquery('#studentPayments').modal('show')">{{ "student payments"
+              | trans }}</button>
+
+                            <button class="btn btn-default w3-block small-shadow btn-margin-bottom" permission="safe_student_service" [disabled]="!studentSearchId" (click)="doc.jquery('#studentServices').modal('show')">{{ "student services"
+              | trans }}</button>
+
+                            <button class="btn btn-default w3-block small-shadow btn-margin-bottom" permission="safe_student_my_installment" [disabled]="!studentSearchId" (click)="doc.jquery('#studentInstallment').modal('show')">{{ "student installments" | trans }}</button>
+
+                            <button class="btn btn-default w3-block small-shadow btn-margin-bottom" permission="safe_student_installment" [disabled]="!studentSearchId" (click)="doc.jquery('#installmentSection').modal('show')">{{ "installments" | trans }}</button>
+
+                            <button class="btn btn-default w3-block small-shadow btn-margin-bottom" permission="safe_note" [disabled]="!studentSearchId" (click)="doc.jquery('#notesModal').modal('show')">{{ "write note" | trans
+              }}</button>
+
+                            <button class="btn btn-default w3-block small-shadow btn-margin-bottom" permission="safe_setting" [disabled]="!studentSearchId" (click)="doc.jquery('#updateStudentInfo').modal('show')">{{ "update
+              settings" | trans }}</button>
+
+                            <button class="btn btn-default w3-block small-shadow btn-margin-bottom" permission="safe_discount" [disabled]="!studentSearchId" (click)="doc.jquery('#createDiscountRequestModal').modal('show')">{{ "create
+              discount request" | trans }}</button>
+
+                            <button class="btn btn-default w3-block small-shadow btn-margin-bottom" permission="safe_balance_reset" [disabled]="!studentSearchId" (click)="doc.jquery('#createBalanceResetModal').modal('show')">{{ "create
+              balance reset" | trans }}</button>
+              <button class="btn btn-default w3-block small-shadow btn-margin-bottom" permission="safe_balance_reset" [disabled]="!studentSearchId" (click)=" openmodel3()">
+              مدفوعات الفصل الصيفى
+              </button>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-9 col-md-9 col-sm-12">
+
+
+                        <div class="custom-panel w3-display-container w3-round">
+                            <div class="custom-panel-title">{{ "student info" | trans }}</div>
+
+                            <div class="custom-panel-body">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                        <img [src]="safeObject.image" class="w3-block w3-round border-gray">
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-6">
+                                        <!--- student search panel -->
+                                        <div class="custom-panel w3-display-container w3-round">
+                                            <div class="custom-panel-title">{{ "search" | trans }}</div>
+
+                                            <div class="custom-panel-body w3-display-container">
+                                                <input class="w3-round-xxlarge w3-white w3-input border-gray search-input " (keyup)="searchInputEvent()" placeholder="{{ 'search with student name code national_id' | trans }}" [(ngModel)]="searchKey">
+
+                                                <button (click)="loadStudentAccountInfo(studentSearchId)" class="btn btn-default small-shadow w3-margin-left w3-margin-right w3-round-xxlarge">{{ "search"
+                        | trans }}</button>
+
+                                                <div class="w3-display-topleft w3-padding" *ngIf="studentSearchDialogLoader" style="top: 12px;left:30%;z-index:10;">
+                                                    <span class="fa fa-spin fa-spinner w3-text-indigo"></span>
+                                                </div>
+
+                                                <div class="w3-display-topright w3-white material-shadow" *ngIf="studentSearchDialogShow" style="top: 47px;right:11px;z-index:10;width: 60%">
+                                                    <div class="w3-display-conitainer">
+                                                        <span class="w3-display-topright w3-button fa fa-close" (click)="studentSearchDialogShow=false"></span>
+                                                        <br>
+                                                        <ul class="w3-ul">
+                                                            <li *ngFor="let item of students" style="cursor: pointer;" class="w3-hover-light-gray w3-block text-right">
+                                                                <div class="media" (click)="selectStudent(item)">
+                                                                    <div class="media-left">
+                                                                        <a href="#">
+                                                                            <img [src]="item.image" style="width: 30px;height: 30px;" class="w3-circle" alt="">
+                                                                            <!--
+                                    <span class="fa fa-user-circle w3-text-indigo w3-large" ></span>
+                                    -->
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <h4 class="media-heading" [innerHTML]="item.name"></h4>
+                                                                        <span [innerHTML]="item.code" class="w3-large"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <br>
+                                        <table class="table">
+                                            <tr>
+                                                <th>{{ "student name" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.name }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ "student code" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.code }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ "national id" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.national_id }}
+                                                </td>
+                                            </tr>
+                                            <!-- <tr>
+                                            <th>{{ "gpa" | trans }}</th>
+                                            <td>
+                                                : {{ safeObject.gpa }}
+                                            </td>
+                                        </tr> -->
+                                            <tr>
+                                                <th>{{ "level" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.level? safeObject.level.name : safeObject.level_id }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ "department" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.division? safeObject.division.name : safeObject.division_id }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ "case constraint" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.case_constraint? safeObject.case_constraint.name : safeObject.case_constraint_id }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ "constraint status" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.registeration_status? safeObject.registeration_status.name : safeObject.registeration_status_id }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div permission="safe_student_payment" class="custom-panel w3-display-container w3-round">
+                            <div class="custom-panel-title">{{ "payment info" | trans }}</div>
+
+                            <div class="custom-panel-body">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <table class="table">
+                                            <tr>
+                                                <th>{{ "date" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.date }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ "required value" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.paid_value }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>الخصم</th>
+                                                <td>
+                                                    : {{ safeObject.discount_total }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ "value" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.paid_value }}
+                                                    <p class="w3-text-red" *ngIf="safeObject.payment_type == 'service'">
+                                                        {{ "total of selected services" | trans }}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <table class="table">
+                                            <tr>
+                                                <th>{{ "old balance" | trans }}</th>
+                                                <td>
+                                                    : <b class="w3-text-red">
+                          {{ safeObject.old_balance }}
+                        </b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ "current balance" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.current_balance }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ "paid value" | trans }}</th>
+                                                <td>
+                                                    : {{ safeObject.paids }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div permission="safe_student_payment" class="custom-panel w3-display-container w3-round">
+                            <div class="custom-panel-title">{{ "payment info" | trans }}</div>
+
+                            <div class="custom-panel-body">
+                                <div class="row" style="padding: 10px 20px" >
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="border: 1px solid black;text-align: center;">القيمة</th>
+                                                <th style="border: 1px solid black;text-align: center">السنة</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let payment of safeObject.payments" style="text-align: center;">
+                                                <td>{{payment.value}}</td>
+                                                <td>{{payment.academic_year?.name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center;">المجموع</td>
+                                                <td style="font-weight: bold;color : #3f51b5;text-align: center;">{{totalPayments || 0}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="custom-panel w3-display-container w3-round">
+                            <div class="custom-panel-body">
+                                <button permission="safe_student_payment" class="btn btn-default small-shadow w3-margin-left" [disabled]="!studentSearchId || safeObject.paid_value < 0 || !safeObject.paid_value && safeObject.payment_type != 'service'" (click)="performPay()">{{ "save & print" | trans }}</button>
+
+                                <button class="btn btn-default small-shadow w3-margin-left" [disabled]="!studentSearchId" (click)="doc.jquery('#studentAvailableServices').modal('show')" permission="safe_service">{{ "services"
+                | trans }}</button>
+
+                                <button class="btn btn-default small-shadow w3-margin-left" *ngIf="safeObject.is_refund == 1" [disabled]="!studentSearchId" (click)="doc.jquery('#studentRefundPayments').modal('show')">{{
+                "pay_refund" | trans }}</button>
+
+                                <button class="btn btn-default small-shadow w3-margin-left" routerLink="">{{ "exit" | trans }}</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-2" style="padding: 0px!important" permission="safe_service">
+
+            <!-- student services modal -->
+            <app-available-service [services]="availableServices" [safeObject]="safeObject" [selectedServices]="selectedServices"></app-available-service>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- student installments modal -->
+<app-student-installment [installments]="safeObject.installments? safeObject.installments : []" [showStudentInstallment]="showStudentInstallment"></app-student-installment>
+
+<!-- student payments modal -->
+<app-student-payment [paymentsRow]="safeObject.payments? safeObject.payments : []" [payments]="safeObject.payment_details? safeObject.payment_details : []" [updateStudent]="updateStudent">
+</app-student-payment>
+
+<!-- student refund payments modal -->
+<app-pay-refund [payments]="safeObject.payments? safeObject.payments : []" [updateStudent]="updateStudent">
+</app-pay-refund>
+
+<!-- student services modal -->
+<app-student-service [safeObject]="safeObject"></app-student-service>
+
+<!-- student services modal -->
+<app-installment [student]="safeObject" [updateStudent]="updateStudent" [studentInstallments]="safeObject.installments? safeObject.installments : []"></app-installment>
+
+<!-- notes modal -->
+<app-send-note [student]="safeObject" [updateStudent]="updateStudent"></app-send-note>
+
+<!-- update setting modal -->
+<app-safe-setting [safeObject]="safeObject"></app-safe-setting>
+
+<!-- create discount request -->
+<app-create-discount-request [safeObject]="safeObject" [updateStudent]="updateStudent"></app-create-discount-request>
+
+<!-- create balace reset for the balance of student -->
+<app-create-balance-reset [safeObject]="safeObject" [updateStudent]="updateStudent"></app-create-balance-reset>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content" style="    margin-top: 150px;">
+          <div class="modal-header" style="background-color:#007aff;">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+      <span aria-hidden="true" style="color: #fff">&times;</span>
+    </button>
+
+              <p class="modal-title" style="color: #fff">
+                  <span style="vertical-align: middle; padding-left:8px">
+تاكيد الدفع
+                </span>
+              </p>
+
+
+          </div>
+
+          <div class="modal-body">
+            <div class="row">
+              <div style="    width: 10%;margin-top: 7px;" class="col-lg-3">التاريخ</div>
+            <div class="col-lg-4"><input type="datetime-local" id="completionDate" class="form-control input-sm"  class="form-control"[(ngModel)]="datemodify" placeholder="">
+            </div>
+            <div style="width: 20%;margin-top: 7px;"*ngIf="mode!=3" class="col-lg-3"> رقم القسيمة  </div>
+            <div class="col-lg-2">
+              <input type="text" *ngIf="mode==1"  class="form-control"[(ngModel)]="seriel" placeholder="">
+              <input type="text" *ngIf="mode==2"  class="form-control"[(ngModel)]="book_serial" placeholder="">
+
+            </div>
+            </div>
+
+            <br>
+            <div class="row">
+              <div style="    width: 10%;margin-top: 7px;" class="col-lg-3">الخصم</div>
+              <div class="col-lg-3"><input type="text"   class="form-control"[(ngModel)]="disco" placeholder="">
+              </div>
+              <div style="    width: 10%;margin-top: 7px;" class="col-lg-3">المدفوع</div>
+              <div class="col-lg-3"><input type="text"   class="form-control"[(ngModel)]="paymony" placeholder="">
+              </div>
+
+            </div>
+
+
+            </div>
+
+          <div class="modal-footer">
+              <button class="btn btn-white bbtclose" (click)="onCloseModal()">
+      <!-- Annulla -->
+      الغاء
+    </button>
+              <!-- Confirm -->
+              <button class="btn btn_color w-40 h-12" style="color: white;
+              background-color:#007aff;;
+              width: 100px;
+              height: 45px;  line-height: 15px;" (click)="onsubmitPay()" >
+       تاكيد
+    </button>
+          </div>
+
+
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display1}" style="background-color: rgba(90,90,90,0.5);">
+
+<div class="modal-dialog" role="document">
+      <div class="modal-content" style="    margin-top: 150px;">
+          <div class="modal-header" style="background-color:#007aff;">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal1()">
+      <span aria-hidden="true" style="color: #fff">&times;</span>
+    </button>
+
+              <p class="modal-title" style="color: #fff">
+                  <span style="vertical-align: middle; padding-left:8px">
+تاكيد الدفع
+                </span>
+              </p>
+
+
+          </div>
+
+          <div class="modal-body"[innerHTML]="responehtml">
+
+
+
+            </div>
+
+          <div class="modal-footer">
+              <button class="btn btn-white bbtclose" (click)="onCloseModal1()">
+      <!-- Annulla -->
+      الغاء
+    </button>
+              <!-- Confirm -->
+              <button class="btn btn_color w-40 h-12" style="color: white;
+              background-color:#007aff;;
+              width: 100px;
+              height: 45px;  line-height: 15px;" (click)="onsubmitPay()" >
+       تاكيد
+    </button>
+          </div>
+
+
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<div class="modal " id="studentPayments" [ngStyle]="{'display':display3}" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content w3-animate-top">
+          <div class="modal-header">
+               <h4 class="modal-title text-center"> مدفوعات الفصل الصيفى </h4>
+               <button type="button" class="btn btn-default" (click)="closemodel3() ">{{ "close" | trans }}</button>
+
+          </div>
+          <div class="modal-body">
+
+              <ul class="w3-ul">
+                  <li>
+                      <table class="table table-bordered">
+                          <thead>
+                              <tr class="w3-dark-gray">
+                                  <th>{{ "date" | trans }}</th>
+                                  <th> نوع الدفع </th>
+                                  <th>{{ "value" | trans }}</th>
+                                  <th> الخزنة</th>
+                                  <th>{{ "print" | trans }}</th>
+                                  <!-- <th>{{ "is_printed" | trans }}</th> -->
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <ng-container *ngFor="let item of summerPayment index as i">
+                                  <tr class="">
+                                       <td>
+                                        <input type="date" id="completionDate" class="form-control input-sm"  class="form-control"  [(ngModel)]="item.date"
+                                        [ngModel]="item.date | date: 'yyyy-MM-dd'" placeholder="">
+
+                                      </td>
+                                      <td *ngIf="item?.model_type=='summer_courses'"> تسجيل الفصل الدراسى الصيفى</td>
+                                      <td *ngIf="item?.model_type=='summer_services'"> خدمة دفع كتب الفصل الدراسى الصيفى</td>
+
+                                      <td>{{ item.value | currency: ' EGP ' }}</td>
+                                      <td>{{ item.store.name}}</td>
+                                      <td>
+                                          <button class="btn btn-default small-shadow"  (click)="getRecitPrint(item.id)">{{ "print" | trans }}</button>
+                                          <button class="btn btn-default small-shadow"style="    margin-right: 10px;"  (click)="onUpdate(item.id,item.date)"> تعديل</button>
+
+                                        </td>
+                                      <!-- <td>
+                                          <mat-slide-toggle [disabled]="!auth.can('safe_change_print_payment')" (change)="changePaymentStatus(item)" [checked]="item.is_print == 1"></mat-slide-toggle>
+                                      </td> -->
+                                  </tr>
+                              </ng-container>
+                          </tbody>
+                      </table>
+                  </li>
+
+              </ul>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" (click)="closemodel3() ">{{ "close" | trans }}</button>
+          </div>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

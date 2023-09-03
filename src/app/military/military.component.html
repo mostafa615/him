@@ -1,0 +1,34 @@
+<div class="content">
+    <div class="row">
+        <div class="col-md-2">
+
+            <!-- Profile Image -->
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <h3 class="profile-username text-center">{{ "military" | trans }}</h3>
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item" permission="military_area">
+                            <a class="active" routerLink="/military/area"><i class="fa fa-circle-o"></i>
+                {{ "military_areas" | trans }}
+              </a>
+                        </li>
+                        <li class="list-group-item" permission="military_status">
+                            <a class="active" routerLink="/military/status"><i class="fa fa-circle-o"></i>
+                {{ "military_status" | trans }}
+              </a>
+                        </li>
+                        <li class="list-group-item" permission="military_status">
+                            <a class="active" routerLink="/military/student-age"><i class="fa fa-circle-o"></i>
+                سن الطالب
+              </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-10">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

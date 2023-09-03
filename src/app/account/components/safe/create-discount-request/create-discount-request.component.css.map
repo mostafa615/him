@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACA,AAAA,cAAc,CAAC;EACX,MAAM,EAAE,GAAG,CAAC,MAAM,CAAC,SAAS,CAAA,UAAU;CACvC",
+    "sources": [
+        "create-discount-request.component.scss"
+    ],
+    "names": [],
+    "file": "create-discount-request.component.css"
+}

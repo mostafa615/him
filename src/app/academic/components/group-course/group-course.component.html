@@ -1,0 +1,207 @@
+<div class="container">
+    <div class="w3-block w3-row">
+        <div class="w3-white material-shadow safe-box col-lg-12 col-md-12 col-sm-12">
+            <div class="safe-box-header w3-large" style="padding: 5px!important">
+                المجموعات
+            </div>
+            <div class="border-bottom-dashed"></div>
+            <br>
+
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                        <div class="add-group">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1" data-whatever="@getbootstrap" style='margin-top: 23px !important;margin-right: 2px;'>اضافة
+                            مجموعة</button>
+                        </div>
+                        <div class="custom-panel-body table-responsive w3-padding w3-center" style="height: 400px;">
+                            <table class=" table-bordered">
+                                <thead>
+                                    <th>الترتيب</th>
+                                    <th>أسم المجموعة</th>
+                                    <th>المستوي</th>
+                                    <!-- <th>التخصص</th> -->
+                                    <th>التيرم</th>
+                                    <th>السنه الدراسيه</th>
+                                    <th>العمليات</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let group of prevgroups index as i">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>
+                                            {{ group.name }}
+                                        </td>
+                                        <td>
+                                            {{ group.level.name }}
+                                        </td>
+                                        <!-- <td>
+                                            {{ group.division.name }}
+                                        </td> -->
+                                        <td>
+                                            {{ group.term.name }}
+                                        </td>
+                                        <td>
+                                            {{ group.year.name }}
+                                        </td>
+                                        <td>
+                                            <!-- [disabled]="isSubmitted" -->
+                                            <button style="margin-left: 5px;" class="btn btn-success" [disabled]="isSubmitted" (click)="setCurrent(group)">
+                                              <!-- *ngIf="!isSubmitted" -->
+                                            <i  data-toggle="modal" data-target="#exampleModal2"
+                                                data-whatever="@getbootstrap" class="fa fa-pencil"></i>
+                                                <!-- *ngIf="isSubmitted" -->
+                                            <i class="fa fa-spin fa-spinner" *ngIf="isSubmitted"></i>
+                                        </button>
+                                            <!-- [disabled]="isSubmitted" -->
+                                            <button class="btn btn-danger" [disabled]="isSubmitted" (click)="destroygroup(group.id)">
+                                              <!-- *ngIf="!isSubmitted" -->
+                                            <i class="fa fa-trash" *ngIf="!isSubmitted"></i>
+                                            <!-- *ngIf="isSubmitted" -->
+                                            <i class="fa fa-spin fa-spinner" *ngIf="isSubmitted" ></i>
+                                        </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="">
+
+    <div class="">
+
+        <div class="custom-panel-body table-responsive w3-padding">
+
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel1">اضافة مجموعة</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <div class="col-lg-12 col-md-12">
+                                                <label for="message-text" class="col-form-label">أسم المجموعة :</label>
+                                                <input class="form-control" id="message-text" type="text" name='group' [(ngModel)]="filter.name" required>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label>{{ "term" | trans }}</label>
+                                                    <select class="form-control" name="filter.term_id" [(ngModel)]="filter.term_id">
+                                                  <option  value="">{{ "term" | trans }}</option>
+                                          <option *ngFor="let item of terms"  value="{{ item.id }}">{{ item.name }}</option>
+                                        </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label>{{ "academic year" | trans }}</label>
+                                                    <select class="form-control" name="filter.academic_id" [(ngModel)]="filter.academic_id">
+                                                <option  value="">{{ "academic year" | trans }}</option>
+                                        <option *ngFor="let item of applicationService.ACADEMIC_YEARS"  value="{{ item.id }}">{{ item.name }}</option>
+                                      </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label>{{ "level" | trans }}</label>
+                                                    <select class="form-control" name="filter.level_id" [(ngModel)]="filter.level_id">
+                                                    <option  value="">{{ "level" | trans }}</option>
+                                            <option *ngFor="let item of levels"  value="{{ item.id }}">{{ item.name }}</option>
+                                          </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- <div class="col-lg-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label>{{ "division" | trans }}</label>
+                                                    <select class="form-control" name="filter.division_id" [(ngModel)]="filter.division_id">
+                                                    <option  value="">{{ "division" | trans }}</option>
+                                            <option *ngFor="let item of applicationService.DIVISIONS" value="{{ item.id }}">{{ item.name }}</option>
+                                          </select>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id='closeNumber1' type="button" class="btn btn-secondary" data-dismiss="modal">غلق</button>
+                                    <button id='beforeLoading' (click)='creategroup()' type="button" class="btn btn-primary">تأكيد</button>
+                                    <button id='buttonLoading' class="btn btn-primary" type="button" disabled>
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                        Loading...
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel2">تعديل مجموعة</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label for="message-text" class="col-form-label">أسم المجموعة:</label>
+                                                <input placeholder="الاسم الحالي : {{ filterUpdate.name }}" class="form-control" id="message-text" type="text" name='filterUpdate.name' [(ngModel)]="filterUpdate.name" required>
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>{{ "division" | trans }}</label>
+                                                <select class="form-control" name="filterUpdate.division_id" [(ngModel)]="filterUpdate.division_id">
+                                                  <option  value="">{{ "division" | trans }}</option>
+                                          <option *ngFor="let item of applicationService.DIVISIONS" value="{{ item.id }}">{{ item.name }}</option>
+                                        </select>
+                                            </div>
+                                        </div> -->
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id='closeNumber2' type="button" class="btn btn-secondary" data-dismiss="modal">غلق</button>
+                                    <button id='beforeLoading' (click)='updategroup(currentgroupName, currentgroupId)' type="button" class="btn btn-primary">تعديل</button>
+                                    <button id='buttonLoading' class="btn btn-primary" type="button" disabled>
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                        Loading...
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+<div permission="add_seating_numbers" class="container">
+  <div class="row">
+    <div id="btn" class="col-sm-12">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap" style='margin-top: 23px !important;margin-right: 2px;'>وضع أرقام الجلوس</button>
+    </div>
+</div>
+<div class="col-lg-3 col-md-3">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ضع البيانات</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">المستوي:</label>
+                            <select class="form-control" name="level_id" [(ngModel)]="level_id" required>
+                <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name }}</option>
+              </select>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ "division" | trans }}</label>
+                            <select class="form-control" name="division_id" [(ngModel)]="division_id">
+              <option *ngFor="let item of applicationService.DIVISIONS" value="{{ item.id }}">{{ item.name }}</option>
+            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">رقم البداية:</label>
+                            <input class="form-control" id="message-text" type="number" name='start_number' [(ngModel)]="start_number" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id='closeNumber' type="button" class="btn btn-secondary" data-dismiss="modal">غلق</button>
+                    <button id='beforeLoading' (click)='sendNumber()' type="button" class="btn btn-primary">تأكيد</button>
+                    <button id='buttonLoading' class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...
+          </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-3 col-md-3">
+    <span class="w3-xlarge w3-text-green" id="count">
+
+  </span>
+</div>
+
+<div class="custom-panel-body table-responsive w3-padding" id="reportContent">
+
+
+</div>
+</div>

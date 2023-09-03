@@ -1,0 +1,723 @@
+<div class="container">
+    <div class="w3-block">
+       
+
+        <div class="w3-white material-shadow safe-box">
+            <div class="safe-box-header w3-large" style="padding: 5px!important">{{ "تقرير حالات الطلاب "}}</div>
+            <div class="border-bottom-dashed"></div><br>
+
+            <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                <div class="custom-panel-title">{{ "student search" | trans }}</div>
+                <div class="custom-panel-body w3-display-container">
+                    <input class="w3-round-xxlarge w3-white w3-input border-gray search-input "
+                        style="width: 50%!important" (keyup)="searchInputEvent()"
+                        placeholder="{{ 'search with student name code national_id' | trans }}" [(ngModel)]="searchKey">
+
+                    <div class="w3-display-topleft w3-padding" (click)="selectStudent({})" *ngIf="searchKey
+                            && !studentSearchDialogLoader" style="top: 12px;left:30%;z-index:10;">
+                        <span class="fa fa-close w3-text-red"></span>
+                    </div>
+
+                    <div class="w3-display-topleft w3-padding" *ngIf="studentSearchDialogLoader"
+                        style="top: 12px;left:30%;z-index:10;">
+                        <span class="fa fa-spin fa-spinner w3-text-indigo"></span>
+                    </div>
+
+
+                    <div class="w3-display-topright w3-white material-shadow" *ngIf="studentSearchDialogShow"
+                        style="top: 47px;right:11px;z-index:10;width: 100%">
+                        <div class="w3-display-conitainer">
+                            <span class="w3-display-topright w3-button fa fa-close"
+                                (click)="studentSearchDialogShow=false"></span>
+                            <br>
+                            <ul class="w3-ul">
+                                <li *ngFor="let item of students" style="cursor: pointer;"
+                                    class="w3-hover-light-gray w3-block text-right">
+                                    <div class="media" (click)="selectStudent(item)">
+                                        <div class="media-left">
+                                            <a href="#">
+                                                <img [src]="item.image" style="width: 30px;height: 30px;"
+                                                    class="w3-circle" alt="">
+
+                                                <span class="fa fa-user-circle w3-text-indigo w3-large"></span>
+
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading" [innerHTML]="item.name"></h4>
+                                            <span [innerHTML]="item.code" class="w3-large"></span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="row">
+
+                            <div class="col-lg-3 col-md-3">
+                                <div class="form-group">
+                                    <label for="">{{ "academic year" | trans }}</label>
+                                    <select class="form-control" [(ngModel)]="filter.year_id" (change)="loadData()">
+                                        <option value="">{{ "academic year" | trans }}</option>
+                                        <option *ngFor="let item of applicationService.ACADEMIC_YEARS"
+                                            value="{{ item.id }}">{{item.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <input [(ngModel)]="val" class="form-control " 
+                    placeholder="ادخل اسم المعهد المحول اليه">
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <label for="">ادخل التاريخ : </label>
+            <input [(ngModel)]="val2" type="date" id="birthdaytime" name="birthdaytime" >
+                </div>
+            </div>
+            
+            <!-- <h1>{{val}}</h1> -->
+           
+
+   
+            <br><br>
+
+            <div class="custom-panel w3-display-container w3-round application-panel student-info-panel "
+                *ngIf="response != null">
+                <div class="custom-panel-body table-responsive w3-padding" >
+
+                    <div>
+                        <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                            <div class="custom-panel-body table-responsive w3-padding">
+                                <button mat-raised-button color="primary" [disabled]="isSubmitted" (click)="loadData()"
+                                    style="margin: 5px">
+                                    <i *ngIf="isSubmitted" class="fa fa-spin fa-spinner"></i>
+                                    <span *ngIf="!isSubmitted">{{ "update" | trans }} </span>
+                                </button>
+                                <button mat-raised-button color="primary" class="w3-margin-left w3-black" (click)="print()"> <i
+                                        class="fa fa-print"></i> {{ "print" | trans }}</button>
+                                <!-- <button mat-raised-button color="primary" class="w3-margin-left w3-green" (click)="exportExcel()"> <i class="fa fa-file-excel-o" ></i> {{ "excel" | trans }}</button> -->
+                            </div>
+                   
+                        </div>
+                        <div class="all" id="printable">
+
+
+                            <!-- <a href="{{url("home/edit/$item->id")}}">Update</a> -->
+
+                        <!-- =====first page=== -->
+                        <div class="container" style="height: 100vh;" >
+                            <div class="container w-100" style="text-align: center !important;">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <img src="/assets/img/logo.png" alt="" style="width: 90px">
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            وزارة التعليم العالي</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            المعهد العالي للإدارة بالمحلة الكبري</h6>
+                                    </div>
+
+                                    <div class="col-xs-12" style="background-color: rgba(0,0,0,.5) !important;">
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            نتيجة العام الجامعي 2021 - 2022
+                                        </h6>
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            تاريخ الميلاد / {{response.studentInfo[0].birthdate}}</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            تاريخ الألتحاق / 2021-2022</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            الساعات المحققة / {{ response.ActualRegisterHours }}</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            حالة الطالب / مستجد</h6>
+
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            موقف القبول / {{ response.studentInfo[0].registeration_status }}</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            رقم الكود / {{response.studentInfo[0].code}}</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            سنة المؤهل / 2021</h6>
+                                        <!-- test -->
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            الساعات التي تم تسجيلها / {{ response.registerHours }}</h6>
+
+                                        <!-- *ngIf='response.studentInfo[0].code == 202110173 || response.studentInfo[0].code == 202110569
+                                                            || response.studentInfo[0].code == 202110433 || response.studentInfo[0].code == 202110484
+                                                            || response.studentInfo[0].code == 202110599 ; else content '
+                                                                <ng-template #content> الساعات التي تم تسجيلها / {{ response.registerHours}}</ng-template> -->
+
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            أسم الطالب / {{response.studentInfo[0].name}}</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            المستوي / {{ response.studentInfo[0].level_name }}</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            المؤهل / {{ response.studentInfo[0].qualification_name }}</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            نوع القيد / {{ response.studentInfo[0].case_constraint }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf='response.studentInfo[0].case_constraint_id != 6 && response.studentInfo[0].case_constraint_id != 8 && response.studentInfo[0].case_constraint_id != 7'
+                                class="col-xs-12" style="background-color: rgba(0,0,0,.5) !important;">
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    الفصل الدراسي الأول</h6>
+                            </div><br>
+
+                            <div *ngIf='response.studentInfo[0].case_constraint_id == 7' class="col-xs-12"
+                                style="background-color: rgba(0,0,0,.5) !important;">
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    سحب ملف طالب متوفي</h6>
+                            </div>
+                            <!-- response.studentInfo[0].case_constraint_id == 8 || -->
+                            <div *ngIf=' response.studentInfo[0].code == 202110173 || response.studentInfo[0].code == 202110569'
+                                class="col-xs-12" style="background-color: rgba(0,0,0,.5) !important;">
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    عذر بموافقة الوزاره للتيرم الاول والتانى رقم القرار 100 بتاريخ 17/7</h6>
+                            </div>
+                            <div *ngIf='response.studentInfo[0].code == 202110433' class="col-xs-12"
+                                style="background-color: rgba(0,0,0,.5) !important;">
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    عذر بموافقة الوزاره عن التيرم التيرم الاول فقط رقم القرار 100 بتاريخ 17/7</h6>
+                            </div>
+                            <table *ngIf='response.studentInfo[0].case_constraint_id != 6
+                                                && response.studentInfo[0].case_constraint_id != 7
+                                                && response.studentInfo[0].case_constraint_id != 8
+                                                && response.studentInfo[0].code != 202110173
+                                                && response.studentInfo[0].code != 202110569
+                                                && response.studentInfo[0].code != 202110433'
+                                class="table table-bordered "
+                                style="direction: rtl!important;margin-bottom: 0px !important;">
+
+                                <thead>
+                                    <tr>
+                                        <th
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            #</th>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            كود المادة</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            أسم المادة</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            الدرجة</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            التقدير</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            النقاط</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            الساعات</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of filterCourses(1) index as i">
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            {{ i + 1 }}</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            {{ item.course_code }}</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            {{ item.course_name }}</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            {{ item.final_degree }}</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            {{ item.gpa_word }}</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            {{ item.gpa }}</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            {{ item.hours }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div *ngIf='response.studentInfo[0].case_constraint_id != 6 &&
+                                                response.studentInfo[0].case_constraint_id != 8 && response.studentInfo[0].code != 202110433 &&
+                                                 response.studentInfo[0].case_constraint_id != 7'
+                                style="background-color:rgba(0,0,0,.5) !important;text-align: center;margin-bottom: 10px;">
+                                نتيجة الطالب عقب إعلان الفصل الدراسي الأول
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; معدل فصلي
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ getTermGpa(1) }}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </div><br>
+
+                            <div *ngIf='response.studentInfo[0].case_constraint_id != 6 && response.studentInfo[0].case_constraint_id != 8
+                                                && response.studentInfo[0].case_constraint_id != 7' class="col-xs-12"
+                                style="background-color: rgba(0,0,0,.5) !important;">
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    الفصل الدراسي الثاني</h6>
+                            </div>
+
+                            <!-- response.studentInfo[0].case_constraint_id == 6  && -->
+                            <div *ngIf=' response.studentInfo[0].code == 202110484 || response.studentInfo[0].code == 202110599'
+                                class="col-xs-12" style="background-color: rgba(0,0,0,.5) !important;">
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    لم يتم تسجيل ارشاد اكاديمي بسبب سحب الطالب للملف بموافقته</h6>
+                            </div>
+
+
+
+                            <div *ngIf="filterCourses(2).length == 0 && response.studentInfo[0].case_constraint_id == 2"
+                                class="col-xs-12" style="background-color: rgba(0,0,0,.5) !important;margin-top: 15px;">
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    لم يتم تسجيل ارشاد اكاديمي</h6>
+                            </div>
+
+
+                            <ng-container *ngIf="filterCourses(2).length > 0">
+                                <table
+                                    *ngIf='response.studentInfo[0].case_constraint_id != 6 &&  response.studentInfo[0].code != 202110173 && response.studentInfo[0].case_constraint_id != 8 && response.studentInfo[0].case_constraint_id != 7'
+                                    class="table table-bordered "
+                                    style="direction: rtl!important;margin-bottom: 0px !important;">
+
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                #</th>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                كود المادة</td>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                أسم المادة</td>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                الدرجة</td>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                التقدير</td>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                النقاط</td>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                الساعات</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of filterCourses(2) index as i">
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                {{ i + 1 }}</td>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                {{ item.course_code }}</td>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                {{ item.course_name }}</td>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                {{ item.final_degree }}</td>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                {{ item.gpa_word }}</td>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                {{ item.gpa }}</td>
+                                            <td
+                                                style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                                {{ item.hours }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                                <div *ngIf='response.studentInfo[0].case_constraint_id != 6 && response.studentInfo[0].case_constraint_id != 8 && response.studentInfo[0].case_constraint_id != 7'
+                                    style="background-color:rgba(0,0,0,.5) !important;text-align: center;margin-bottom: 10px;">
+                                    نتيجة الطالب عقب إعلان الفصل الدراسي الثاني
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    معدل فصلي &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{
+                                    getTermGpa(2) }}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </div>
+                            </ng-container>
+                            <div style="background-color:rgba(0,0,0,.5) !important;text-align: center;">المعدل التراكمي
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <!-- .toString().slice(0, (response.CGPA.indexOf("."))+3) -->
+                                {{ response.CGPA }}
+                            </div>
+                            <div class="container" style="text-align: center !important;">
+                                <div class="row">
+
+
+                                    <div class="col-xs-4">
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            رئيس عام الامتحانات</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            أ.د / أحمد ابوالقمصان <br> عميد المعهد </h6>
+                                           
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            رئيس لجنة النظام والمراقبة</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            د / يوسف ابراهيم</h6>
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            لجنة الكنترول</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            د / منى داود</h6>
+                                        <h6
+                                            style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            د / أحمد رضوان</h6>
+                                            <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important; margin-bottom: 50px !important;">
+                                             تحريرا فى  :{{val2}}
+                          
+                                             </h6>
+                                     
+                                    </div>
+
+                                </div>
+                              
+                                  
+                            </div>
+                          
+                          
+                        </div>
+                        <!-- =====first bian 7ala======= -->
+                        <br>
+                        <div class="container" style="height: 100vh;">
+
+                            <div class="row">
+
+                                <div class="col-xs-6">
+                                    <img src="/assets/img/logo.png" alt="" style="width: 90px">
+                                </div>
+                                <div class="col-xs-6">
+                                    <h6
+                                        style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                        وزارة التعليم العالي</h6>
+                                    <h6
+                                        style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                        المعهد العالي للإدارة بالمحلة الكبري</h6>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 "
+                                style="background-color: rgba(0,0,0,.5) !important;  margin-bottom: 25px !important;">
+                                <h6 style="text-align: center !important; text-decoration: underline !important;font-size: 22px !important;font-weight:
+                                                bolder !important;">بيان حاله 
+                                </h6>
+                            </div>
+                            <p style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">    (2+2) المعهد بنظام الساعات المعتمده   </p>
+                            <div class="col-xs-6">
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    الجنسيه / {{ response.studentInfo[0].nationality_name }}</h6>
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    تخصص / {{response.studentInfo[0].division_type}}</h6>
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    حاله القيد / مستجد</h6>
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    تاريخ الحصول على المؤهل / 2021</h6>
+                                <h6
+                                    style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    المجموع / {{response.studentInfo[0].grade}}</h6>
+
+                            </div>
+                            <div class="col-xs-6">
+                                <h6
+                                    style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    اسم الطالب / {{response.studentInfo[0].name}}</h6>
+                                <h6
+                                    style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    المستوى / {{response.studentInfo[0].level_name}}</h6>
+                                <h6
+                                    style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    العام الدراسى/ 2021-2022</h6>
+                                <h6
+                                    style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    المؤهل / {{ response.studentInfo[0].qualification_name }}</h6>
+                                <h6
+                                    style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    رقم الجلوس/ {{ response.studentInfo[0].code }}</h6>
+                            </div>
+
+                            <div class="col-xs-12"
+                                style="background-color: rgba(0,0,0,.5) !important; margin-bottom: 30px !important;">
+                                <h4 style="text-align: center !important; text-decoration: underline !important;
+                                    font-size: 22px !important;font-weight: bolder !important; ">التسلسل الدراسى للطالب
+                                </h4>
+
+                            </div>
+                            <div class="tst" style="overflow: hidden;">1</div><br>
+                            <h5 class="test" style="margin-top: 5px !important; text-align: right !important;">الطالب
+                                قيد بالمستوى الاول مستجد فى العام الدراسى 2021/2022 ونتيجته ناجح
+                                <br><br> وله حق القيد بالمستوى التاني مستجد فى العام الدراسى2022/2023
+
+                                <br><br>
+                                <b> وقد اعطى هذا البيان بناء على طلب الطالب لتقديمه الى / {{val}}
+                                </b>
+                            </h5>
+                            <br><br>
+                            <div class="container" style="text-align: center !important;">
+                                <div class="row">
+
+                                    <div class="col-xs-4">
+
+                                        <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            عميد المعهد</h6>
+                                        <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            أ.د / أحمد ابوالقمصان </h6>
+                    
+
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            مدير شئون الطلاب </h6>
+                                        <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                        </h6>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            الموظف المختص </h6><br><br>
+                                            <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important; margin-bottom: 50px !important;">
+                                            تحريرا فى  :{{val2}} 
+                          
+                                    </h6>
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+                            <br><br>
+                             <br><br>
+                        </div>
+                        <!-- =====end first bian 7ala=== -->
+                        <br>
+                        <!-- <div class="border-bottom-dashed"></div> -->
+                        <!-- =====second bian 7ala=== -->
+                        <div class="container" >
+                            <div class="row">
+
+                                <div class="col-xs-6">
+                                    <img src="/assets/img/logo.png" alt="" style="width: 90px">
+                                </div>
+                                <div class="col-xs-6">
+                                    <h6
+                                        style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                        وزارة التعليم العالي</h6>
+                                    <h6
+                                        style="text-align: center !important;font-size: 13px !important;font-weight: bolder !important;">
+                                        المعهد العالي للإدارة بالمحلة الكبري</h6>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 "
+                                style="background-color: rgba(0,0,0,.5) !important;  margin-bottom: 30px !important;">
+                                <h6 style="text-align: center !important; text-decoration: underline !important;font-size: 22px !important;font-weight:
+                                                bolder !important;">بيان حاله
+                                </h6>
+
+                            </div>
+
+                            <div style="text-align: right !important;font-size: 20px !important;">
+                                السيد الاستاذ الدكتور عميد /{{val}}
+                                <br>
+                                <p style="text-align: center !important">تحيه طيبه وبعد ...</p>
+                                نتشرف باحاطه سيادتكم علما بان الطالب / &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {{response.studentInfo[0].name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                المقيد بمعهدنا علما
+                                بان بياناته كما يلى
+                                <hr>
+                            </div>
+                            <div class="col-xs-6">
+                                <h6
+                                    style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    سنه المؤهل / 2021</h6>
+                                <h6
+                                    style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    المجموع / {{response.studentInfo[0].grade}}</h6>
+
+                            </div>
+                            <div class="col-xs-6">
+                                <h6
+                                    style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    المؤهل / {{ response.studentInfo[0].qualification_name }}</h6>
+                                <h6
+                                    style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                    رقم الجلوس/ {{ response.studentInfo[0].code }}</h6>
+                            </div>
+
+                            <p style="text-align: center;font-size: 20px !important;">وفيما يلى بيان بالتسلسل الدراسى
+                                للطالب</p>
+                            <table class="table table-bordered "
+                                style="direction: rtl!important;margin-bottom: 0px !important;">
+
+                                <thead>
+                                    <tr>
+                                        <th
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            العام الجامعى</th>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            حاله القيد</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            المستوى</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            تخصص</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            المعدل التراكمي</td>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            2022/2021</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            مستجد</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            الاول</td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            {{response.studentInfo[0].division_type}} </td>
+                                        <td
+                                            style="text-align: center;font-weight: bolder;border: 1px solid black !important;padding: 2px !important;">
+                                            {{response.CGPA}}
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table><br>
+                            <div style="text-align: right !important; ">
+                                <h5>وطبقا لسجلات المعهد فان الطالب المذكور له حق القيد بالمستوى :
+                                الثاني<br>
+                                 تخصص:
+                                    {{response.studentInfo[0].division_type}}</h5>
+                                <h5>وذلك للعام الدراسى : 2022/2023
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    حاله القيد : مستجد</h5>
+                                <h5>والمعهد ليس عليه اى مسؤليه عن سوء استعمال هذا البيان ولا يجوز استخدامه الا من قبل
+                                    الجهه الموجهه اليها فقط </h5>
+                            </div>
+                            <br><br><br>
+                            
+                            <div class="container" style="text-align: center !important;">
+                                <div class="row">
+
+                                    
+                                   
+                                    <div class="col-xs-4">
+                                        <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            عميد المعهد</h6>
+                                        <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            أ.د / أحمد ابوالقمصان </h6>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            مدير شئون الطلاب </h6>
+                                        <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                        </h6>
+                                    </div>
+                                   
+                                    <div class="col-xs-4">
+                                        <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                            الموظف المختص </h6>
+                                        <h6
+                                            style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important;">
+                                        </h6>
+                                    </div>
+                                    
+                                </div>
+                                <br><br>
+                                <h6
+                                style="text-align: right !important;font-size: 13px !important;font-weight: bolder !important; margin-bottom: 50px !important;">
+                                تحريرا فى  :{{val2}} 
+              
+                        </h6>
+                            </div>
+                            
+                        </div>
+                    </div>
+                        <!-- =====end second bian 7ala=== -->
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

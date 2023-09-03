@@ -1,0 +1,104 @@
+<div class="w3-block w3-row">
+  <div class="w3-white material-shadow safe-box w3-block">
+      <div class="safe-box-header w3-large" style="padding: 5px!important">
+          {{"تقرير المتطلبات السابقه"}}
+      </div>
+      <div class="border-bottom-dashed"></div>
+      <br>
+
+      <div class="">
+
+          <div class="">
+              <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+
+                  <div class="custom-panel-body table-responsive w3-padding">
+
+                      <div id="form" class="row">
+
+                        <div class="col-lg-3 col-md-3">
+                          <div class="form-group">
+                              <label for="">{{ "level" | trans }}</label>
+                              <select id="level_id" name="filter.level_id" class="form-control" [(ngModel)]="filter.level_id">
+                        <option value="">الكل</option>
+                  <option *ngFor="let item of levels" value="{{ item.id }}">{{item.name}}</option>
+                </select>
+                          </div>
+                      </div>
+                          <!-- <div class="col-lg-2 col-md-3">
+                              <div class="form-group">
+                                  <label for="">{{ "division" | trans }}</label>
+                                  <select id="division_id" name="filter.division_id" class="form-control" [(ngModel)]="filter.division_id">
+                            <option value="">الكل</option>
+                      <option *ngFor="let item of divisions" value="{{ item.id }}">{{item.name}}</option>
+                    </select>
+                              </div>
+                          </div> -->
+                          <div class="col-lg-3 col-md-3">
+                              <div class="form-group">
+                                  <label for="">{{ "term" | trans }}</label>
+                                  <select id="term_id" name="filter.term_id" class="form-control" [(ngModel)]="filter.term_id">
+                          <option value="">الكل</option>
+                    <option *ngFor="let item of terms" value="{{ item.id }}">{{item.name}}</option>
+                  </select>
+                              </div>
+                          </div>
+                        <!-- sgl wla l2 -->
+                       
+                          <div class="col-lg-3 col-md-3">
+                            <div class="form-group">
+                                <label for="">الماده</label>
+                                <select class="form-control" id="course_id" name="filter.course_id" [(ngModel)]="filter.course_id">
+                                <option value="">الكل</option>
+                                <option *ngFor="let item of courses|level:level_id|term:term_id" value="{{ item.id }}">{{item.name}}</option>
+                                </select>
+                            </div>
+                         </div>
+                         <!-- <div class="col-lg-3 col-md-3">
+                            <div class="form-group">
+                                <label for="">{{ "academic year" | trans }}</label>
+                                <select name="filter.year_id" class="form-control" [(ngModel)]="filter.year_id">
+                      <option value="">الكل</option>
+                <option *ngFor="let item of applicationService.ACADEMIC_YEARS" value="{{ item.id }}">{{item.name}}</option>
+              </select>
+                            </div>
+                        </div> -->
+                          <!-- <div class="col-lg-3 col-md-3">
+                            <div class="form-group">
+                                <label for="">سجل ام لم يسجل</label>
+                                <select name="filter.registered" class="form-control" [(ngModel)]="filter.registered">
+                                <option value="">الكل</option>
+                                <option value="1">سجل</option>
+                                <option value="0">لم يسجل</option>
+                                </select>
+                            </div>
+                         </div> -->
+
+                          <div style="display: flex;" class="col-lg-3 col-md-4">
+                              <button class="btn btn-default w3-round" (click)="load()">{{ "search" | trans }}</button>
+                              <button style="margin: 0 5px;" class="btn btn-default w3-round" (click)="printContent()">{{ "print" | trans }}</button>
+                              <button class="btn btn-default w3-round" (click)="excel()">{{ "excel" | trans }}</button>
+                          </div>
+
+
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+          <div class="">
+              <div class="custom-panel w3-display-container w3-round application-panel student-info-panel" id="printable">
+
+                  <div dir="rtl" class="custom-panel-body table-responsive w3-padding" id="reportContent">
+
+
+                  </div>
+              </div>
+          </div>
+
+
+
+      </div>
+
+
+  </div>
+</div>

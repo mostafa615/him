@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+* {
+    font-family: 'Amiri', serif;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#title {
+    padding-top: 40px;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table {
+    margin-top: 50px;
+}
+
+th h5 {
+    font-weight: bold;
+}
+
+td {
+    font-weight: 400;
+    padding: 5px 0;
+    font-size: 20px;
+}
+
+h5 {
+    font-family: 'Amiri', serif;
+    font-weight: 400;
+}
+
+#seating_number {
+    border: 1px solid black;
+    text-align: center;
+    width: 25%;
+    margin: 0 20px 0 0;
+}
+
+#seating_number th {
+    border-bottom: black 1px solid;
+}
+
+#img {
+    border: 1px solid black;
+    position: absolute;
+    left: 40px;
+    height: 140px;
+}
+
+img {
+    width: 100%;
+}
+
+#name {
+    width: 94%;
+    margin: 10px 10px 0 0;
+    text-align: start;
+    border: 1px solid black;
+}
+
+#room {
+    display: flex;
+    justify-content: center;
+}
+
+#place {
+    width: 94%;
+    margin: 10px 10px 0 0;
+    text-align: start;
+    border: 1px solid black;
+    text-align: center;
+}
+
+#place-style {
+    display: flex;
+    justify-content: space-between;
+}
+
+.border {
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    padding: 0 40px;
+}
+
+#subjects {
+    padding-top: 31px;
+    border-right: black solid 1px;
+}

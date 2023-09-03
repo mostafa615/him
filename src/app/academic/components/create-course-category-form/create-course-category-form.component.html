@@ -1,0 +1,44 @@
+
+  <!-- add course modal -->
+  <div class="modal fade" tabindex="-1" id="courseCategoryFormModal" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">{{ "create new course category" | trans }}</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table">
+            <tr>
+              <td>{{ "name"| trans }} *</td>
+              <td>
+                <input type="text" [(ngModel)]="courseCategory.name" class="form-control"    >
+              </td>
+            </tr>
+
+            <tr>
+              <td>{{ "total_hours"| trans }} *</td>
+              <td>
+                <input type="number"  [(ngModel)]="courseCategory.total_hours" class="form-control"    >
+              </td>
+            </tr>
+
+            <tr>
+              <td>{{ "required_hours"| trans }} *</td>
+              <td>
+                <input type="number"  [(ngModel)]="courseCategory.required_hours" class="form-control"    >
+              </td>
+            </tr>
+
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">{{ "close" | trans }}</button>
+          <button type="button" class="btn btn-primary" (click)="send();" [disabled]="isSubmitted" >
+            <i  *ngIf="isSubmitted" class="fa fa-spin fa-spinner" ></i>
+            <span  *ngIf="!isSubmitted">{{ "save changes" | trans }}</span>
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->

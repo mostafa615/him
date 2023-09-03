@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "service-create.component.scss"
+    ],
+    "names": [],
+    "file": "service-create.component.css"
+}

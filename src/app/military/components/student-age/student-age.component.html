@@ -1,0 +1,59 @@
+<div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+    <div class="custom-panel-body table-responsive w3-padding">
+        <button mat-raised-button color="primary" class="mat-raised-button mat-primary" [disabled]="isSubmitted" (click)="updateDate()" style="margin: 5px">
+<i *ngIf="isSubmitted" class="fa fa-spin fa-spinner"></i>
+<span *ngIf="!isSubmitted">{{ "update" | trans }} </span>
+   </button>
+        <button mat-raised-button color="primary" class="w3-margin-left w3-black" (click)="print()"> <i class="fa fa-print" ></i> {{ "print" | trans }}</button>
+        <button mat-raised-button color="primary" class="w3-margin-left w3-green" (click)="exportExcel()"> <i class="fa fa-file-excel-o" ></i> {{ "excel" | trans }}</button>
+
+        <!-- <button mat-raised-button color="primary" class="w3-margin-left w3-black" (click)="print()"> <i class="fa fa-print" ></i> {{ "print" | trans }}</button> -->
+
+        <!-- <button mat-raised-button color="primary" class="w3-margin-left w3-green" (click)="exportExcel()"> <i class="fa fa-file-excel-o" ></i> {{ "excel" | trans }}</button> -->
+
+        <!-- <button permission="result_transfer" mat-raised-button color="primary" class="w3-margin-left w3-red" routerLink="/academic/result-transfer"> <i class="fa fa-send-o" ></i> {{ "result_transfer" | trans }}</button> -->
+
+    </div>
+</div>
+<div class="custom-panel w3-display-container w3-round application-panel student-info-panel" style="height:455px;overflow: auto;margin-left: 78px !important;">
+    <div class="custom-panel-body table-responsive w3-padding" id="printable">
+        <table class="table" id="tablePrint">
+            <tr>
+                <th scope="col">كود الطالب</th>
+
+                <th scope="col">الاسم</th>
+                <th scope="col">رقم التليفون</th>
+                <th scope="col"> الرقم القومى</th>
+
+                <th scope="col">المستوى</th>
+                <th scope="col">التخصص</th>
+
+                <th scope="col">السن</th>
+
+
+            </tr>
+            <tr *ngFor="let res of responses ">
+                <td> {{res.code}}</td>
+
+                <td> {{res.name}}</td>
+                <td> {{res.phone_1}}</td>
+                <td> {{res.national_id}}</td>
+
+                <td> {{res.level_name}}</td>
+                <td> {{res.division_name}}</td>
+
+                <td *ngIf="res.age>=24" style="background-color:red"> {{res.age}}</td>
+                <td *ngIf="res.age< 24"> {{res.age}}</td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- <div class="row mt-5">
+    <div class="col-12">
+        <nav aria-label="Page navigation " style="display: flex;">
+            <pagination-controls style="margin: auto;" previousLabel="السابق" nextLabel="التالى" (pageChange)="onPageChange($event)">
+            </pagination-controls>
+        </nav>
+    </div>
+</div> -->

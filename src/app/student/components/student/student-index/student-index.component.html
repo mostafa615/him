@@ -1,0 +1,647 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbList"></app-breadcrumb>
+
+
+<div class="w3-display-bottomleft w3-padding" style="position: fixed;z-index: 9999">
+    <button permission="required_document_read" mat-fab color="primary" class="w3-large" routerLink="/student/create" style="margin: 5px">
+        <span class="fa fa-plus"></span>
+    </button>
+</div>
+
+<!--
+<div class="box box-primary  table-responsive" >
+  <div class="box-header">
+
+
+
+    <button *ngIf="showRemoveButton" (click)="removeResources()" class="btn btn-danger" style="margin: 5px"  >
+      <span class="fa fa-trash" ></span>
+    </button>
+  </div>
+  <br>
+
+</div>
+    -->
+
+<button permission="student_import" mat-raised-button class="w3-green" (click)="$('#importExcelModal').modal('show')">{{ "import from excel" | trans}}</button>
+
+<br>
+<div class="row">
+    <div class="col-md-3">
+        <label for="">{{ "search" | trans }}</label>
+        <input type="text" class="w3-input w3-block form-control" placeholder="{{ 'search' | trans }}" (keyup)="loadResources()" [(ngModel)]="search.search_key">
+    </div>
+
+    <div class="col-md-3">
+        <label for="">{{ "level" | trans }}</label>
+        <select class="form-control" (change)="loadResources()" [(ngModel)]="search.level_id">
+            <option value="">{{ "all" | trans }}</option>
+            <option *ngFor="let item of levels" value="{{item.id}}">{{ item.name }}</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label for="">{{ "division" | trans }}</label>
+        <select class="form-control" (change)="loadResources()" [(ngModel)]="search.division_id">
+            <option value="">{{ "all" | trans }}</option>
+            <option *ngFor="let item of applicationSettings.DIVISIONS" value="{{item.id}}">{{ item.name }}</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label for="">{{ "case_constraint" | trans }}</label>
+        <select class="form-control" (change)="loadResources()" [(ngModel)]="search.case_constraint_id">
+            <option value="">{{ "all" | trans }}</option>
+            <option *ngFor="let item of applicationSettings.CASE_CONSTRAINTS" value="{{item.id}}">{{ item.name }}
+            </option>
+        </select>
+    </div>
+</div>
+
+<!-- <input type="text" class="w3-input w3-block form-control" placeholder="{{ 'search' | trans }}" (change)="loadResources()" [(ngModel)]="search.search_key"> -->
+<br>
+
+<div class="w3-row student-container nicescroll" style="padding: 5px;">
+    <div *ngIf="isLoad" class="w3-block text-center w3-padding">
+        <i class="fa fa-spin fa-refresh w3-jumbo w3-text-indigo"></i>
+    </div>
+    <ng-container *ngFor="let item of resources.data">
+        <div class="{{ col }} student-list-col">
+            <div class="media material-shadow w3-white w3-padding w3-display-container student-list-item w3-round">
+                <div class="w3-display-topleft w3-padding">
+                    <div class="text-left">
+                        <a href="#" permission="student_edit" [routerLink]="['/student/', item.id]" style="margin: 5px"><i
+                                class="material-shadow fa fa-edit btn btn-warning btn-sm"></i>
+                        </a>
+
+                        <a href="#" permission="student_show" [routerLink]="['/student/show/', item.id]" style="margin: 5px"><i
+                                class="material-shadow fa fa-desktop btn btn-success btn-sm"></i></a>
+
+                        <button permission="safe_student_payment" (click)="showStudentPayments(item)" style="margin: 5px" class="material-shadow fa fa-money btn w3-indigo btn-sm"> {{ "student payments" | trans }}
+                        </button>
+
+                        <button permission="safe_student_payment" class="btn btn-info btn-sm">
+                            <b>{{ item.paid_value }}</b><b>جنيه</b>
+                        </button>
+                        <br>
+                        <button (click)="openModel(item)" style="width: 100%;background-color: red !important; font-weight: 900 !important;margin: 5px" *ngIf="item.case_constraint_id!=null &&(item.level_id==1||item.level_id==2)"  class="material-shadow fa fa-money btn w3-indigo btn-sm"> تسجيل الفصل الصيفى
+                        </button>
+                    </div>
+                </div>
+
+                <div class="media-left">
+                    <a>
+                        <img class="media-object w3-round" [src]="item.image" style="width: 100px;max-height: 210;">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h5 class="media-heading">{{ item.name }}..</h5>
+                    <table class="w3-tiny">
+                        <tr>
+                            <th>{{ "code" | trans }}</th>
+                            <td>{{ item.code }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ "level" | trans }}</th>
+                            <td>{{ item.level? item.level.name : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ "academic_year" | trans }}</th>
+                            <td>{{ item.academic_year? item.academic_year.name : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ "department" | trans }}</th>
+                            <td>{{ item.department? item.department.name : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ "qualification" | trans }}</th>
+                            <td>{{ item.qualification? item.qualification.name : '' }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>{{ "division" | trans }}</th>
+                            <td>{{ item.division? item.division.name : '' }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>{{ "set number" | trans }}</th>
+                            <td>{{ item.set_number? item.set_number : '' }}</td>
+                        </tr>
+
+                        <!-- <tr>
+                            <th>{{ "room" | trans }}</th>
+                            <td>{{ item.commission_id? item.commission.name : '' }}</td>
+                        </tr> -->
+
+                        <!-- <tr>
+                            <th>{{ "theater" | trans }}</th>
+                            <td>{{ item.theater_id? item.theater.name : '' }}</td>
+                        </tr> -->
+
+                        <tr>
+                            <th>{{ "case_constraint" | trans }}</th>
+                            <td>{{ item.case_constraint? item.case_constraint.name : '' }}</td>
+                        </tr>
+
+
+                        <tr>
+                            <th>{{ "registeration_status" | trans }}</th>
+                            <td>{{ item.registeration_status? item.registeration_status.name : '' }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>{{ "notes" | trans }}</th>
+                            <td>{{ item.notes }}</td>
+                        </tr>
+                        <tr>
+                            <th>لقاح كورونا</th>
+
+                            <td><input (click)='corona(item.id)' type="checkbox" class="custom-control-input" id="customSwitch{{item.id}}" [checked]="item.iscorona == 1"></td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </ng-container>
+
+
+
+</div>
+<br>
+<div class="text-center w3-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li>
+                <a class="" [ngClass]="{'disabled': !resources.prev_page}" (click)="loadResources(resources.prev_page)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li *ngFor="let item of resources.pages_arr">
+                <a class="" [ngClass]="{'active': resources.current_page == item}" (click)="loadResources(item)">{{ item
+                    }}</a>
+            </li>
+            <li>
+                <a class="" [ngClass]="{'disabled': !resources.next_page}" (click)="loadResources(resources.next_page)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+<!-- remove modal -->
+<div class="w3-modal w3-block" *ngIf="showRemoveModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ "remove applications" | trans }}</h4>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fa fa-spinner fa-spin w3-jumbo w3-text-indigo w3-center"></i>
+                <br> {{ trashList.size() }} - {{ "removed" | trans }} {{ trashList.size() + removed.length }}
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+<!-- student payments modal -->
+<app-student-payment [payments]="selectedItem.payment_details? selectedItem.payment_details : []"></app-student-payment>
+
+
+<app-import-excel [apiUrl]="'import-student'" [action]="loadResources"></app-import-excel>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content" style="    margin-top: 150px;">
+          <div class="modal-header" style="background-color:#007aff;">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+      <span aria-hidden="true" style="color: #fff">&times;</span>
+    </button>
+
+              <p class="modal-title" style="color: #fff">
+                  <span style="vertical-align: middle; padding-left:8px">
+تنبيه
+                </span>
+              </p>
+
+          </div>
+
+          <div class="modal-body">
+              <p style="color:rgba(0,0,0,0.87)">
+                لا يمكنك تسجيل الفصل الصيفى
+
+                المبلغ المتبقى  :
+                {{paid_value}}
+              </p>
+          </div>
+
+          <div class="modal-footer">
+              <button class="btn btn-white bbtclose" (click)="onCloseModal()">
+      <!-- Annulla -->
+      الغاء
+    </button>
+              <!-- Confirm -->
+              <button (click)="openNextModel()" class="btn btn_color w-40 h-12" style="color: white;
+              background-color:#007aff;;
+              width: 100px;
+              height: 45px;  line-height: 15px;"  >
+       تخطى
+    </button>
+          </div>
+
+
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display2}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content" style="    margin-top: 150px;">
+          <div class="modal-header" style="background-color:#007aff;">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal2()">
+      <span aria-hidden="true" style="color: #fff">&times;</span>
+    </button>
+
+              <p class="modal-title" style="color: #fff">
+                  <span style="vertical-align: middle; padding-left:8px">
+الرقم السرى
+                </span>
+              </p>
+
+
+          </div>
+
+          <div class="modal-body">
+              <input type="text"class="form-control"[(ngModel)]="valepa" placeholder=" ادخل الرقم السرى">
+              <div class="invalid-feedback"*ngIf="notVailed==true">
+                <div style="color: red;"> كلمة السر غير صحيحه </div>
+            </div>
+            </div>
+
+          <div class="modal-footer">
+              <button class="btn btn-white bbtclose" (click)="onCloseModal2()">
+      <!-- Annulla -->
+      الغاء
+    </button>
+              <!-- Confirm -->
+              <button class="btn btn_color w-40 h-12" style="color: white;
+              background-color:#007aff;;
+              width: 100px;
+              height: 45px;  line-height: 15px;" (click)="openNextMode2()" >
+       تاكيد
+    </button>
+          </div>
+
+
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display3}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content" style="    margin-top: 30px;">
+          <div class="modal-header" style="background-color:#007aff;">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal3()">
+      <span aria-hidden="true" style="color: #fff">&times;</span>
+    </button>
+
+              <p class="modal-title" style="color: #fff">
+                  <span style="vertical-align: middle; padding-left:8px">
+   تاكيد التخطى
+                </span>
+              </p>
+
+          </div>
+
+          <div class="modal-body">
+            <div>
+              التاريخ :
+              <input type="datetime-local" id="completionDate"
+               placeholder="yyyy-MM-ddTHH:mm:ss"
+                [(ngModel)]="dated2">
+            </div>
+            <div style=" margin-top: 20px;">
+              <input type="text"class="form-control" [(ngModel)]="note2" placeholder=" سبب التخطى">
+              <br>
+             <input type="file" class="form-control"  #fileInput (change)="chooseFile(fileInput.files)" accept="image/png, image/jpeg, image/jpg,image/TIFF, .pdf*" required/>
+            </div>
+            <div style="display: flex;margin-top: 20px;">
+              <span>
+                اجمالى سعر المواد
+                :
+               {{totalpay2                }}
+             </span>
+             <span style="margin-right: 50px;">
+              اجمالى سعر الكتاب
+              :
+             {{totalbook2                }}
+            </span>
+            <span style="margin-right: 50px;color: red;">
+            الاجمالى
+            :
+            {{    totalBook_Mat2
+            }}
+            </span>
+            </div>
+            <div style="display: flex; margin-top: 20px;margin-bottom: 20px;" >
+              <br>
+              <span >
+                عدد الساعات المجتازة :
+                {{resStudData?.registerHours}}
+              </span>
+              <br>
+              <span style="margin-right: 80px;">  عدد المواد المتاحه للتسجيل :
+                {{resStudData?.numberSubject}}
+              </span>
+            </div>
+
+
+
+          </div>
+          <div class="custom-panel w3-display-container w3-round application-panel student-info-panel" style="height: 180px;overflow: auto;">
+            <div class="custom-panel-body table-responsive w3-padding" >
+                     <div  >
+             <table style= "width: 70%;">
+              <tr>
+                <th>المادة</th>
+              </tr>
+              <tr  *ngFor="let cor of coursees">
+                <td>{{cor?.name}}</td>
+                <td><input (change)="change($event,cor)"  type="checkbox"></td>
+              </tr>
+            </table>
+            </div>
+            </div>
+            </div>
+
+            <div *ngIf="studentHistory!=null ||studentHistory.length>0">
+              <h5 style="text-align: center;color: red; margin-top: 30px;">سجل الطالب</h5>
+              <table class="table table-bordered" style="width: 100%; margin-bottom: 0px !important;overflow: scroll;">
+                <tr>
+                  <th style="font-size: 12px;">التاريخ</th>
+
+                  <th style="font-size: 12px;">المادة</th>
+                  <!-- <th style="font-size: 12px;">اجمالى فلوس المواد</th>
+                  <th style="font-size: 12px;">اجمالى فلوس الكتاب</th>
+                  <th style="font-size: 12px;">الاجمالى    </th> -->
+
+                </tr>
+                <tr *ngFor="let item of studentHistory"  >
+                  <td> </td>
+                  <td>
+                    <span style="font-size: 11px;" >{{item?.course.name}}</span>
+                    <!-- <br>
+                    <span style="font-size: 11px;" *ngIf="studentHistory?.sub2_name!=null||studentHistory?.sub2_name!=''">{{studentHistory?.sub2_name}}</span>
+                   <br>
+                    <span style="font-size: 11px;"*ngIf="studentHistory?.sub3_name!=null||studentHistory?.sub3_name!=''">{{studentHistory?.sub3_name}}</span> -->
+
+                    </td>
+                  <!-- <td style="font-size: 12px;">{{studentHistory?.total_price_material}} </td>
+                  <td style="font-size: 12px;">{{studentHistory?.total_price_book}} </td>
+                  <td style="font-size: 12px;">{{studentHistory?.total_price_book +studentHistory?.total_price_material}} </td> -->
+
+                </tr>
+              </table>
+            </div>
+          <div class="modal-footer">
+              <button class="btn btn-white bbtclose" (click)="onCloseModal3()">
+      <!-- Annulla -->
+      الغاء
+    </button>
+              <!-- Confirm -->
+              <button class="btn btn_color w-40 h-12" style="color: white;
+              background-color:#007aff;;
+              width: 100px;
+
+              height: 45px;  line-height: 15px;" (click)="submitData2()" >
+       تاكيد التخطى
+    </button>
+          </div>
+
+
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display5}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content" style="margin-top: 50px;">
+          <div class="modal-header" style="background-color:#007aff;">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal5()">
+      <span aria-hidden="true" style="color: #fff">&times;</span>
+    </button>
+
+              <p class="modal-title" style="color: #fff">
+                  <span style="vertical-align: middle; padding-left:8px">
+التسجيل                </span>
+              </p>
+
+          </div>
+
+          <div class="modal-body">
+            <div>
+              التاريخ :
+              <input type="datetime-local" id="completionDate"
+              placeholder="yyyy-MM-ddTHH:mm:ss"
+               [(ngModel)]="dated">            </div>
+            <div style="display: flex; margin-top: 23px;">
+              <span>
+                عدد الساعات المجتازة :
+                {{resStudData1?.registerHours}}
+              </span>
+
+              <span style="margin-right: 80px;">  عدد المواد المتاحه للتسجيل :
+                {{resStudData1?.numberSubject}}
+              </span>
+              <br>
+
+            </div>
+            <br>
+            <div style="display: flex;">
+              <span>
+                اجمالى سعر المواد
+                :
+               {{totalpay                }}
+             </span>
+             <span style="margin-right: 50px;">
+              اجمالى سعر الكتاب
+              :
+             {{totalbook                }}
+           </span>
+           <span style="margin-right: 50px;color: red;">
+           الاجمالى
+           :
+           {{    totalBook_Mat
+           }}
+         </span>
+            </div>
+
+
+          </div>
+          <div class="custom-panel w3-display-container w3-round application-panel student-info-panel" style="height: 180px;overflow: auto;">
+            <div class="custom-panel-body table-responsive w3-padding"  >
+                     <div  >
+             <table style=" width: 70%">
+              <tr>
+                <!-- <th>المادة</th> -->
+              </tr>
+              <tr  *ngFor="let cor of  coursees2 ">
+                <td>{{cor?.name}}</td>
+                <td><input (change)="change2($event,cor)"  type="checkbox"></td>
+              </tr>
+            </table>
+</div>
+</div>
+</div>
+            <div *ngIf="studentHistory!=null ||studentHistory.length>0">
+            <h5 style="text-align: center;color: red; margin-top: 30px;">سجل الطالب</h5>
+            <table class="table table-bordered" style="width: 100%; margin-bottom: 0px !important;overflow: scroll;">
+              <tr>
+                <th style="font-size: 12px;">المادة</th>
+                <th style="font-size: 12px;">التاريخ</th>
+
+                <!-- <th style="font-size: 12px;">اجمالى فلوس المواد</th>
+                <th style="font-size: 12px;">اجمالى فلوس الكتاب</th>
+                <th style="font-size: 12px;">الاجمالى    </th> -->
+
+              </tr>
+              <tr *ngFor="let item of studentHistory"  >
+                <td>
+                  <span style="font-size: 11px;" >{{item?.course.name}}</span>
+                  <!-- <br>
+                  <span style="font-size: 11px;" *ngIf="studentHistory?.sub2_name!=null||studentHistory?.sub2_name!=''">{{studentHistory?.sub2_name}}</span>
+                 <br>
+                  <span style="font-size: 11px;"*ngIf="studentHistory?.sub3_name!=null||studentHistory?.sub3_name!=''">{{studentHistory?.sub3_name}}</span> -->
+
+                  </td>
+                  <td>{{item.date}}</td>
+                <!-- <td style="font-size: 12px;">{{studentHistory?.total_price_material}} </td>
+                <td style="font-size: 12px;">{{studentHistory?.total_price_book}} </td>
+                <td style="font-size: 12px;">{{studentHistory?.total_price_book +studentHistory?.total_price_material}} </td> -->
+
+              </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-white bbtclose" (click)="onCloseModal5()">
+      <!-- Annulla -->
+      الغاء
+    </button>
+              <!-- Confirm -->
+              <button class="btn btn_color w-40 h-12" style="color: white;
+              background-color:#007aff;;
+              width: 100px;
+              height: 45px;  line-height: 15px;"(click)="submitData()"  >
+       تاكيد
+    </button>
+          </div>
+
+
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display4}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content" style="    margin-top: 150px;">
+          <div class="modal-header" style="background-color:#b10d0d;">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal4()">
+      <span aria-hidden="true" style="color: #fff">&times;</span>
+    </button>
+
+              <p class="modal-title" style="color: #fff">
+                  <span style="vertical-align: middle; padding-left:8px">
+تنبيه                </span>
+              </p>
+
+          </div>
+
+          <div class="modal-body">
+
+ <p>لقد تخطيت عدد المواد المسموح بها
+
+ </p>
+ <br>
+ <input type="text"class="form-control"[(ngModel)]="valepa2" placeholder=" ادخل الرقم السرى">
+ <div class="invalid-feedback"*ngIf="notVailed==true">
+  <div style="color: red;"> كلمة السر غير صحيحه </div>
+</div>
+</div>
+
+
+
+
+          <div class="modal-footer">
+              <button class="btn btn-white bbtclose" (click)="onCloseModal4()">
+      <!-- Annulla -->
+      الغاء
+    </button>
+    <button class="btn btn_color w-40 h-12" style="color: white;
+    background-color:#ad0a0a;;
+    width: 100px;
+    height: 45px;  line-height: 15px;" (click)="onOpenModel5()" >
+تخطى
+</button>
+              <!-- Confirm -->
+
+          </div>
+
+
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div *ngIf="expression==true"class="custom-panel-body table-responsive w3-padding" id="printable">
+  <div *ngIf="expression==true">
+  <p> الطالب :
+    {{this.StudData.name}}
+        </p>
+  <table>
+    <tr>
+      <th>المادة </th>
+    </tr>
+    <tr *ngFor="let item of namecourse2">
+<td>{{item}}</td>
+    </tr>
+
+  </table>
+<p>
+  الاجمالى :
+
+  {{totalBook_Mat}}
+</p>
+</div>
+<div *ngIf="expression2===true" >
+  <p> الطالب :
+{{this.StudData.name}}
+  </p>
+  <table>
+    <tr>
+      <th>المادة </th>
+    </tr>
+    <tr *ngFor="let item of namecourse">
+<td>{{item}}</td>
+    </tr>
+
+  </table>
+  <p>
+    الاجمالى :
+
+    {{totalBook_Mat2}}
+  </p>
+  </div>
+  </div>

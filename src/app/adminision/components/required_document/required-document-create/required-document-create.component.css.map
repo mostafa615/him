@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "required-document-create.component.scss"
+    ],
+    "names": [],
+    "file": "required-document-create.component.css"
+}

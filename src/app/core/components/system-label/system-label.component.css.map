@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,sBAAsB,CAAC;EACnB,QAAQ,EAAE,KAAK;EACf,GAAG,EAAE,GAAG;EACR,KAAK,EAAE,KAAK;EACZ,OAAO,EAAE,YAAY;CACxB;;AAED,AAAA,iBAAiB,CAAC;EAChB,OAAO,EAAE,MAAM;EACf,GAAG,EAAE,IAAI;CACV",
+    "sources": [
+        "system-label.component.scss"
+    ],
+    "names": [],
+    "file": "system-label.component.css"
+}

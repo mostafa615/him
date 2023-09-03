@@ -1,0 +1,256 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="w3-white material-shadow safe-box">
+
+                <div class="safe-box-header w3-xlarge">
+                    {{ "card export unit" | trans }}
+                </div>
+                <div class="border-bottom-dashed"></div>
+                <br>
+
+                <div class="safe-box-body row">
+
+                    <div class="col-lg-9 col-md-9 col-sm-12">
+                        <div class="custom-panel w3-display-container w3-round">
+                            <div class="custom-panel-title">{{ "search" | trans }}</div>
+
+                            <div class="custom-panel-body w3-display-container">
+                                <input class="w3-round-xxlarge w3-white w3-input border-gray search-input " (keyup)="searchInputEvent()" placeholder="{{ 'search with student name code national_id' | trans }}" [(ngModel)]="searchKey">
+
+                                <button (click)="loadStudentInfo(student.id)" class="btn btn-default small-shadow w3-margin-left w3-margin-right w3-round-xxlarge">{{ "search" | trans }}</button>
+
+                                <div class="w3-display-topleft w3-padding" *ngIf="studentSearchDialogLoader" style="top: 12px;left:30%;z-index:10;">
+                                    <span class="fa fa-spin fa-spinner w3-text-indigo"></span>
+                                </div>
+
+                                <div class="w3-display-topright w3-white material-shadow" *ngIf="studentSearchDialogShow" style="top: 47px;right:11px;z-index:10;width: 60%">
+                                    <div class="w3-display-conitainer">
+                                        <span class="w3-display-topright w3-button fa fa-close" (click)="studentSearchDialogShow=false"></span>
+                                        <br>
+                                        <ul class="w3-ul">
+                                            <li *ngFor="let item of students" style="cursor: pointer;" class="w3-hover-light-gray w3-block text-right">
+                                                <div class="media" (click)="selectStudent(item)">
+                                                    <div class="media-left">
+                                                        <a href="#">
+                                                            <img [src]="item.image" style="width: 30px;height: 30px;" class="w3-circle" alt="">
+                                                            <!--
+                          <span class="fa fa-user-circle w3-text-indigo w3-large" ></span>
+                          -->
+                                                        </a>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h4 class="media-heading" [innerHTML]="item.name"></h4>
+                                                        <span [innerHTML]="item.code" class="w3-large"></span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="custom-panel w3-display-container w3-round">
+                                    <div class="custom-panel-title">{{ "student info" | trans }}</div>
+
+                                    <div class="custom-panel-body">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>{{ "student name" | trans }}</th>
+                                                        <td>
+                                                            : {{ student.name }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{ "student code" | trans }}</th>
+                                                        <td>
+                                                            : {{ student.code }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{ "national id" | trans }}</th>
+                                                        <td>
+                                                            : {{ student.national_id }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{ "gpa" | trans }}</th>
+                                                        <td>
+                                                            : {{ student.gpa }}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>{{ "level" | trans }}</th>
+                                                        <td>
+                                                            : {{ student.level? student.level.name : '' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{ "department" | trans }}</th>
+                                                        <td>
+                                                            : {{ student.division? student.division.name : '' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{ "case constraint" | trans }}</th>
+                                                        <td>
+                                                            : {{ student.case_constraint? student.case_constraint.name : '' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{ "constraint status" | trans }}</th>
+                                                        <td>
+                                                            : {{ student.registeration_status? student.registeration_status.name : '' }}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="custom-panel w3-display-container w3-round">
+                                    <div class="custom-panel-title">{{ "card_reason" | trans }}</div>
+
+                                    <div class="custom-panel-body">
+                                        <!-- *ngIf="!student.can_take_cards" -->
+                                        <ng-container *ngIf="!student.can_take_cards">
+                                            <div class="w3-text-red" [innerHTML]="student.reason_of_cards">
+
+                                            </div>
+                                        </ng-container>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="custom-panel w3-display-container w3-round">
+                            <div class="custom-panel-title">{{ "card types" | trans }}</div>
+
+                            <div class="custom-panel-body">
+                                <ul class="w3-ul">
+                                    <li *ngFor="let item of cardTypes index as i" class="w3-display-container">
+                                        <!-- [disabled]="!availableCards.has(item.id)" -->
+                                        <!-- [checked]="selectedCard .id== item.id" -->
+
+                                        <mat-slide-toggle [checked]="selectedCard .id== item.id" [disabled]="!availableCards.has(item.id)" id='card{{item.id}}' [disabled]="student.case_constraint.id != 2" (change)="selectedCard = (selectedCard == item)? null : item;preCardSrc()"></mat-slide-toggle>
+                                        <span style="padding-right: 3px" class="w3-">{{ item.name }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-12">
+
+                        <div class="card-place" style="height: auto;border: 2px dashed lightgray;padding: 5px;">
+
+                            <img [src]="student.image" class="w3-block material-shadow w3-round">
+
+                        </div>
+                        <br>
+
+                        <div class="custom-panel w3-display-container w3-round">
+                            <div class="custom-panel-body">
+
+                                <!-- [disabled]="isExportSubmitted || !selectedCard.id" -->
+
+                                <button [disabled]="student.case_constraint.id != 2 && student.case_constraint.id != 3 " (click)="saveAndPrint()" class="btn btn-default w3-block small-shadow btn-margin-bottom">
+            <span *ngIf="isExportSubmitted" class="fa fa-spin fa-spinner" ></span>
+            <span *ngIf="!isExportSubmitted"  >{{ "save & print" | trans }}</span>
+
+          </button>
+
+                                <button (click)="showTermsAndConditions()" class="btn btn-default w3-block small-shadow btn-margin-bottom">
+            <span   >{{ "card terms & conditions" | trans }}</span>
+
+          </button>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-2" style="padding: 0px!important">
+
+            <div class="material-shadow w3-white" style="padding: 5px">
+                <ul class="w3-ul">
+                    <li class="text-center">
+                        {{ "available cards" | trans }}
+                    </li>
+                    <li *ngFor="let card of student.available_cards index as i" style="padding: 5px">
+                        <img [src]="card.image_url" width="30px" class="w3-round" style="margin-left: 5px"> {{ card.name }}
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="cardTermCondition" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ "card terms & conditions" | trans }}</h4>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>
+                        ان يكون الطالب مقيد بالمعهد
+                    </li>
+                    <li>
+                        ان يكون الطالب سدد القسط المطلوب لاستخراج الكارنيه
+                    </li>
+                    <li>
+                        لا يوجد مانع للطلاب الذكور مثل (اتم ال 18 ولم يحضر بطاقة 6 جند)
+                    </li>
+                    <li>
+                        توجد صوره شخصية للطالب
+                    </li>
+                    <li>
+                        الطالب غير موقوف تجنيديا
+                    </li>
+                    <li>
+                        الطالب مقيد و غير موقوف من المعهد
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ "close" | trans }}</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

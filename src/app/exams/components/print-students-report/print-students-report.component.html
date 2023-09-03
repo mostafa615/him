@@ -1,0 +1,97 @@
+<div permission="print_students_report" class="w3-block">
+
+    <div class="row">
+
+        <div class="col-lg-3 w3-white material-shadow safe-box">
+            <div class="safe-box-header w3-large" style="padding: 5px!important">
+                {{ "print students report" | trans }}
+            </div>
+            <div class="border-bottom-dashed"></div>
+            <br>
+            <div class="custom-panel w3-display-container w3-round ">
+
+                <div class="custom-panel-body table-responsive w3-padding w3-center">
+                    <a href="#" [routerLink]="['/exams/print-walls-reports']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>{{ "print walls reports" | trans }}</b>
+                        <a href="#" class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a href="#" [routerLink]="['/exams/print-signs-reports']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>{{ "print signs reports" | trans }}</b>
+                        <a href="#" class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <!-- <a href="#" [routerLink]="['/exams/print-year-score']" role="button"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+            <b>{{ "print year score" | trans }}</b>
+            <a href="#" class="pull-left">
+              <i class="fa fa-newspaper-o"></i>
+            </a>
+          </a>
+          <a href="#" [routerLink]="['/exams/print-scientific-test-report']" role="button"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+            <b>{{ "print scientific test report" | trans }}</b>
+            <a href="#" class="pull-left">
+              <i class="fa fa-newspaper-o"></i>
+            </a>
+          </a>
+          <a href="#" [routerLink]="['/exams/print-attendance-report']" role="button"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+            <b>{{ "print attendance report" | trans }}</b>
+            <a href="#" class="pull-left">
+              <i class="fa fa-check-square"></i>
+            </a>
+          </a>
+          <a href="#" [routerLink]="['/affairs/students/create']" role="button"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+            <b>{{ "print rooms map" | trans }}</b>
+            <a href="#" class="pull-left">
+              <i class="fa fa-users"></i>
+            </a>
+          </a>
+          <a href="#" routerLink='/affairs/required_documents' role="button"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow">
+            <b>{{ "print_seating_numbers_lists" | trans }}</b>
+            <a href="#" class="pull-left">
+              <i class="fa fa-address-card-o"></i>
+            </a>
+          </a>
+          <a href="#" routerLink='/affairs/application_required' role="button"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow">
+            <b>{{ "absences_report" | trans }}</b>
+            <a href="#" class="pull-left">
+              <i class="fa fa-check-square"></i>
+            </a>
+          </a>
+          <a href="#" routerLink='/affairs/settings' role="button"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow">
+            <b>{{ "monitoring_report" | trans }}</b>
+            <a href="#" class="pull-left">
+              <i class="fa fa-newspaper-o"></i>
+            </a>
+          </a>
+          <a href="#" routerLink='/affairs/report/report1' role="button"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow">
+            <b>{{ "print_research_report" | trans }}</b>
+            <a href="#" class="pull-left">
+              <i class="fa fa-newspaper-o"></i>
+            </a>
+          </a> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9 student-affair-container  " style="overflow: auto;">
+            <div class="table-responsive w3-padding">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</div>

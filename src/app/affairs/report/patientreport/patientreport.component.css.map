@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "patientreport.component.scss"
+    ],
+    "names": [],
+    "file": "patientreport.component.css"
+}

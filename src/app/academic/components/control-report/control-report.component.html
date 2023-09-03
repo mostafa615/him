@@ -1,0 +1,240 @@
+<div class="container">
+    <div class="w3-block">
+        <div class="w3-white material-shadow safe-box">
+            <div class="safe-box-header w3-large" style="padding: 5px!important">
+                {{ "control report" | trans }}
+            </div>
+            <div class="border-bottom-dashed"></div>
+            <br>
+
+            <div class="control-message" *ngIf="!canShowResult">
+                <!-- password panel -->
+                <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                    <div class="custom-panel-body table-responsive w3-padding w3-center">
+                        <input class="w3-round-xxlarge w3-white w3-input border-gray search-input w3-center" 
+                        style="width: 90%!important" type="password" 
+                        placeholder="{{ 'enter password of result' | trans }}" [(ngModel)]="password">
+                        <br>
+                        <br>
+                        <button class="btn w3-light-gray w3-round-xlarge" (click)="login()">{{ "show" | trans }}</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-body" *ngIf="canShowResult">
+
+                <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                    <div class="custom-panel-title">{{ "student search" | trans }}</div>
+                    <div class="custom-panel-body w3-display-container">
+                        <input class="w3-round-xxlarge w3-white w3-input border-gray search-input " style="width: 100%!important" (keyup)="searchInputEvent()" placeholder="{{ 'search with student name code national_id' | trans }}" [(ngModel)]="searchKey">
+
+                        <div class="w3-display-topleft w3-padding" (click)="selectStudent({})" *ngIf="searchKey && !studentSearchDialogLoader" style="top: 12px;left:5%;z-index:10;">
+                            <span class="fa fa-close w3-text-red"></span>
+                        </div>
+
+                        <div class="w3-display-topleft w3-padding" *ngIf="studentSearchDialogLoader" style="top: 12px;left:5%;z-index:10;">
+                            <span class="fa fa-spin fa-spinner w3-text-indigo"></span>
+                        </div>
+
+
+                        <div class="w3-display-topright w3-white material-shadow" *ngIf="studentSearchDialogShow" style="top: 47px;right:11px;z-index:10;width: 100%">
+                            <div class="w3-display-conitainer">
+                                <span class="w3-display-topright w3-button fa fa-close" (click)="studentSearchDialogShow=false"></span>
+                                <br>
+                                <ul class="w3-ul">
+                                    <li *ngFor="let item of students" style="cursor: pointer;" class="w3-hover-light-gray w3-block text-right">
+                                        <div class="media" (click)="selectStudent(item)">
+                                            <div class="media-left">
+                                                <a href="#">
+                                                    <img [src]="item.image" style="width: 30px;height: 30px;" class="w3-circle" alt="">
+                                                    <!--
+                        <span class="fa fa-user-circle w3-text-indigo w3-large" ></span>
+                        -->
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                                                <h4 class="media-heading" [innerHTML]="item.name"></h4>
+                                                <span [innerHTML]="item.code" class="w3-large"></span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3">
+                                <div class="form-group">
+                                    <label for="">{{ "term" | trans }}</label>
+                                    <select class="form-control" [(ngModel)]="filter.term_id" (change)="searchAboutStudent(filter.term_id,filter.year_id)">
+                        <option value="">{{ "term" | trans }}</option>
+                  <option *ngFor="let item of terms" value="{{ item.id }}">{{item.name}}</option>
+                </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3">
+                                <div class="form-group">
+                                    <label for="">{{ "academic year" | trans }}</label>
+                                    <select class="form-control" [(ngModel)]="filter.year_id" (change)="searchAboutStudent(filter.term_id,filter.year_id)">
+                      <option value="">{{ "academic year" | trans }}</option>
+                <option *ngFor="let item of applicationService.ACADEMIC_YEARS" value="{{ item.id }}">{{item.name}}</option>
+              </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <!-- course categories panel -->
+                        <div class="custom-panel w3-display-container w3-round application-panel student-info-panel" id='reportContent'>
+                            <div class="custom-panel-body table-responsive w3-padding">
+                                <div>
+                                    <input type="text" (keyup)="searchAboutCourse()" [(ngModel)]="searchCourseKey" class="w3-input w3-round-xxlarge w3-block" placeholder="{{ 'search about course' | trans }}">
+                                </div>
+                                <div style="height: 147px;overflow: auto;">
+                                    <ul class="w3-ul">
+                                        <li *ngFor="let item of courses index as i" class="course-item">
+                                            <mat-slide-toggle (change)="toggle(item.id, selectedCourses);loadData()" [checked]="selectedCourses.has(item.id)"></mat-slide-toggle>
+                                            <span style="padding-right: 3px">{{ item.name }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                            <div class="custom-panel-title">{{ "divisions" | trans }}</div>
+                            <div class="custom-panel-body filter-top" style="height: 200px;overflow: auto;">
+                                <ul class="w3-ul">
+                                    <li *ngFor="let item of divisions index as i">
+                                        <mat-slide-toggle (change)="toggle(item.id, selectedDivisions);loadData()" [checked]="selectedDivisions.has(item.id)"></mat-slide-toggle>
+                                        <span style="padding-right: 3px">{{ item.name }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                            <div class="custom-panel-title">{{ "levels" | trans }}</div>
+                            <div class="custom-panel-body filter-top" style="height: 200px;overflow: auto;">
+                                <ul class="w3-ul">
+                                    <li *ngFor="let item of levels index as i">
+                                        <mat-slide-toggle (change)="toggle(item.id, selectedLevels);loadData()" [checked]="selectedLevels.has(item.id)"></mat-slide-toggle>
+                                        <span style="padding-right: 3px">{{ item.name }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- result panel -->
+                <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                    <div class="custom-panel-body table-responsive w3-padding">
+
+                        <table class="table table-bordered " id="printable" style="direction: rtl!important;">
+                            <thead>
+                                <tr style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>
+                                    <th style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>#</th>
+                                    <th style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>{{ "code" | trans }}</th>
+                                    <th style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>رقم الجلوس</th>
+                                    <th style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>{{ "name" | trans }}</th>
+                                    <th style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>أسم المادة</th>
+                                    <th style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>أعمال سنة</th>
+                                    <th style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>ميد ترم</th>
+                                    <th style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>تحريري</th>
+                                    <th style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>المجموع</th>
+                                    <th style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>المعدل</th>
+                                    <th style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>التقدير</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngFor="let item of response.data index as i">
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>{{ i + 1 }}</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>{{ item.code }}</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>{{ item.set_number }}</td>
+
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>{{ item.name }}</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>{{ item.course_name }}</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.work_year_degree != -1 && item.work_year_degree != 4">{{ item.work_year_degree }}</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.work_year_degree == -1">غياب</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.work_year_degree == -4">منسحب</td>
+
+
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.mid_degree != -1 && item.mid_degree != 4">{{ item.mid_degree }}</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.mid_degree == -1">غياب</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.mid_degree == -4">منسحب</td>
+
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.final_tahrery_degree != -1 && item.final_tahrery_degree != 4">{{ item.final_tahrery_degree }}</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.final_tahrery_degree == -1">غياب</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.final_tahrery_degree == -4">منسحب</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.final_tahrery_degree != -1 && item.final_tahrery_degree != -2 && item.final_tahrery_degree != -3 && item.final_tahrery_degree != -4">{{ item.final_degree }}</td>
+
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.final_tahrery_degree == -1">غياب</td>
+
+
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.final_tahrery_degree == -2">شغب</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.final_tahrery_degree == -3">غش</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;' *ngIf="item.final_tahrery_degree == -4">انسحاب</td>
+
+
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>{{ item.gpa }}</td>
+                                    <td style='border: 1px solid black !important;text-align: center !important;vertical-align: middle;padding: 0px !important;background-color: #d4d4d4 !important;'>{{ item.gpa_word }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="w3-block text-center" *ngIf="!response.data">
+                            <b>{{ "please select course" | trans }}</b>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="text-center w3-center">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li>
+                                        <a class="btn" [ngClass]="{'disabled': !response.prev_page}" (click)="loadPage(response.prev_page)" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li *ngFor="let item of response.pages_arr">
+                                        <a class="btn" [ngClass]="{'active w3-indigo': response.current_page == item}" (click)="loadPage(item)">{{ item }}</a>
+                                    </li>
+                                    <li>
+                                        <a class="btn" [ngClass]="{'disabled': !response.next_page}" (click)="loadPage(response.next_page)" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- course categories panel -->
+                <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                    <div class="custom-panel-body table-responsive w3-padding">
+                        <button mat-raised-button color="primary" [disabled]="isSubmitted" (click)="loadData()" style="margin: 5px">
+            <i *ngIf="isSubmitted" class="fa fa-spin fa-spinner"></i>
+            <span *ngIf="!isSubmitted">{{ "update" | trans }} </span>
+          </button>
+
+                        <button mat-raised-button color="primary" class="w3-margin-left w3-black" (click)="print()"> <i class="fa fa-print" ></i> {{ "print" | trans }}</button>
+
+                        <button mat-raised-button color="primary" class="w3-margin-left w3-green" (click)="exportExcel()"> <i class="fa fa-file-excel-o" ></i> {{ "excel" | trans }}</button>
+                        <button permission="result_transfer" mat-raised-button color="primary" class="w3-margin-left w3-red" routerLink="/academic/result-transfer"> <i class="fa fa-send-o" ></i> {{ "result_transfer" | trans }}</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

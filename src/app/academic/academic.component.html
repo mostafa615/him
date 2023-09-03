@@ -1,0 +1,144 @@
+<div class="w3-block">
+
+    <div class="row">
+
+        <div class="col-lg-3 w3-white material-shadow safe-box">
+            <div class="safe-box-header w3-large" style="padding: 5px!important">
+                الكنترول و النتائج
+            </div>
+            <div class="border-bottom-dashed"></div>
+            <br>
+            <div class="custom-panel w3-display-container w3-round ">
+
+                <div class="custom-panel-body table-responsive w3-padding w3-center">
+                    <a [routerLink]="['/academic/student-result']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>{{ "control" | trans }}</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/result-stats']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>احصائيات النتيجة</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/courses-stats']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>احصائيات المواد</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/student-results']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>طباعة نتائج طالب</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/students-results']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>طباعة نتائج الطلاب</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/allgradlevel2']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>  نتائج طلاب الفرقة الثانية  </b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/publisher-result']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>طباعة النتيجة</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/publisher-result-report']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>تقرير عرض النتيجه</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/control-report']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>{{ "control report" | trans }}</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/attendance-report']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>{{ "attendance report" | trans }}</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/ministry-cumulative-report']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>تقرير التراكمي للوزارة</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/graduation-report']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b> تقرير الخريجين    </b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/graduatuin-gov']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                      <b> تقرير الخريجين - المحافظة   </b>
+                      <a class="pull-left">
+                          <i class="fa fa-newspaper-o"></i>
+                      </a>
+                  </a>
+                    <a [routerLink]="['/academic/grade']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>تقرير تقديرات الطلبه</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/prerequsite']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>تقرير  المتطلبات السابقه</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/medterm']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>   الطلبه المتخلفه عن الميد</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/details']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>   تقرير تفاصيل  الساعات المسجله</b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/topten']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>  تقرير الطلبه الاوائل </b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+                    <a [routerLink]="['/academic/yearwork']" role="button" class="btn-margin-bottom btn btn-default w3-block small-shadow" [queryParams]="{col: 'col-lg-12'}">
+                        <b>  تقرير أعمال السنه </b>
+                        <a class="pull-left">
+                            <i class="fa fa-newspaper-o"></i>
+                        </a>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9 student-affair-container  " style="overflow: auto;">
+            <div class="table-responsive w3-padding">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</div>

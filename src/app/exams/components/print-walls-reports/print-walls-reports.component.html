@@ -1,0 +1,95 @@
+<div permission="print_walls_reports" class="container">
+    <div class="w3-block w3-row">
+        <div class="w3-white material-shadow safe-box w3-block">
+            <div class="safe-box-header w3-large" style="padding: 5px!important">
+                طباعة كشوف الحائط
+            </div>
+            <div class="border-bottom-dashed"></div>
+            <br>
+
+            <div class="">
+
+                <div class="">
+                    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+
+                        <div class="custom-panel-body table-responsive w3-padding">
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>{{ "level" | trans }}</label>
+                                        <select id="level_id" class="form-control" name="level_id"
+                                            [(ngModel)]="filter.level_id">
+                                            <option value="">المستوي</option>
+                                            <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="form-group">
+                                        <label for="">{{ "division" | trans }}</label>
+                                        <select class="form-control input-sm course_id"
+                                            [(ngModel)]="filter.division_id">
+                                            <option value="">الشعبة</option>
+                                            <option *ngFor="let item of divisions" value="{{ item.id }}">{{item.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>اللجنة</label>
+                                        <select class="form-control" [(ngModel)]="filter.commission_id">
+                                            <option value="">اللجنة</option>
+                                            <option
+                                                *ngFor="let item of commissionsGet|division:division_id|level:level_id"
+                                                value="{{ item.id }}">{{ item.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="form-group">
+                                        <label for="">{{ "academic year" | trans }}</label>
+                                        <select name="filter.year_id" class="form-control" [(ngModel)]="filter.year_id">
+                                            <option value="">الكل</option>
+                                            <option *ngFor="let item of applicationService.ACADEMIC_YEARS"
+                                                value="{{ item.id }}">{{item.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3">
+                                    <button class="btn btn-default w3-round" (click)="load()">{{ "search" | trans
+                                        }}</button>
+                                    <button style="margin: 0 5px;" class="btn btn-default w3-round"
+                                        (click)="printContent()">{{ "print" | trans }}</button>
+                                    <button class="btn btn-default w3-round" (click)="excel()">{{ "excel" | trans
+                                        }}</button>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel"
+                        id="printable">
+
+                        <div dir="rtl" class="custom-panel-body table-responsive w3-padding" id="reportContent">
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>

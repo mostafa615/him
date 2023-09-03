@@ -1,0 +1,533 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="w3-white material-shadow safe-box">
+                <div class="safe-box-header w3-large" style="padding: 5px!important">
+                    {{ "student_register_course" | trans }}
+                </div>
+                <div class="border-bottom-dashed"></div>
+                <br>
+
+                <div class="safe-box-body ">
+
+
+                    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                        <div class="custom-panel-title">{{ "student info" | trans }}</div>
+                        <div class="custom-panel-body">
+
+
+                            <div class="row">
+
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                    <img [src]="student.image" class="w3-round w3-block">
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-12">
+                                    <br>
+                                    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                                        <div class="custom-panel-title">{{ "student search" | trans }}</div>
+                                        <div class="custom-panel-body w3-display-container">
+                                            <input class="w3-round-xxlarge w3-white w3-input border-gray search-input " style="width: 100%!important" (keyup)="searchInputEvent()" placeholder="{{ 'search with student name code national_id' | trans }}" [(ngModel)]="searchKey">
+
+                                            <div class="w3-display-topleft w3-padding" (click)="selectStudent({})" *ngIf="searchKey && !studentSearchDialogLoader" style="top: 12px;left:5%;z-index:10;">
+                                                <span class="fa fa-close w3-text-red"></span>
+                                            </div>
+
+                                            <div class="w3-display-topleft w3-padding" *ngIf="studentSearchDialogLoader" style="top: 12px;left:5%;z-index:10;">
+                                                <span class="fa fa-spin fa-spinner w3-text-indigo"></span>
+                                            </div>
+
+
+                                            <div class="w3-display-topright w3-white material-shadow" *ngIf="studentSearchDialogShow" style="top: 47px;right:11px;z-index:10;width: 100%">
+                                                <div class="w3-display-conitainer">
+                                                    <span class="w3-display-topright w3-button fa fa-close" (click)="studentSearchDialogShow=false"></span>
+                                                    <br>
+                                                    <ul class="w3-ul">
+                                                        <li *ngFor="let item of students" style="cursor: pointer;" class="w3-hover-light-gray w3-block text-right">
+                                                            <div class="media" (click)="selectStudent(item)">
+                                                                <div class="media-left">
+                                                                    <a href="#">
+                                                                        <img [src]="item.image" style="width: 30px;height: 30px;" class="w3-circle" alt="">
+                                                                        <!--
+                                  <span class="fa fa-user-circle w3-text-indigo w3-large" ></span>
+                                  -->
+                                                                    </a>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <h4 class="media-heading" [innerHTML]="item.name"></h4>
+                                                                    <span [innerHTML]="item.code" class="w3-large"></span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <b>{{ "student name" | trans }}</b> : {{ student.name }}
+                                            </td>
+                                            <td *ngIf="student.set_number != null">
+                                                <b>{{ "student set number" | trans }}</b> : {{ student.set_number }}
+                                            </td>
+                                            <td>
+                                                <b>{{ "student code" | trans }}</b> : {{ student.code }}
+                                            </td>
+                                            <td>
+                                                <b>{{ "national id" | trans }}</b> : {{ student.national_id }}
+                                            </td>
+                                            <td>
+                                                <b>{{ "gpa" | trans }}</b> : {{ student.gpa }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>{{ "level" | trans }}</b> : {{ student.level? student.level.name : '' }}
+                                            </td>
+                                            <td>
+                                                <b>{{ "department" | trans }}</b> : {{ student.division? student.division.name : '' }}
+                                            </td>
+                                            <td>
+                                                <b>{{ "case constraint" | trans }}</b> : {{ student.case_constraint? student.case_constraint.name : '' }}
+                                            </td>
+                                            <td>
+                                                <b>{{ "constraint status" | trans }}</b> : {{ student.registeration_status? student.registeration_status.name : '' }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>{{ "available hours" | trans }}</b> : {{ requiredHours }}
+                                                <b *ngIf="moreHours > 0">  ({{ "graduation hours" | trans }}): {{ moreHours}} <br>
+                                                      {{  +requiredHours + +moreHours }}
+                                                </b>
+                                            </td>
+                                            <td>
+                                                <b>{{ "available courses" | trans }}</b> : {{ courses.length }}
+                                            </td>
+                                            <td>
+                                                <b>{{ "الساعات المسجله فى التيرم "  }}</b> : {{ getRegisterHours() }}
+                                            </td>
+                                            <td>
+                                                <b>{{ "المقررات المسجله فى التيرم  "  }}</b> : {{ registerCourses.getKeys().length }}
+                                            </td>
+                                            <tr>
+                                                <td>
+                                                    <b>{{ "الساعات المسجله"  }}</b> : {{ student.actual_register_hours }}
+                                                </td>
+                                                <td>
+                                                    <b>{{ " الساعات التى اجتازها "  }}</b> : {{ student.register_hours }}
+                                                </td>
+                                            </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                    <div>
+
+                        <!-- setting panel -->
+                        <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                            <div class="custom-panel-body table-responsive">
+                                <button mat-raised-button color="primary" (click)="performUpdateRegisterCourses()" [disabled]="isSubmitted || !canRegister()" style="margin: 5px">
+                                <i *ngIf="isSubmitted" class="fa fa-spin fa-spinner"></i>
+                                <span *ngIf="!isSubmitted">{{ "save changes" | trans}} </span>
+                            </button>
+
+                                <button mat-raised-button color="primary" class="w3-teal" (click)="$('#studentRegisterCourseModal').modal('show');getStudentRegisterCourse();" [disabled]="!student_id" style="margin: 5px">
+                                <span>{{ "student register document" | trans}} </span>
+                            </button>
+
+                                <button mat-raised-button color="primary" class="w3-purple" [disabled]="!canRegister()" (click)="printRegisterCourses()" style="margin: 5px">
+                                <span>{{ "print" | trans}} </span>
+                            </button>
+                                <!-- <button *ngIf="student.set_number == null && isSelected && canRegister()" mat-raised-button color="primary" class="w3-purple" [disabled]="!canRegister()" (click)="addSeatingNumber(student.id)" style="margin: 5px">
+                <span>{{ "add_seating_number" | trans}} </span>
+              </button> -->
+                                <button [disabled]="!canRegister() || !isSelected" type="button" mat-raised-button color="primary" class="w3-purple" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap" style="margin: 5px"><span>{{ "add or edit seating number"
+                                    |
+                                    trans}} </span></button>
+
+                                <!-- <button type="button" mat-raised-button color="primary" class="w3-purple"
+                                data-target="#exampleModal" data-whatever="@getbootstrap" data-toggle="modal"
+                                style="margin: 5px">
+                                <span>{{ "add_seating_number" | trans}} </span>
+                            </button> -->
+                                <button mat-raised-button color="primary" class="w3-purple" (click)="printNumber(student.id)" style="margin: 5px">
+                                <span>طباعة رقم جلوس</span>
+                            </button>
+
+                            </div>
+                        </div>
+                        <div *ngIf="student.set_number == null" class="col-lg-3 col-md-3">
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">اضافة رقم جلوس</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-control alert-warning">اخر رقم جلوس هو : {{ student.max_set_number}}
+                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">اللجنه:</label>
+                                                    <select class="form-control" name="commission_id" [(ngModel)]="commission_id" required>
+                                                    <option *ngFor="let item of commissionsGet" value="{{ item.id }}">{{
+                                                        item.name }}</option>
+                                                </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">رقم الجلوس:</label>
+                                                    <input class="form-control" id="message-text" type="number" name='set_number' [(ngModel)]="set_number" required>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id='closeNumber' type="button" class="btn btn-secondary" data-dismiss="modal">غلق</button>
+                                            <button id='beforeLoading' (click)='sendNumber(student.id)' type="button" class="btn btn-primary">تأكيد</button>
+                                            <button id='buttonLoading' class="btn btn-primary" type="button" disabled>
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                            Loading...
+                                        </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="student.set_number != null" class="col-lg-3 col-md-3">
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">تعديل رقم جلوس</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-control alert-warning">اخر رقم جلوس هو : {{ student.max_set_number}}
+                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">اللجنه:</label>
+                                                    <select class="form-control" name="commission_id" [(ngModel)]="commission_id" required>
+                                                    <option *ngFor="let item of commissionsGet" value="{{ item.id }}">{{
+                                                        item.name }}</option>
+                                                </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">رقم الجلوس:</label>
+                                                    <input class="form-control" id="message-text" type="number" placeholder="رقم الجلوس الحالي للطالب : {{ student.set_number }}" name='set_number' [(ngModel)]="set_number" required>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id='closeNumber' type="button" class="btn btn-secondary" data-dismiss="modal">غلق</button>
+                                            <button id='beforeLoading' (click)='sendNumber(student.id)' type="button" class="btn btn-primary">تعديل</button>
+                                            <button id='buttonLoading' class="btn btn-primary" type="button" disabled>
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                            Loading...
+                                        </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="custom-panel-body table-responsive w3-padding" id="reportContent">
+
+                        </div>
+                        <br>
+
+                        <div *ngIf="!canRegister()">
+                            <div class="alert alert-danger">
+                                {{ cantRegisterReason }}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row" *ngIf="canRegister()">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">بحث بالسنة الدراسية</label>
+                                    <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]='levelFilter'>
+                                      <option value="0">الكل</option>
+                                  <option *ngFor='let level of levels' value="{{level.id}}">{{level.name}}</option>
+                                </select>
+                                </div>
+                                <div class="w3-padding">
+                                    <b>{{ "sort" | trans }}</b>
+                                    <select class="btn btn-default w3-round-xxlarge select2 sort-select" multiple>
+                                    <option value="1">{{ "sort with prerequsites"| trans }}</option>
+                                    <option value="2">{{ "sort with register times"| trans }}</option>
+                                </select>
+                                </div>
+                                <div class="w3-green text-center w3-round" style="padding: 5px">
+                                    <b>{{ "available courses" | trans }}</b>
+                                </div>
+                                <br>
+                                <table class="table text-center" id="availableCourseTable">
+                                    <ng-container *ngFor="let item of levels index as i">
+                                        <tr class="w3-light-gray">
+                                            <th>{{ i + 1 }}</th>
+                                            <th colspan="7">{{ item.name }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>{{ "code" | trans }}</th>
+                                            <th>{{ "name" | trans }}</th>
+                                            <th>النوع</th>
+                                            <th>{{ "credit_hour" | trans }}</th>
+                                            <th>{{ "prerequsites" | trans }}</th>
+                                            <th>{{ "register_times" | trans }}</th>
+                                            <th></th>
+                                        </tr>
+
+                                        <tr *ngFor="let course of item.courses|level:levelFilter; index as counter" (click)="addCourse(course)" class="w3-hover-light-gray" style="cursor: pointer">
+                                            <td>{{ counter + 1 }}</td>
+                                            <td>{{ course.code }}</td>
+                                            <td>{{ course.name }}</td>
+                                            <td *ngIf="course.type == 1">اجباري</td>
+                                            <td *ngIf="course.type == 2">اختياري</td>
+                                            <!-- <td>{{ course.division? course.division.name : '' }}</td> -->
+                                            <td>{{ course.credit_hour }}</td>
+                                            <td>{{ course.prerequsites_names }}</td>
+                                            <td>{{ course.times }}</td>
+                                            <td>
+                                                <span *ngIf="registerCourses.has(course.id)" class="fa fa-toggle-on w3-text-green w3-large"></span>
+                                                <span *ngIf="!registerCourses.has(course.id)" class="fa fa-toggle-off w3-text-light-gray w3-large"></span>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </table>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="w3-red text-center w3-round" style="padding: 5px">
+                                    <b>{{ "student register courses" | trans }}</b>
+                                </div>
+                                <br>
+
+
+
+                                <form id="myForm" style='direction: ltr !important;'>
+                                    <ng-container *ngFor='let item of groups'>
+                                        <input (change)="checkAll(item.id)" type="radio" name="radioName" value="{{item.id}}" /> {{item.name}}
+                                    </ng-container>
+                                </form>
+
+
+
+                                <table class="table text-center">
+                                    <tr class="w3-light-gray">
+                                        <th>#</th>
+                                        <!-- <th>{{ "code" | trans }}</th> -->
+                                        <th>{{ "name" | trans }}</th>
+                                        <!-- <th>{{ "division" | trans }}</th> -->
+                                        <!-- {{ "credit_hour" | trans }} -->
+                                        <!-- <th>الساعات</th> -->
+                                        <!-- <th>{{ "book_price" | trans }}</th> -->
+                                        <th>الجروب</th>
+                                        <th>السكشن</th>
+                                        <th>الحالة</th>
+                                        <th>اللجنة</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr *ngFor="let course of registerCourses.getAll() index as counter" (click)="course.selected = course.selected? false : true" class="w3-hover-light-gray" style="cursor: pointer">
+                                        <td>{{ counter + 1 }}</td>
+                                        <!-- <td>{{ course.code }}</td> -->
+                                        <td>{{ course.name }}</td>
+                                        <!-- <td>{{ course.division? course.division.name : '' }}</td> -->
+                                        <!-- <td>{{ course.credit_hour }}</td> -->
+                                        <!-- <td>{{ course.book_price }}</td> -->
+                                        <td>
+                                            <select value="{{course.group_id}}" class="form-control groupFilter" name="{{course.group_id}}" [(ngModel)]="course.group_id" id="coursegroup{{course.id}}" (change)="putsection2($('#courseSection'  + course.id).val() , counter , $('#coursegroup' + course.id).val() , course.id , course.section)">
+                                                <option value="">لا يوجد</option>
+                                                <option class="clickGroup" *ngFor='let item of groups' value="{{item.id}}">{{item.name}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control sectionClass" value="{{course.section_id}}" name="{{course.section_id}}" [(ngModel)]="course.section_id" id="courseSection{{course.id}}" (change)="putsection($('#courseSection' + course.id).val() , counter , $('#coursegroup' + course.id).val() , course.id , course.section )">
+                                                <option value="">لا يوجد</option>
+                                                <option *ngFor='let item of course.section|group:course.group_id ' value="{{item.id}}">سكشن {{item.name}} المتاح {{item.std_num - item.register}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" value="{{course.gpa_word}}" name="{{course.gpa_word}}" [(ngModel)]="course.gpa_word">
+                                                <option value="">لا يوجد</option>
+                                                <option *ngFor='let item of gpaWordGet ' value="{{item.gpa_word}}"> {{item.name}} </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" value="{{course.commission_id}}" name="{{course.commission_id}}" [(ngModel)]="course.commission_id">
+                                                <option value="">لا يوجد</option>
+                                                <option *ngFor='let item of commissionsGet ' value="{{item.id}}"> {{item.name}} </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button class="w3-red" style="padding: 0px;min-width: 50px;height: 30px;" mat-raised-button color="danger" (click)="removeCourse(course)">{{ "remove"
+                                    | trans }}</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="studentRegisterCourseModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                      aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ "student register document" | trans }}</h4>
+            </div>
+            <div id="printable" class="modal-body">
+                <div class="title">
+                    <div class="text">
+                        <h6>وزارة التعليم العالي</h6>
+                        <h6>المعهد العالي للإدارة بالمحلة الكبري</h6>
+                    </div>
+                    <div class="image">
+                        <img style="width: 20%;" src="http://him.msa-bns.com/logo.png" alt="">
+                    </div>
+                </div>
+                <table class="table table-bordered" style="width: 100%" style="direction: rtl;">
+                    <tr>
+                        <td colspan="5">
+                            <b>{{ "student name" | trans }}</b> : {{ student.name }}
+                        </td>
+                        <td colspan="5">
+                            <b>{{ "student code" | trans }}</b> : {{ student.code }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <b>{{ "national id" | trans }}</b> : {{ student.national_id }}
+                        </td>
+                        <td colspan="5">
+                            <b>{{ "gpa" | trans }}</b> : {{ student.gpa }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <b>{{ "level" | trans }}</b> : {{ student.level? student.level.name : '' }}
+                        </td>
+                        <td colspan="5">
+                            <b>{{ "department" | trans }}</b> : {{ student.division? student.division.name : '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <b>{{ "case constraint" | trans }}</b> : {{ student.case_constraint? student.case_constraint.name : '' }}
+                        </td>
+                        <td colspan="5">
+                            <b>{{ "constraint status" | trans }}</b> : {{ student.registeration_status? student.registeration_status.name : '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <b>{{ "register hours total" | trans }}</b> : {{ student.register_hours }}
+                        </td>
+                        <td colspan="5">
+                            <b>{{ "student register courses count" | trans }}</b> : <span *ngIf="student.courses">{{
+                              student.courses.length }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <b>{{ "gpa" | trans }}</b> : {{ student.gpa }}
+                        </td>
+                        <td colspan="5">
+                            <b>{{ "total registeration required hours" | trans }}</b> : <span *ngIf="academicSetting.has(8)">{{
+                              academicSetting.get(8).value }}</span>
+                        </td>
+                    </tr>
+                    <ng-container *ngFor="let level of student.academic_document">
+                        <tr>
+                            <th class="text-center w3-dark-gray" colspan="10" style="text-align: center;">
+                                {{ "level" | trans }} - {{ level.name }}
+                            </th>
+                        </tr>
+                        <ng-container *ngFor="let term of level.terms">
+                            <tr>
+                                <th colspan="10" class="text-center w3-light-gray" style="text-align: center;">
+                                    {{ term.name + " - " + term.academic_year }}
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th>#</th>
+                                <th>{{ "code" | trans }}</th>
+                                <th>{{ "name" | trans }}</th>
+                                <th>{{ "division" | trans }}</th>
+                                <th>{{ "credit_hour" | trans }}</th>
+                                <!-- <th>{{ "book_price" | trans }}</th> -->
+                                <th>{{ "degree" | trans }}</th>
+                                <th>{{ "student_mark" | trans }}</th>
+                                <th>{{ "register_date" | trans }}</th>
+                                <th>{{ "gpa" | trans }}</th>
+                            </tr>
+                            <tr *ngFor="let course of term.courses index as counter">
+                                <td>{{ counter + 1 }}</td>
+                                <td>{{ course.code }}</td>
+                                <td>{{ course.name }}</td>
+                                <td>{{ course.division? course.division.name : '' }}</td>
+                                <td>{{ course.credit_hour }}</td>
+                                <!-- <td>{{ course.book_price }}</td> -->
+                                <td>{{ course.large_degree }}</td>
+                                <td>{{ course.gpa_word }}</td>
+                                <td>{{ course.created_at | date: 'yyyy-mm-d' }}</td>
+                                <td>{{ course.gpa }}</td>
+                            </tr>
+                            <tr>
+                                <td>المعدل التراكمي للتيرم</td>
+                                <td>{{ term.gpa_fasly }}</td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" mat-raised-button data-dismiss="modal" style="margin: 5px;">{{
+                  "close" | trans }}</button>
+                <button type="button" class="w3-black" mat-raised-button (click)="print()" style="margin: 5px;">{{
+                  "print" |
+                  trans }}</button>
+                <button type="button" class="w3-green" mat-raised-button (click)="exportExcel()" style="margin: 5px;">{{
+                  "excel"
+                  | trans }}</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

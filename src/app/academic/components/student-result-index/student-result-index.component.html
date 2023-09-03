@@ -1,0 +1,222 @@
+<div class="container">
+    <div class="w3-block">
+        <div class="w3-white material-shadow safe-box">
+            <div class="safe-box-header w3-large" style="padding: 5px!important">
+                {{ "control" | trans }}
+            </div>
+            <div class="border-bottom-dashed"></div>
+            <br>
+
+            <!-- course categories panel -->
+            <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                <div class="custom-panel-body table-responsive w3-padding">
+
+                    <div class="col-lg-2">
+                        <label for="">{{ "level" | trans }}</label>
+                        <select id="level_id" class="form-control input-sm select2 level_id" [(ngModel)]="level_id">
+                          <option value="">{{ "level" | trans }}</option>
+                    <option *ngFor="let item of levels" value="{{ item.id }}">{{item.name}}</option>
+                  </select>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="">{{ "division" | trans }}</label>
+                        <select id="division_id" class="form-control input-sm select2 division_id" [(ngModel)]="division_id">
+                        <option value="">{{ "division" | trans }}</option>
+                  <option *ngFor="let item of divisions" value="{{ item.id }}">{{item.name}}</option>
+                </select>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="">السنة الدراسية</label>
+                        <select id='year_id' class="form-control input-sm select2" [(ngModel)]="year_id">
+                        <option value="">السنة الدراسية</option>
+                  <option *ngFor="let item of applicationService.ACADEMIC_YEARS" value="{{ item.id }}">{{item.name}}</option>
+                </select>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="">الترم</label>
+                        <select id="term_id" class="form-control input-sm select2 term_id" [(ngModel)]="term_id">
+                        <option value="">الترم</option>
+                        <option value="1">الفصل الدراسي الأول</option>
+                        <option value="2">الفصل الدراسي الثاني</option>
+                        <option value="3">الفصل الدراسي الصيفي</option>
+                </select>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="">{{ "courses" | trans }}</label>
+                        <select id="course_id" class="form-control input-sm select2 course_id" [(ngModel)]="course_id">
+                          <option value="">{{ "courses" | trans }}</option>
+                  <option *ngFor="let item of courses|level:level_id|term:term_id|division:division_id|year:year_id" value="{{ item.course_id }}">{{item.course_name}}</option>
+                </select>
+                    </div>
+<div class="col-lg-1" style="margin-top: 22px!important;">
+    <button id='getResult' mat-raised-button color="primary" class="w3-green" [disabled]="isLoading" (click)="loadResult()" >
+        <i *ngIf="isLoading" class="fa fa-spin fa-spinner"></i>
+        <span *ngIf="!isLoading">{{ "search" | trans }} </span>
+      </button>
+</div>
+                    <div class="col-sm-12">
+
+                     
+
+                        <button id='all' mat-raised-button color="primary" class="w3-green" (click)="(this.course_id == null ) ? $('#eceGo').trigger('click')  : $('#importExcelModal').modal('show')" style="margin: 5px">
+
+                    <span  >رفع جميع الدرجات</span>
+                  </button>
+
+                        <!-- <button id='final' mat-raised-button color="primary" class="w3-green" (click)="(this.course_id == null ) ? $('#eceGo').trigger('click')  : $('#importExcelModal').modal('show')" style="margin: 5px">
+
+                    <span  >رفع درجات الفاينل </span>
+                  </button>
+                        <button id='mid' mat-raised-button color="primary" class="w3-green" (click)="(this.course_id == null ) ? $('#eceGo').trigger('click')  : $('#importExcelModal').modal('show')" style="margin: 5px">
+
+                    <span  >رفع درجات الميدترم </span>
+                  </button>
+                        <button id='a3mal' mat-raised-button color="primary" class="w3-green" (click)="(this.course_id == null ) ? $('#eceGo').trigger('click')  : $('#importExcelModal').modal('show')" style="margin: 5px">
+
+                    <span  >رفع درجات أعمال السنة </span>
+                  </button> -->
+                        <button id='a3mal' mat-raised-button color="primary" class="w3-green" (click)="exportExcel()" style="margin: 5px">
+
+                    <span  >  اكسيل </span>
+                  </button>
+                        <button style="display: none;" id="eceGo" (click)='excel()'></button>
+                        <button type="button" class="w3-black" mat-raised-button (click)="print()" style="margin: 5px;">طباعة</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- course categories panel -->
+            <div class="custom-panel w3-display-container w3-round application-panel student-info-panel" style='direction: rtl !important;'>
+                <div class="custom-panel-body table-responsive w3-padding" id="printable">
+
+                    <div class="title" style='direction: rtl !important;'>
+                        <div class="text">
+                            <h6>وزارة التعليم العالي</h6>
+                            <h6>المعهد العالي للإدارة بالمحلة الكبري</h6>
+                            <!-- <h6>{{(printCourse[0].name != '' || printCourse[0].name != null || printCourse[0].name != undefined ) ? printCourse[0].name : 'المادة' }}</h6> -->
+                        </div>
+                        <div class="image">
+                            <img width="100px" style="margin: auto" src="https://him-ma.site/logo.png" alt="">
+                        </div>
+                    </div>
+                    <table class="table table-bordered " style='direction: rtl !important;'>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>الأسم</th>
+                                <th>الكود</th>
+                                <th>التخصص</th>
+                                <th>رقم الجلوس</th>
+                                <!-- <th>{{ "level" | trans }}</th> -->
+                                <th>المقرر</th>
+                                <!-- <th>نهاية صغري</th>
+                                <th>{{ "large_degree" | trans }}</th> -->
+                                <!-- <th>{{ "term" | trans }}</th> -->
+                                <th>ميد ترم</th>
+                                <th>أعمال سنة</th>
+                                <th>فاينل</th>
+                                <th>المجموع</th>
+                                <th>المعدل</th>
+                                <th>التقدير</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of result index as i">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.code }}</td>
+                                <td>{{ item.division_name }}</td>
+                                <td>{{ item.set_number }}</td>
+                                <!-- <td>{{ item.level_name }}</td> -->
+                                <td>{{ item.course_name }}</td>
+                                <!-- <td>{{ item.small_degree }}</td>
+                                <td>{{ item.large_degree }}</td> -->
+                                <!-- <td>{{ item.term_name }}</td> -->
+
+                                <td>
+                                    <ng-container *ngIf="excelClick"><input id="mid_degree{{item.id}}" type="number" [(ngModel)]="item.mid_degree" (keyup)="calculate(item.id)" max="{{item.large_degree }}" class="form-control input-sm"></ng-container>
+                                    <ng-container *ngIf="excelClick2">{{item.mid_degree}}</ng-container>
+                                </td>
+                                <td>
+                                    <ng-container *ngIf="excelClick"><input id="work_year_degree{{item.id}}" type="number" [(ngModel)]="item.work_year_degree" (keyup)="calculate(item.id)" max="{{item.large_degree }}" class="form-control input-sm"></ng-container>
+                                    <!-- <input id="work_year_degree{{item.id}}" type="number" [(ngModel)]="item.work_year_degree" max="{{item.large_degree }}" class="form-control input-sm"> -->
+                                    <ng-container *ngIf="excelClick2">{{item.work_year_degree}}</ng-container>
+                                </td>
+                                <td>
+                                    <ng-container *ngIf="excelClick"><input id="final_tahrery_degree{{item.id}}" type="number" [(ngModel)]="item.final_tahrery_degree" (keyup)="calculate(item.id)" max="{{item.large_degree }}" class="form-control input-sm"></ng-container>
+                                    <!-- <input id="final_tahrery_degree{{item.id}}" type="number" [(ngModel)]="item.final_tahrery_degree" max="{{item.large_degree }}" class="form-control input-sm"> -->
+                                    <ng-container *ngIf="excelClick2">{{item.final_tahrery_degree}}</ng-container>
+                                </td>
+                                <td id="final_degree{{item.id}}" *ngIf="item.final_tahrery_degree != -1 && item.final_tahrery_degree != -2 && item.final_tahrery_degree != -3 && item.final_tahrery_degree != -4">
+                                    {{item.final_degree}}
+                                </td>
+                                <td id="final_degree{{item.id}}" *ngIf="item.final_tahrery_degree == -1">
+                                    غياب
+                                </td>
+                                <td id="final_degree{{item.id}}" *ngIf="item.final_tahrery_degree == -2">
+                                    شغب
+                                </td>
+                                <td id="final_degree{{item.id}}" *ngIf="item.final_tahrery_degree == -3">
+                                    غش
+                                </td>
+                                <td id="final_degree{{item.id}}" *ngIf="item.final_tahrery_degree == -4">
+                                    انسحاب
+                                </td>
+                                <td id="gpa{{item.id}}">{{ item.gpa }}</td>
+                                <td id="gpa_word{{item.id}}">{{ item.gpa_word }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="text" style="text-align: center !important;">
+                        <h6>توقيع عميد المعهد</h6>
+                        <h6>............................................</h6>
+                    </div>
+                    <div class="w3-block text-center" *ngIf="result.length <= 0">
+                        <b>{{ "please select course" | trans }}</b>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="text-center w3-center" *ngIf="excelClick">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li>
+                                    <a class="btn" [ngClass]="{'disabled': !response.prev_page}" (click)="loadPage(response.prev_page)" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li *ngFor="let item of response.pages_arr">
+                                    <a class="btn" [ngClass]="{'active w3-indigo': response.current_page == item}" (click)="loadPage(item)">{{ item }}</a>
+                                </li>
+                                <li>
+                                    <a class="btn" [ngClass]="{'disabled': !response.next_page}" (click)="loadPage(response.next_page)" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- course categories panel -->
+            <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                <div class="custom-panel-body table-responsive w3-padding">
+                    <button id="cal" mat-raised-button color="primary" [disabled]="isSubmitted" (click)="updateResult()" style="margin: 5px">
+                  <i *ngIf="isSubmitted" class="fa fa-spin fa-spinner"></i>
+                  <span *ngIf="!isSubmitted">{{ "save changes" | trans }} </span>
+                </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<app-import-excel [apiUrl]="import_result" [course_id]="course_id"></app-import-excel>

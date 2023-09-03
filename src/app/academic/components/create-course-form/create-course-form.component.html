@@ -1,0 +1,215 @@
+<!-- add course modal -->
+<div class="modal fade" tabindex="-1" id="courseFormModal" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+                <h4 class="modal-title">{{ "create new course" | trans }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <table class="table">
+                            <tr>
+                                <td>{{ "name" | trans }} *</td>
+                                <td>
+                                    <input type="text" value="Math III" [(ngModel)]="course.name" class="form-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "code" | trans }} *</td>
+                                <td>
+                                    <input type="text" value="Math III" [(ngModel)]="course.code" class="form-control" />
+                                </td>
+                            </tr>
+                            <!-- <tr>
+                                <td>{{ "stage" | trans }} *</td>
+                                <td>
+                                    <select [(ngModel)]="course.stage" class="form-control">
+                              <option value="1">الاولي</option>
+                              <option value="2">الثانيه</option>
+                            </select>
+                                </td>
+                            </tr> -->
+                            <tr>
+                                <td>{{ "term" | trans }} *</td>
+                                <td>
+                                    <select [(ngModel)]="course.term" class="form-control">
+                                      <option *ngFor="let item of terms" value="{{item.id}}">{{ item.name }}</option>
+                            </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "credit_hour" | trans }} *</td>
+                                <td>
+                                    <input type="number" value="Math III" [(ngModel)]="course.credit_hour" class="form-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "division" | trans }} *</td>
+                                <td>
+                                    <select [(ngModel)]="course.division_id" class="form-control">
+                  <option
+                    *ngFor="let item of divisions"
+                    value="{{ item.id }}"
+                  >
+                    {{ item.name }}
+                  </option>
+                </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "level" | trans }} *</td>
+                                <td>
+                                    <select [(ngModel)]="course.level_id" class="form-control">
+                  <option *ngFor="let item of levels" value="{{ item.id }}">
+                    {{ item.name }}
+                  </option>
+                </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "course_category" | trans }} *</td>
+                                <td>
+                                    <select [(ngModel)]="course.subject_category_id" class="form-control">
+                  <option
+                    *ngFor="let item of categories"
+                    value="{{ item.id }}"
+                  >
+                    {{ item.name }}
+                  </option>
+                </select>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>تصنيف المقرر *</td>
+                                <td>
+                                    <select  [(ngModel)]="course.type" class="form-control">
+                                        <option
+                                        *ngFor="let item of types"
+                                        value="{{ item.id }}"
+                                      >
+                                        {{ item.name }}
+                                      </option>
+                                  </select>
+                                </td>
+                            </tr>
+
+
+
+
+                            <tr>
+                                <td>{{ "year_work_degree" | trans }} *</td>
+                                <td>
+                                    <input type="number" value="Math III" [(ngModel)]="course.year_work_degree" class="form-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "practical_degree" | trans }} *</td>
+                                <td>
+                                    <input type="number" value="Math III" [(ngModel)]="course.practical_degree" class="form-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "academic_degree" | trans }} *</td>
+                                <td>
+                                    <input type="number" value="Math III" [(ngModel)]="course.academic_degree" class="form-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "small_degree" | trans }} *</td>
+                                <td>
+                                    <input type="number" [(ngModel)]="course.small_degree" class="form-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "large_degree" | trans }} *</td>
+                                <td>
+                                    <input type="number" [(ngModel)]="course.large_degree" class="form-control" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <table class="table">
+                            <tr>
+                                <td>{{ "has_project" | trans }}</td>
+                                <td>
+                                    <input type="checkbox" [(ngModel)]="course.has_project" class="w3-check" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "required_for_graduation" | trans }}</td>
+                                <td>
+                                    <input type="checkbox" [(ngModel)]="course.is_required" class="w3-check" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "is_not_credit_hour" | trans }}</td>
+                                <td>
+                                    <input type="checkbox" [(ngModel)]="course.is_not_credit_hour" class="w3-check" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "book_price" | trans }} *</td>
+                                <td>
+                                    <input type="number" [(ngModel)]="course.book_price" class="form-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "failed_degree" | trans }} *</td>
+                                <td>
+                                    <input type="number" [(ngModel)]="course.failed_degree" class="form-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "prequsites" | trans }}</td>
+                                <td>
+                                    <select class="form-control select2 prerequsited" multiple value="{{ course.prerequsites }}">
+                  <option *ngFor="let item of courses" value="{{ item.id }}">
+                    {{ item.name }}-{{ item.code }}
+                  </option>
+                </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "service" | trans }}</td>
+                                <td>
+                                    <select [(ngModel)]="course.service_id" class="form-control">
+                  <option value="">{{ "service" | trans }}</option>
+                  <option *ngFor="let item of services" value="{{ item.id }}">
+                    {{ item.name }}
+                  </option>
+                </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ "notes" | trans }}</td>
+                                <td>
+                                    <textarea [(ngModel)]="course.notes" class="form-control"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+        {{ "close" | trans }}
+      </button>
+                <button type="button" class="btn btn-primary" (click)="send()" [disabled]="isSubmitted">
+        <i *ngIf="isSubmitted" class="fa fa-spin fa-spinner"></i>
+        <span *ngIf="!isSubmitted">{{ "save changes" | trans }}</span>
+      </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

@@ -1,0 +1,107 @@
+<app-breadcrumb [breadcrumbList]="[
+  {name: 'Dashboard', url:'dashboard'},
+  {name: 'Admin Users List', url:'admin-users/list'},
+  {name: 'Admin User Create'}
+]"></app-breadcrumb>
+<div class="row">
+  <!-- <div *ngIf="roles" class="col-md-12 d-flex align-items-stretch grid-margin"> -->
+  <div class="col-md-12 d-flex align-items-stretch grid-margin">
+    <div class="row flex-grow">
+      <div class="col-12 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title" i18n="Add new admin user">Add new admin user</h4>
+            <div class="col-lg-12">
+              <div [hidden]="!errorMessage" class="alert alert-danger">{{errorMessage}}</div>
+            </div>
+            <form class="forms-sample create" [formGroup]="AdminUserForm" (ngSubmit)="create()" autocomplete="off">
+              <div class="form-group row">
+                <div class="col-lg-6">
+                  <label for="name"><span i18n="Full name">Full name </span><span style="color: red">*</span></label>
+                  <input formControlName="name" type="text" id="name" class="form-control" maxlength="50">
+                  <div *ngIf="(name.touched || name.dirty) && name.invalid">
+                    <div class="alert alert-danger fade show" *ngIf="name.errors?.required">
+                      <small i18n="Please enter the name">Please enter the name</small>
+                    </div>
+                    <div class="alert alert-danger fade show" *ngIf="name.errors?.maxlength">
+                      <small i18n="Maximum length is 25">Maximum length is 50</small>
+                    </div>
+                    <div class="alert alert-danger fade show" *ngIf="name.errors?.shouldNotStartWithSpace">
+                      <small i18n="Should not start with space">Should not start with space</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <label for="email"><span i18n="User email">Email </span><span style="color: red">*</span></label>
+                  <input formControlName="email" type="email" id="email" class="form-control">
+                  <div *ngIf="(email.touched || errorMessage!='' )&& email.invalid">
+                    <div class="alert alert-danger fade show" *ngIf="email.errors?.required">
+                      <small i18n="Please enter email">Please enter email</small>
+                    </div>
+                    <div class="alert alert-danger fade show" *ngIf="email.errors.email">
+                      <small i18n="Please enter email correctly">Please enter email correctly</small>
+                    </div>
+                  </div>
+                  <div class="alert alert-danger fade show" *ngIf="emailError!='' && errorMessage!=''">
+                    <small i18n="Email is already registered">Email is already registered</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-6">
+                  <label for="password"><span i18n="Password">Password </span><span style="color: red">*</span></label>
+                  <input formControlName="password" type="password" id="password" class="form-control" maxlength="35">
+                  <div *ngIf="(password.touched || password.dirty) && password.invalid">
+                    <div class="alert alert-danger fade show" *ngIf="password.errors?.required">
+                      <small i18n="Please enter password">Please enter password</small>
+                    </div>
+                    <div class="alert alert-danger fade show" *ngIf="password.errors?.maxlength">
+                      <small i18n="Maximum length is 25">Password maxlength 35 characters</small>
+                    </div>
+                    <div class="alert alert-danger fade show" *ngIf="password.errors?.minlength">
+                      <small i18n="Minimum length is 8">Password must be at least 6 characters</small>
+                    </div>
+                    <div class="alert alert-danger fade show" *ngIf="password.errors?.hasCapitalCase">
+                      <small i18n="Minimum length is 8">Password must have at least 1 Capital letter</small>
+                    </div>
+                    <div class="alert alert-danger fade show" *ngIf="password.errors?.hasSmallCase">
+                      <small i18n="Minimum length is 8">Password must have at least 1 Small letter</small>
+                    </div>
+                    <div class="alert alert-danger fade show" *ngIf="password.errors?.hasNumber">
+                      <small i18n="Minimum length is 8">Password must have at least 1 number</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <label for="role"><span i18n="User Role">Admin Role </span><span style="color: red">*</span></label>
+                  <select id="role" class="form-control" [formControlName]="'role'">
+                    <option value="" selected i18n="Select user role">Select user role</option>
+                    <option value="super_admin" i18n="Active">super_admin</option>
+                    <option value="admin" i18n="Inactive">admin</option>
+                  </select>
+                  <span *ngIf="(role.touched || errorMessage!='') && role.invalid"
+                    class="custom-error alert alert-danger">
+                    <span i18n="Please Select user role">Please Select user role</span>
+                  </span>
+                </div>
+
+              </div>
+              <br>
+              <br>
+              <br>
+              <hr>
+              <button [disabled]="AdminUserForm.invalid || isSubmitClick" type="submit"
+                class="btn btn-primary btn-block">
+                <span i18n="Create Admin User">Create Admin User </span>
+                <img *ngIf="isSubmitClick" src="assets/img/preloader-white.svg" style="height: 16px;">
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12">
+    <!-- <app-main-loader *ngIf="!roles"></app-main-loader> -->
+  </div>
+</div>

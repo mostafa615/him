@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "import-excel.component.scss"
+    ],
+    "names": [],
+    "file": "import-excel.component.css"
+}

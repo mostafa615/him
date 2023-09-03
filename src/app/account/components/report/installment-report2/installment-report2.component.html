@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="w3-white material-shadow safe-box">
+
+    <div class="label w3-pale-red w3-block w3-large text-right" >{{ "students installment report" | trans }} 2</div>
+    <br>
+
+
+    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+      <div class="custom-panel-body"  >
+        <div class="row panel">
+          <div class="col-lg-6 col-md-6 filters">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                  <label>القسط</label>
+                  <select id="installment_id" class="form-control" name="searchData.installment_id" [(ngModel)]="searchData.installment_id">
+                <option value="">- اختر قسط -</option>
+        <option *ngFor="let item of installments"  value="{{ item.id }}">{{ item.name }}</option>
+      </select>
+              </div>
+
+          </div>
+          <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+            <label>حالة القسط</label>
+            <select id="installment_status" class="form-control" name="searchData.installment_status" [(ngModel)]="searchData.installment_status">
+          <option value="">الكل</option>
+          <option value="1">مدفوع</option>
+          <option value="0">غير مدفوع</option>
+</select>
+        </div>
+      </div>
+          </div>
+          <div class="col-lg-6 col-md-6 buttons">
+            <button
+        mat-raised-button color="primary"
+        class="  w3-display-container gray-button w3-text-black"
+        style="margin: 5px;"
+        (click)="loadData()" >
+        <i class="fa fa-refresh w3-left" style="padding-top: 10px" ></i>  <span class="w3-right" >{{ "update" | trans }}</span>
+      </button>
+
+  <button
+        mat-raised-button color="primary"
+        class=" w3-display-container w3-black"
+        style="margin: 5px;"
+        (click)="print()" >
+        <i class="fa fa-print w3-left" style="padding-top: 10px" ></i> <span class="w3-right" >{{ "print" | trans }}</span>
+      </button>
+
+  <button
+        mat-raised-button color="primary"
+        class=" w3-display-container w3-green"
+        style="margin: 5px;"
+        (click)="exportExcel()" >
+        <i class="fa fa-file-excel-o w3-left" style="padding-top: 10px" ></i>  <span class="w3-right" >{{ "excel" | trans }}</span>
+      </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+      <div class="custom-panel-title" >{{ "student installments" | trans }}</div>
+      <div class="custom-panel-body filter-side"  >
+        <table class="table table-bordered"  id="printable"style="direction: rtl!important;" >
+          <tr>
+            <th>{{ "#" }}</th>
+            <th>{{ "student_code" | trans }}</th>
+            <th>{{ "student_name" | trans }}</th>
+            <!-- <th>{{ "case_constraint" | trans }}</th> -->
+            <th>{{ "level" | trans }}</th>
+            <th>{{ "division" | trans }}</th>
+            <th>{{ "student_phone" | trans }}</th>
+            <th>{{ "parent_phone" | trans }}</th>
+            <th>{{ "paid_value" | trans }}</th>
+          </tr>
+
+          <ng-container *ngIf="!isSubmitted">
+            <tr *ngFor="let item of response.details index as i"  >
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.code }}</td>
+              <td>{{ item.name }}</td>
+              <!-- <td>{{ item.case_constraint? item.case_constraint.name : item.case_constraint_id }}</td> -->
+              <td>{{ item.level? item.level.name : item.level_id }}</td>
+              <td>{{ item.division? item.division.name : item.division_id }}</td>
+              <td>{{ item.phone_1 }}</td>
+              <td>{{ item.parent_phone? item.parent_phone : '-' }}</td>
+              <td>{{ item.sum_value }}</td>
+
+            </tr>
+          </ng-container>
+
+          <tr *ngIf="isSubmitted">
+            <th colspan="13" >
+              <div class="text-center"><b><i class="fa fa-spin fa-refresh"></i> {{ "please_wait" | trans }}</b></div>
+            </th>
+          </tr>
+
+          <tr *ngIf="!isSubmitted && response.details.length <= 0">
+            <th colspan="13" >
+              <div class="text-center"><b><i class="fa fa-search"></i> {{ "no data available" | trans }}</b></div>
+            </th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+
+<app-breadcrumb [breadcrumbList]="breadcrumbList"></app-breadcrumb>
+
+<div class="box box-primary material-shadow w3-white table-responsive" >
+  <div class="box-header">
+
+  </div>
+  <table  class="table table-bordered text-right">
+    <tr>
+      <td>{{ "years of adminision" | trans }}</td>
+      <td>
+        <input type="number" style="width: 100px" class="form-control input-sm" [(ngModel)]="adminisionSetting5.value"  >
+      </td>
+      <td>
+        <button mat-raised-button color="primary" [disabled]="isSubmitted5" style="margin: 5px" (click)="updateSettings(adminisionSetting5)" >
+          <span *ngIf="!isSubmitted5" >{{ "save" | trans }}</span>
+          <span *ngIf="isSubmitted5"  class="fa fa-spin fa-spinner" ></span>
+        </button>
+      </td>
+
+      <td>{{ "currrent term" | trans }}</td>
+      <td>
+        <select   style="width: 100px" class="form-control input-sm" [(ngModel)]="currentTerm.id" (change)="updateSettings(currentTerm)"   >
+           <ng-container *ngFor="let item of terms">
+              <option  value="{{ item.id }}" >{{ item.name }}</option>
+           </ng-container>
+        </select>
+      </td>
+
+
+
+    </tr>
+  </table>
+  <br>
+</div>
+

@@ -1,0 +1,28 @@
+#alertNumber {
+  text-align: center;
+  position: fixed;
+  top: 10%;
+  left: 0px;
+  right: 0px;
+  z-index: 20000000000000000 !important;
+  margin-right: 30%;
+  margin-left: 30%;
+  display: none;
+}
+
+#alertNumberSuccess {
+  text-align: center;
+  position: fixed;
+  top: 10%;
+  left: 0px;
+  right: 0px;
+  z-index: 20000000000000000 !important;
+  margin-right: 30%;
+  margin-left: 30%;
+  display: none;
+}
+
+#buttonLoading {
+  display: none;
+}
+/*# sourceMappingURL=student-affair-report6.component.css.map */

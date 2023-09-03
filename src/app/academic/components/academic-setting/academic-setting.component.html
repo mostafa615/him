@@ -1,0 +1,316 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <div class="w3-white material-shadow safe-box">
+        <div class="safe-box-header w3-large" style="padding: 5px!important">
+          {{ "academic_setting" | trans }}
+        </div>
+        <div class="border-bottom-dashed"></div>
+        <br>
+
+        <div class="safe-box-body row">
+
+          <div class="col-lg-6 col-md-6 col-sm-6">
+             <!-- setting panel -->
+             <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+              <div class="custom-panel-body table-responsive"  >
+                <table class="w3-table w3-block text-right table-right" >
+                  <tr>
+                    <th>1)</th>
+                    <th>تسجيل الارشاد الاكاديمى للطالب من القسط رقم</th>
+                    <td>
+                      <input type="number" class="input-setting" [(ngModel)]="settings[0].value" >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>2)</th>
+                    <th>المعدل التراكمى القانونى</th>
+                    <td>
+                      <input type="number" class="input-setting" [(ngModel)]="settings[1].value" >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>3)</th>
+                    <th>عدد الساعات لمعدل اقل من المعدل القانونى</th>
+                    <td>
+                      <input type="number" class="input-setting" [(ngModel)]="settings[2].value" >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>4)</th>
+                    <th>عدد الساعات للمعدل القانوى او اكثر</th>
+                    <td>
+                      <input type="number" class="input-setting" [(ngModel)]="settings[3].value" >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>5)</th>
+                    <th>الحد الاقصى للتسجيل فى الفصل الصيفى</th>
+                    <td>
+                      <input type="number" class="input-setting" [(ngModel)]="settings[4].value" >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>6)</th>
+                    <th>السماح بتسجيل مواد من مستويات اعلى</th>
+                    <td>
+                      <mat-slide-toggle
+                      [(ngModel)]="settings[5].value"
+                         ></mat-slide-toggle>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>7)</th>
+                    <th>السماح بسجيل اى مادة بدون فحص المقرر المعتمدة</th>
+                    <td>
+                      <mat-slide-toggle
+                      [(ngModel)]="settings[6].value"
+                         ></mat-slide-toggle>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <br>
+          </div>
+
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <!-- setting panel -->
+            <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+             <div class="custom-panel-body table-responsive"  >
+               <table class="w3-table w3-block text-right table-right" >
+                 <tr>
+                   <th>8)</th>
+                   <th>اجمالى الساعات المطلوبة للتخرج</th>
+                   <td>
+                     <input type="number" class="input-setting" [(ngModel)]="settings[7].value" >
+                   </td>
+                 </tr>
+                 <tr>
+                   <th>9)</th>
+                   <th>دواعى التخرج للطالب لا تقل ساعات تسجلة عن</th>
+                   <td>
+                     <input type="number" class="input-setting" [(ngModel)]="settings[8].value" >
+                   </td>
+                 </tr>
+                 <tr>
+                   <th>10)</th>
+                   <th>عدد الساعات المسوحة لدواعى التخرج</th>
+                   <td>
+                     <input type="number" class="input-setting" [(ngModel)]="settings[9].value" >
+                   </td>
+                 </tr>
+               </table>
+             </div>
+           </div>
+
+            <!-- setting panel -->
+            <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+             <div class="custom-panel-body table-responsive"  >
+               <table class="w3-table w3-block text-right table-right" >
+                <tr>
+                  <th>11)</th>
+                  <th>كلمة سر اعلان او الغاء النتيجة</th>
+                  <td>
+                    <input type="password" class="input-setting" [(ngModel)]="settings[11].value" >
+                  </td>
+                </tr>
+                <tr>
+                  <th>13)</th>
+                  <th>كلمة سر حالات الطلبه</th>
+                  <td>
+                    <input type="password" class="input-setting" [(ngModel)]="settings[12].value" >
+                    <!-- settings[13].value -->
+                  </td>
+                </tr>
+                 <tr>
+                   <th>13)</th>
+                   <th>
+                     <button
+                     style="margin: 5px"
+                     mat-raised-button color="warn"
+                     (click)="showPublishResultModal(1)" >اعلان النتيجة</button>
+
+                     <button
+                     style="margin: 5px"
+                     mat-raised-button color="warn"
+                     (click)="showPublishResultModal(0)" >الغاء اعلان النتيجة</button>
+                   </th>
+                   <td class="hidden" >
+                    <i *ngIf="settings[10].value" class="fa fa-check-square w3-text-green" ></i>
+                    <i *ngIf="!settings[10].value" class="fa fa-check-square w3-text-red" ></i>
+                   </td>
+                 </tr>
+               </table>
+             </div>
+           </div>
+           <br>
+         </div>
+
+         <div class="col-12" style="text-align: center;">&nbsp;</div>
+         <div style="text-align: center ; font-size: 18px;width: 100%;">إعدادات حسابات الارشاد الكاديمى</div>
+
+         <div style="display: grid;grid-template-columns: repeat(2, minmax(0, 1fr));width : 100%;gap : 1rem;padding: 1rem;">
+
+          <div style="margin : 10px 0">
+          <!-- setting panel -->
+
+          <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+           <div class="custom-panel-body table-responsive"  >
+             <table class="w3-table w3-block text-right table-right" >
+              <th>المقيد</th>
+               <tr>
+                 <th>1)</th>
+                 <th> سنه أولى </th>
+                 <td>
+                   <input type="number" class="input-setting" [(ngModel)]="settings[13].value" >
+                 </td>
+               </tr>
+               <tr>
+                 <th>2)</th>
+                 <th>  سنه تانيه</th>
+                 <td>
+                   <input type="number" class="input-setting" [(ngModel)]="settings[14].value" >
+                 </td>
+               </tr>
+               <tr>
+                 <th>3)</th>
+                 <th>      سنه تالته</th>
+                 <td>
+                   <input type="number" class="input-setting" [(ngModel)]="settings[15].value" >
+                 </td>
+               </tr>
+               <tr>
+                 <th>4)</th>
+                 <th> سنه رابعه </th>
+                 <td>
+                   <input type="number" class="input-setting" [(ngModel)]="settings[16].value" >
+                 </td>
+               </tr>
+               <tr>
+                 <th>5)</th>
+                 <th> الخريجين </th>
+                 <td>
+                   <input type="number" class="input-setting" [(ngModel)]="settings[17].value" >
+                 </td>
+               </tr>
+
+           
+             </table>
+           </div>
+         </div>
+         <br>
+         </div>
+         
+         
+         <div style="margin : 10px 0">
+          <!-- setting panel -->
+          <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+           <div class="custom-panel-body table-responsive"  >
+             <table class="w3-table w3-block text-right table-right" >
+              <th >باقى للاعاده</th>
+               <tr>
+                 <th>1)</th>
+                 <th> سنه أولى </th>
+                 <td>
+                   <input type="number" class="input-setting" [(ngModel)]="settings[18].value" >
+                 </td>
+               </tr>
+               <tr>
+                 <th>2)</th>
+                 <th>  سنه تانيه</th>
+                 <td>
+                   <input type="number" class="input-setting" [(ngModel)]="settings[19].value" >
+                 </td>
+               </tr>
+               <tr>
+                 <th>3)</th>
+                 <th>      سنه تالته</th>
+                 <td>
+                   <input type="number" class="input-setting" [(ngModel)]="settings[20].value" >
+                 </td>
+               </tr>
+               <tr>
+                 <th>4)</th>
+                 <th> سنه رابعه </th>
+                 <td>
+                   <input type="number" class="input-setting" [(ngModel)]="settings[21].value" >
+                 </td>
+               </tr>
+               <tr>
+                 <th>5)</th>
+                 <th> الخريجين </th>
+                 <td>
+                   <input type="number" class="input-setting" [(ngModel)]="settings[22].value" >
+                 </td>
+               </tr>
+             
+             </table>
+           </div>
+         </div>
+         <br>
+         </div>
+
+        </div>
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <!-- setting panel -->
+            <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+             <div class="custom-panel-body table-responsive"  >
+              <button
+              mat-raised-button color="primary"
+              [disabled]="isSubmitted"
+              (click)="updateSetting()" style="margin: 5px" >
+              <i *ngIf="isSubmitted"  class="fa fa-spin fa-spinner"></i>
+              <span *ngIf="!isSubmitted" >{{ "save changes" | trans}} </span>
+            </button>
+             </div>
+           </div>
+           <br>
+         </div>
+         
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- add course modal -->
+  <div class="modal fade" tabindex="-1" id="publishResultModal" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 *ngIf="action == 1" class="modal-title">{{ "publish result" | trans }}</h4>
+          <h4 *ngIf="action != 1" class="modal-title">{{ "cancel publish result" | trans }}</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table">
+            <tr>
+              <td>{{ "password of publish result"| trans }} *</td>
+              <td>
+                <input type="password" [(ngModel)]="password" class="form-control"    >
+              </td>
+            </tr>
+            <tr>
+              <td>{{ "level"| trans }} *</td>
+              <td>
+                <select [(ngModel)]="level_id" class="form-control" >
+                  <option *ngFor="let item of levels" value="{{ item.id }}">{{ item.name }}</option>
+                </select>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">{{ "close" | trans }}</button>
+          <button type="button" class="btn btn-primary" (click)="publishResult();" [disabled]="isSubmitted" >
+            <i  *ngIf="isSubmitted" class="fa fa-spin fa-spinner" ></i>
+            <span  *ngIf="!isSubmitted">{{ "publish result" | trans }}</span>
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->

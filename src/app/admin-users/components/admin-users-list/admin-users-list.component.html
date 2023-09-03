@@ -1,0 +1,48 @@
+<app-breadcrumb [breadcrumbList]="[
+  {name: 'Dashboard', url:'dashboard'},
+  {name: 'Admin Users List'}
+]"></app-breadcrumb>
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card no-margin-bottom">
+    <div *ngIf="isListDataLoaded && adminUsers.length > 0" class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th i18n="User name">Name</th>
+              <th i18n="Email">Email</th>
+              <th i18n="User Role">Admin Role</th>
+              <th i18n="Status">Status</th>
+              <th i18n="Actions">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let adminUser of adminUsers index as i">
+              <td>{{adminUser.name}}</td>
+              <td>{{adminUser.email}}</td>
+              <td>{{adminUser.role}}</td>
+              <td>
+                <label *ngIf="!adminUser.active" class="badge badge-danger" i18n="Inactive">Inactive</label>
+                <label *ngIf="adminUser.active" class="badge badge-success" i18n="Active">Active</label>
+              </td>
+              <td>
+                <button
+                  class="btn btn-inverse-info btn-sm"
+                  routerLink='/admin/adminUsers/edit/{{adminUser._id}}'
+                  type="button">
+                  <i class="fa fa-edit"></i><span i18n="Edit">Edit</span>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12">
+    <app-no-matching *ngIf="isListDataLoaded && (adminUsers.length === 0)"></app-no-matching>
+    <app-main-loader *ngIf="!isListDataLoaded"></app-main-loader>
+  </div>
+</div>

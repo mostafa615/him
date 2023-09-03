@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,kBAAkB,CAAC;EACf,aAAa,EAAE,GAAG,CAAA,UAAU;CAC/B;;AAED,AAAA,iBAAiB,CAAC;EACd,OAAO,EAAE,GAAG,CAAA,UAAU;CACzB;;AAED,AAAA,kBAAkB,CAAA;EACd,QAAQ,EAAE,IAAI;CACjB",
+    "sources": [
+        "student-index.component.scss"
+    ],
+    "names": [],
+    "file": "student-index.component.css"
+}

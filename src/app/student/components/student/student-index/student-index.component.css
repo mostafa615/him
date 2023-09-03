@@ -1,0 +1,12 @@
+.student-list-item {
+  margin-bottom: 5px !important;
+}
+
+.student-list-col {
+  padding: 5px !important;
+}
+
+.student-container {
+  overflow: auto;
+}
+/*# sourceMappingURL=student-index.component.css.map */

@@ -1,0 +1,138 @@
+<app-breadcrumb [breadcrumbList]="[
+  {name: 'Dashboard', url:'dashboard'},
+  {name: 'Admin Users List', url:'admin-users/list'},
+  {name: 'Admin User Edit'}
+]"></app-breadcrumb>
+<div class="row">
+  <div *ngIf="currentAdminUser" class="col-md-12 d-flex align-items-stretch grid-margin">
+    <div class="row flex-grow">
+      <div class="col-12 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title" i18n="Update admin user">Update admin user</h4>
+            <div [hidden]="!errorMessage || errorMessage == ''" class="alert alert-danger">{{errorMessage}}</div>
+            <div [hidden]="!successMessage || successMessage == ''" class="alert alert-success">{{successMessage}}</div>
+            <form class="forms-sample create" [formGroup]="AdminUserForm" (ngSubmit)="update()">
+              <div class="form-group row">
+                <div class="col-lg-6">
+                  <label for="name"><span i18n="Full name ">Full name </span><span style="color: red">*</span></label>
+                  <input formControlName="name" type="text" id="name" class="form-control" maxlength="50">
+                  <div *ngIf="(name.touched || name.dirty) && name.invalid">
+                    <div class="alert alert-danger fade show" *ngIf="name.errors?.required">
+                      <small i18n="Please enter the name">Please enter the name</small>
+                    </div>
+                    <div class="alert alert-danger fade show" *ngIf="name.errors?.maxlength">
+                      <small i18n="Maximum length is 25">Maximum length is 50</small>
+                    </div>
+                    <div class="alert alert-danger fade show" *ngIf="name.errors?.shouldNotStartWithSpace">
+                      <small i18n="Should not start with space">Should not start with space</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <label for="email"><span i18n="User email ">User email </span><span
+                      style="color: red">*</span></label>
+                  <input formControlName="email" type="email" id="email" class="form-control">
+                  <div *ngIf="(email.touched ||email.dirty) && email.invalid">
+                    <div class="alert alert-danger fade show" *ngIf="email.errors?.required">
+                      <small i18n="Please enter email">Please enter email</small>
+                    </div>
+                    <div class="alert alert-danger fade show" *ngIf="email.errors?.email">
+                      <small i18n="Please enter email correctly">Please enter email correctly</small>
+                    </div>
+                  </div>
+                  <div class="alert alert-danger fade show" *ngIf="emailError!='' && errorMessage!=''">
+                    <small i18n="Email is already registered">Email is already registered</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-6">
+                  <label for="active"><span i18n="User roles ">Admin Status </span><span
+                      style="color: red">*</span></label>
+                  <select id="active" class="form-control" [formControlName]="'active'">
+                    <option value="Active" i18n="Active">Active</option>
+                    <option value="Inactive" i18n="Inactive">Inactive</option>
+                  </select>
+                </div>
+                <div class="col-lg-6">
+                  <label for="role"><span i18n="User roles ">Admin roles </span><span style="color: red">*</span></label>
+                  <select id="role" class="form-control" [formControlName]="'role'">
+                    <option value="super_admin" i18n="Active">super_admin</option>
+                    <option value="admin" i18n="Inactive">admin</option>
+                  </select>
+                </div>
+              </div>
+              <hr>
+              <button [disabled]="AdminUserForm.invalid || isSubmitClick" type="submit"
+                class="btn btn-primary btn-user btn-block">
+                <span i18n="Update Admin Users ">Update Admin Users </span>
+                <img *ngIf="isSubmitClick" src="assets/img/preloader-white.svg" style="height: 16px;">
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-grow">
+    <div class="col-12 grid-margin">
+      <div class="card">
+        <h5 class="card-header" i18n="Change password">Change password</h5>
+        <div class="collapse show" aria-labelledby="heading-example">
+          <div class="card-body">
+            <div class="col-lg-12">
+              <div [hidden]="!errorMessageChangePassword" class="alert alert-danger">{{errorMessageChangePassword}}
+              </div>
+            </div>
+            <form class="forms-sample create" [formGroup]="ChangePasswordForm" (ngSubmit)="createChangePassword()">
+
+              <div class="form-group">
+                <label for="password"> <span i18n="New password">New password </span><span
+                    style="color: red">*</span></label>
+                <input formControlName="password" type="password" id="password" class="form-control" maxlength="50">
+                <div *ngIf="(password.touched || password.dirty) && password.invalid">
+                  <div class="alert alert-danger fade show" *ngIf="password.errors?.required">
+                    <small i18n="Please enter password">Please enter password</small>
+                  </div>
+                  <div class="alert alert-danger fade show" *ngIf="password.errors?.maxlength">
+                    <small i18n="Maximum length is 25">Maximum length is 25</small>
+                  </div>
+                  <div class="alert alert-danger fade show" *ngIf="password.errors?.minlength">
+                    <small i18n="Minimum length is 8">Minimum length is 8</small>
+                  </div>
+                  <div class="alert alert-danger fade show" *ngIf="password.errors?.shouldNotStartWithSpace">
+                    <small i18n="Should not start with space">Should not start with space</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword"><span i18n="Confirm password">Confirm password</span><span
+                    style="color: red">*</span></label>
+                <input formControlName="confirmPassword" type="password" id="confirmPassword" class="form-control"
+                  maxlength="50">
+                <div *ngIf="(confirmPassword.touched || confirmPassword.dirty) && confirmPassword.invalid">
+                  <div class="alert alert-danger fade show" *ngIf="confirmPassword.errors?.required">
+                    <small i18n="Please enter password">Please enter password</small>
+                  </div>
+                  <div class="alert alert-danger fade show" *ngIf="confirmPassword.errors?.NoPassswordMatch">
+                    <small i18n="Please enter password correctly">Please enter password correctly</small>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <button [disabled]="ChangePasswordForm.invalid || isSubmitChangePasswordClick" type="submit"
+                class="btn btn-primary btn-block">
+                <span i18n="Change Password">Change Password</span>
+                <img *ngIf="isSubmitChangePasswordClick" src="assets/img/preloader-white.svg" style="height: 16px;">
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12">
+    <app-main-loader *ngIf="!currentAdminUser"></app-main-loader>
+  </div>
+</div>

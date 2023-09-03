@@ -1,0 +1,60 @@
+<div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+  <div class="custom-panel-body table-responsive w3-padding">
+      <!-- <button mat-raised-button color="primary" class="mat-raised-button mat-primary" [disabled]="isSubmitted" (click)="updateDate()" style="margin: 5px">
+<i *ngIf="isSubmitted" class="fa fa-spin fa-spinner"></i>
+<span *ngIf="!isSubmitted">{{ "update" | trans }} </span>
+ </button> -->
+ <h3> تقرير تسجيل الفصل الصيفى </h3>
+
+ <input type="datetime-local" id="completionDate"
+ placeholder="yyyy-MM-ddTHH:mm:ss"
+  [(ngModel)]="dated">
+       <button mat-raised-button color="primary" style="margin-right: 15px; background-color: rgb(36, 36, 168); color: white;" class="w3-margin-left w3-black" (click)="search()"> بحث</button>
+      <button mat-raised-button color="primary" style="margin-right: 15px; background-color: rgb(36, 36, 168); color: white;" class="w3-margin-left w3-green" (click)="ShowStudentrecords()">  كل الطلاب</button>
+
+      <!-- <button mat-raised-button color="primary" class="w3-margin-left w3-black" (click)="print()"> <i class="fa fa-print" ></i> {{ "print" | trans }}</button> -->
+
+      <!-- <button mat-raised-button color="primary" class="w3-margin-left w3-green" (click)="exportExcel()"> <i class="fa fa-file-excel-o" ></i> {{ "excel" | trans }}</button> -->
+
+      <!-- <button permission="result_transfer" mat-raised-button color="primary" class="w3-margin-left w3-red" routerLink="/academic/result-transfer"> <i class="fa fa-send-o" ></i> {{ "result_transfer" | trans }}</button> -->
+
+  </div>
+</div>
+<div class="custom-panel w3-display-container w3-round application-panel student-info-panel" style="height:455px;overflow: auto;margin-left: 78px !important;">
+  <div class="custom-panel-body table-responsive w3-padding" id="printable">
+      <table class="table table-striped" style="background-color: white;" id="tablePrint">
+          <tr>
+              <th scope="col">   التاريخ</th>
+
+              <th scope="col">الاسم</th>
+
+              <th scope="col">المستوى</th>
+              <th scope="col">التخصص</th>
+
+              <th scope="col">المادة</th>
+
+
+          </tr>
+          <tr *ngFor="let res of studentDataSummer ">
+              <td> {{res.date}}</td>
+
+              <td> {{res.student.name}}</td>
+
+
+              <td> {{res.student.level.name}}</td>
+              <td> {{res.student.division.name}}</td>
+
+               <td>{{res.course.name}}</td>
+
+          </tr>
+      </table>
+  </div>
+</div>
+<!-- <div class="row mt-5">
+  <div class="col-12">
+      <nav aria-label="Page navigation " style="display: flex;">
+          <pagination-controls style="margin: auto;" previousLabel="السابق" nextLabel="التالى" (pageChange)="onPageChange($event)">
+          </pagination-controls>
+      </nav>
+  </div>
+</div> -->

@@ -1,0 +1,78 @@
+<div class="modal fade"  [id]="updateMode? 'updateModal' : 'createModal'"   role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="box box-primary modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+        onclick="document.getElementById('createModal').style.display='none'"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">
+          <b *ngIf="!updateMode" >{{ "إضافه بنك"  }}</b>
+          <b *ngIf="updateMode" >{{ "تعديل البنك" }}</b>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <table class="table" >
+          <tr>
+            <th> تاريخ الانشاء   *</th>
+            <td>
+
+              <input type="datetime-local" id="completionDate" class="form-control input-sm"  [(ngModel)]="item.date" >
+            </td>
+          </tr>
+            <tr>
+              <th>{{ "name" | trans }} *</th>
+              <td>
+                <input type="text" class="form-control input-sm"  [(ngModel)]="item.name" >
+              </td>
+            </tr>
+            <tr>
+              <th>{{ "account_number" | trans }} *</th>
+              <td>
+                <input type="text" class="form-control input-sm"  [(ngModel)]="item.account_number" >
+              </td>
+            </tr>
+            <tr>
+              <th>{{ "نوع الإيداع "  }} *</th>
+              <td>
+                <select class="form-control" name="" id="" [(ngModel)]="item.type_user_id">
+                  <option value="0">أختر البنك </option>
+                  <option value="1">بنك اساسى</option>
+                  <option value="2">تمويل خارجى</option>
+
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th>{{ "branche" | trans }} *</th>
+              <td>
+                <input type="text" class="form-control input-sm"  [(ngModel)]="item.branche" >
+              </td>
+            </tr>
+            <tr *ngIf="!updateMode" >
+              <th>{{ "init_balance" | trans }} *</th>
+              <td>
+                <input type="text" class="form-control input-sm"  [(ngModel)]="item.init_balance" >
+              </td>
+            </tr>
+            <tr>
+              <th>{{ "notes" | trans }} *</th>
+              <td>
+                <input type="text" class="form-control input-sm"  [(ngModel)]="item.notes" >
+              </td>
+            </tr>
+        </table>
+      </div>
+      <div class="modal-footer text-right">
+        <button type="button" mat-raised-button
+        (click)="updateMode? doc.jquery('#updateModal').modal('hide') : doc.jquery('#createModal').modal('hide')"  >{{ "close" | trans }}</button>
+
+        <button
+          mat-raised-button color="primary"
+          [disabled]="isSubmitted"
+          (click)="sendResource()" >
+          <span *ngIf="!isSubmitted" >{{ "save" | trans }}</span>
+          <span *ngIf="isSubmitted" class="fa fa-spin fa-spinner" ></span>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

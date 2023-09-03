@@ -1,0 +1,92 @@
+
+  <!-- add doctor modal -->
+  <div class="modal fade" tabindex="-1" id="doctorFormModal" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" *ngIf="!doctor.id" >{{ "create new doctor" | trans }}</h4>
+          <h4 class="modal-title" *ngIf="doctor.id" >{{ "update doctor" | trans }}</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+
+          <div class="col-lg-12">
+            <table class="table">
+              <tr>
+                <td>{{ "name"| trans }} *</td>
+                <td>
+                  <input type="text"   [(ngModel)]="doctor.name" class="form-control"    >
+                </td>
+              </tr>
+              <tr>
+                <td>{{ "phone"| trans }} *</td>
+                <td>
+                  <input type="text" [(ngModel)]="doctor.phone" class="form-control"    >
+                </td>
+              </tr>
+              <tr>
+                <td>{{ "username"| trans }} *</td>
+                <td>
+                  <input type="text"  [(ngModel)]="doctor.username" class="form-control"    >
+                </td>
+              </tr>
+              <tr>
+                <td>{{ "password"| trans }} *</td>
+                <td>
+                  <input type="password"  [(ngModel)]="doctor.password" class="form-control"    >
+                </td>
+              </tr>
+              <tr>
+                <td>{{ "email"| trans }} </td>
+                <td>
+                  <input type="email"  [(ngModel)]="doctor.email" class="form-control"    >
+                </td>
+              </tr>
+              <tr>
+                <td>{{ "gender"| trans }} </td>
+                <td>
+                  <select  [(ngModel)]="doctor.gender"  class="form-control">
+                    <option value="male" >{{ "male" | trans }}</option>
+                    <option value="female" >{{ "female" | trans }}</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ "active"| trans }} </td>
+                <td>
+                  <mat-slide-toggle
+                  [(ngModel)]="doctor.active"
+                     ></mat-slide-toggle>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ "level"| trans }} </td>
+                <td>
+                  <select class="form-control select2 level-select" multiple   >
+                    <option *ngFor="let item of levels" value="{{ item.id }}" >{{ item.name }}</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ "description"| trans }}</td>
+                <td>
+                  <textarea [(ngModel)]="doctor.description"   class="form-control"  ></textarea>
+                </td>
+              </tr>
+
+            </table>
+          </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">{{ "close" | trans }}</button>
+          <button type="button" class="btn btn-primary"  (click)="send();" [disabled]="isSubmitted" >
+            <i  *ngIf="isSubmitted" class="fa fa-spin fa-spinner" ></i>
+            <span  *ngIf="!isSubmitted">{{ "save changes" | trans }}</span>
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->

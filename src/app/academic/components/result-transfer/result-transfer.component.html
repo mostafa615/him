@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="w3-white material-shadow safe-box">
+      <div class="safe-box-header w3-large" style="padding: 5px!important">
+        {{ "result_transfer" | trans }}
+      </div>
+      <div class="border-bottom-dashed"></div>
+      <br>
+
+      <div class="safe-box-body w3-padding">
+
+        <div class="step-1" *ngIf="currentStep == 1" >
+           <!-- setting panel -->
+           <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+            <div class="custom-panel-body table-responsive w3-large text-center"  >
+              <img src="/assets/img/result-image.jpg" class="animated zoomIn" style="max-width: 250px;margin: auto" >
+              <br>
+              <p class="w3-text-red">
+                عند ترحيل النتيجة لا يمكنك ترحيلها مره اخرى فى هذا الترم
+              </p>
+              <br>
+              <button mat-raised-button  class="w3-red"  (click)="goToStep2()" >{{ "understand this" | trans }}</button>
+              <br>
+              <br>
+            </div>
+          </div>
+          <br>
+        </div>
+
+        <div class="step-2" *ngIf="currentStep == 2" >
+          <!-- setting panel -->
+          <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+           <div class="custom-panel-body table-responsive w3-large text-center"  >
+             <img src="/assets/img/result-image.jpg" class="animated {{ currentStep == 2? 'lightSpeedIn' : '' }}" style="max-width: 250px;margin: auto" >
+             <br>
+             <p class="w3-text-red" >
+               البدا فى ترحيل النتيجة لكل المستويات
+             </p>
+             <br>
+             <button mat-raised-button class="w3-red"  (click)="start()" >{{ "start" | trans }}</button>
+             <br>
+             <br>
+           </div>
+         </div>
+         <br>
+       </div>
+
+        <div class="step-3" *ngIf="currentStep == 3 && loading" >
+           <!-- setting panel -->
+           <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+            <div class="custom-panel-body table-responsive w3-large text-center"  >
+              <i class="fa fa-spinner fa-spin" ></i>
+              <p class="w3-text-red" >
+                من فضلك انتظر يتم ترحيل النتيجة
+              </p>
+              <br>
+            </div>
+          </div>
+          <br>
+        </div>
+
+        <div class="step-4" *ngIf="currentStep == 4 && !loading" >
+           <!-- setting panel -->
+           <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+            <div class="custom-panel-body table-responsive text-center"  >
+              <p class="w3-large" >
+                تم ترحيل النتيجة بنجاح
+              </p>
+              <table class="table table-bordered text-center" id="printable" style="direction: rtl;" >
+                <tr>
+                  <th>#</th>
+                  <th>{{ "name" | trans }}</th>
+                  <th>{{ "code" | trans }}</th>
+                  <th>{{ "level" | trans }}</th>
+                  <th>{{ "problem" | trans }}</th>
+                </tr>
+
+                <tr *ngFor="let item of result index as i" >
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.code }}</td>
+                  <td>{{ item.level? item.level.name : item.level_id }}</td>
+                  <td class="w3-text-red" >{{ item.faild_transfer_reason }}</td>
+                </tr>
+              </table>
+              <br>
+              <button type="button" class="w3-black" mat-raised-button (click)="print()" style="margin: 5px;"  >{{ "print" | trans }}</button>
+              <button type="button" class="w3-green" mat-raised-button (click)="exportExcel()" style="margin: 5px;"  >{{ "excel" | trans }}</button>
+              <br>
+            </div>
+          </div>
+          <br>
+          <br>
+        </div>
+
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+

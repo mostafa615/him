@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "income-sheet.component.scss"
+    ],
+    "names": [],
+    "file": "income-sheet.component.css"
+}

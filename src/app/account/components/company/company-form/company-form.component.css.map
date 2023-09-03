@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "company-form.component.scss"
+    ],
+    "names": [],
+    "file": "company-form.component.css"
+}

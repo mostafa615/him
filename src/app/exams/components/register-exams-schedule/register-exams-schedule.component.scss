@@ -1,0 +1,12 @@
+ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+li{
+    border-bottom: 0;
+}
+#checkboxs{
+    display: flex;
+    justify-content: center;
+}

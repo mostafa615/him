@@ -1,0 +1,299 @@
+<div class="w3-block">
+  <div class="">
+    <div class="row">
+      <div class="col-lg-3 w3-white material-shadow safe-box">
+        <div class="safe-box-header w3-large" style="padding: 5px !important">
+          {{ "student affairs" | trans }}
+        </div>
+        <div class="border-bottom-dashed"></div>
+        <br />
+        <div class="custom-panel w3-display-container w3-round">
+          <div class="custom-panel-body table-responsive w3-padding w3-center">
+            <a
+              permission="application_read"
+              [routerLink]="['/affairs/applications']"
+              role="button"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+              [queryParams]="{ col: 'col-lg-12' }"
+            >
+              <b>{{ "applications" | trans }}</b>
+              <a class="pull-left">
+                <i class="fa fa-address-card-o"></i>
+              </a>
+            </a>
+            <a
+              permission="application_add"
+              [routerLink]="['/affairs/applications/create']"
+              role="button"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+              [queryParams]="{ col: 'col-lg-12' }"
+            >
+              <b>{{ "add application" | trans }}</b>
+              <a class="pull-left">
+                <i class="fa fa-address-book-o"></i>
+              </a>
+            </a>
+            <a
+              [routerLink]="['/affairs/students']"
+              role="button"
+              permission="student_read"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+              [queryParams]="{ col: 'col-lg-12' }"
+            >
+              <b>{{ "students" | trans }}</b>
+              <a class="pull-left">
+                <i class="fa fa-users"></i>
+              </a>
+            </a>
+            <a
+              [routerLink]="['/affairs/students/create']"
+              role="button"
+              permission="student_add"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+              [queryParams]="{ col: 'col-lg-12' }"
+            >
+              <b>{{ "add student" | trans }}</b>
+              <a class="pull-left">
+                <i class="fa fa-user-circle"></i>
+              </a>
+            </a>
+           
+
+            <a
+              routerLink="/affairs/required_documents"
+              role="button"
+              permission="required_document_read"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+            >
+              <b>{{ "required_documents" | trans }}</b>
+              <a class="pull-left">
+                <i class="fa fa-newspaper-o"></i>
+              </a>
+            </a>
+            <a
+              routerLink="/affairs/application_required"
+              role="button"
+              permission="application_required"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+            >
+              <b>{{ "application_required" | trans }}</b>
+              <a class="pull-left">
+                <i class="fa fa-check-square"></i>
+              </a>
+            </a>
+            <a
+              routerLink="/affairs/settings"
+              role="button"
+              permission="application_setting"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+            >
+              <b>{{ "adminision settings" | trans }}</b>
+              <a class="pull-left">
+                <i class="fa fa-cogs"></i>
+              </a>
+            </a>
+            <a
+            routerLink="/affairs/report/report21"
+            role="button"
+            permission="student_affair_report11"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow"
+          >
+            <b>سجل تجنيد الوزارة</b>
+            <a class="pull-left">
+              <i class="fa fa-print"></i>
+            </a>
+          </a>
+          <a
+            routerLink="/affairs/report/report5"
+            role="button"
+            permission="student_affair_report5"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow"
+          >
+            <b>{{ "student_affair_repor5" | trans }}</b>
+            <a class="pull-left">
+              <i class="fa fa-print"></i>
+            </a>
+          </a>
+         
+        
+            <a
+              routerLink="/affairs/report/report11"
+              role="button"
+              permission="student_affair_report11"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+            >
+              <b>{{ "student_affair_repor11" | trans }}</b>
+              <a class="pull-left">
+                <i class="fa fa-print"></i>
+              </a>
+            </a>
+            <a
+              routerLink="/affairs/report/report15"
+              role="button"
+              permission="student_affair_report11"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+            >
+              <b>سجل التجنيد</b>
+              <a class="pull-left">
+                <i class="fa fa-print"></i>
+              </a>
+            </a>
+            <a
+            routerLink="/affairs/report/report1"
+            role="button"
+            permission="student_affair_report1"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow"
+          >
+            <b>{{ "student_affair_repor1" | trans }}</b>
+            <a class="pull-left">
+              <i class="fa fa-line-chart"></i>
+            </a>
+          </a>
+            <a
+            routerLink="/affairs/report/report2"
+            role="button"
+            permission="student_affair_report2"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow"
+          >
+            <b>{{ "student_affair_repor2" | trans }}</b>
+            <a class="pull-left">
+              <i class="fa fa-print"></i>
+            </a>
+          </a>
+        
+          <a
+            routerLink="/affairs/report/report4"
+            role="button"
+            permission="student_affair_report5"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow"
+          >
+            <b>{{ "student_affair_repor4" | trans }}</b>
+            <a class="pull-left">
+              <i class="fa fa-check-square"></i>
+            </a>
+          </a>
+            <a
+            routerLink="/affairs/report/report3"
+            role="button"
+            permission="student_affair_report3"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow"
+          >
+            <b>{{ "student_affair_repor3" | trans }}</b>
+            <a class="pull-left">
+              <i class="fa fa-print"></i>
+            </a>
+          </a>
+            <a
+              routerLink="/affairs/report/report10"
+              role="button"
+              permission="student_affair_report10"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+            >
+              <b>{{ "student_affair_repor10" | trans }}</b>
+              <a class="pull-left">
+                <i class="fa fa-print"></i>
+              </a>
+            </a>
+            <a
+              routerLink="/affairs/report/report14"
+              role="button"
+              permission="student_affair_report14"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+            >
+              <b>{{ "student_affair_repor14" | trans }}</b>
+              <a class="pull-left">
+                <i class="fa fa-print"></i>
+              </a>
+            </a>
+            <!-- student_affair_report14 -->
+            <a
+              routerLink="/affairs/report/student-status"
+              role="button"
+              permission="student_status_report"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+            >
+              <b> تقرير حالات الطلاب</b>
+              <a class="pull-left">
+                <i class="fa fa-check-square"></i>
+              </a>
+            </a>
+            <a
+              routerLink="/affairs/report/registration"
+              role="button"
+              permission="student_constraint_report"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+            >
+              <b> تقرير إثبات القيد</b>
+              <a class="pull-left">
+                <i class="fa fa-check-square"></i>
+              </a>
+            </a>
+            <a
+              routerLink="/affairs/report/patients"
+              role="button"
+              permission="student_status_illness_report"
+              class="btn-margin-bottom btn btn-default w3-block small-shadow"
+            >
+              <b>تقرير الحالات المرضيه </b>
+              <a class="pull-left">
+                <i class="fa fa-check-square"></i>
+              </a>
+            </a>
+            <a
+            routerLink="/affairs/report/creditHour"
+            role="button"
+            permission="student_credit_hours_report"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow"
+          >
+            <b>تقرير الساعات المسجلة </b>
+            <a class="pull-left">
+              <i class="fa fa-check-square"></i>
+            </a>
+          </a>
+          <a
+          routerLink="/affairs/registrationtype"
+          permission="student_constraint_edit_report"
+          class="btn-margin-bottom btn btn-default w3-block small-shadow"
+          [queryParams]="{ col: 'col-lg-12' }"
+        >
+          <b>{{ "تعديل نوع القيد" }}</b>
+          <a href="#" class="pull-left">
+            <i class="fa fa-newspaper-o"></i>
+          </a>
+        </a>
+        <!-- <a
+          routerLink="/affairs/registrationreport"
+          class="btn-margin-bottom btn btn-default w3-block small-shadow"
+          [queryParams]="{ col: 'col-lg-12' }"
+        >
+          <b>{{ "تقرير نوع القيد" }}</b>
+          <a href="#" class="pull-left">
+            <i class="fa fa-newspaper-o"></i>
+          </a>
+        </a> -->
+          <!-- <a
+          routerLink="/affairs/report/service"
+          role="button"
+          class="btn-margin-bottom btn btn-default w3-block small-shadow"
+        >
+          <b>تقرير الخدمات </b>
+          <a class="pull-left">
+            <i class="fa fa-check-square"></i>
+          </a>
+        </a> -->
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="col-lg-9 student-affair-container"
+        id="studentAffairContainer"
+        style="overflow: auto"
+      >
+        <div class="table-responsive w3-padding">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<div permission="set_numbers_null" class="row">
+  <div class="col-lg-2 col-md-4">
+    <div class="form-group">
+        <label for="">{{ "level" | trans }}</label>
+        <select id="level_id" name="filter.level_id" class="form-control" [(ngModel)]="filter.level_id">
+        <option value="">الكل</option>
+        <option *ngFor="let item of levels" value="{{ item.id }}">{{item.name}}</option>
+        </select>
+    </div>
+</div>
+  <div id="btn" class="col-lg-2 col-md-3">
+    <button type="button" class="btn btn-primary" (click)='setNumbersNull()' data-whatever="@getbootstrap"
+      style='margin-top: 23px !important;margin-right: 2px;'>تصفير أرقام الجلوس</button>
+  </div>
+</div>

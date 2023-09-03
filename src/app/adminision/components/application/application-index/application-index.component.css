@@ -1,0 +1,13 @@
+.student-list-item {
+  /*height: 220px;*/
+  margin-bottom: 5px !important;
+}
+
+.student-list-col {
+  padding: 5px !important;
+}
+
+.student-container {
+  overflow: auto;
+}
+/*# sourceMappingURL=application-index.component.css.map */

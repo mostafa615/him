@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,KAAK,CAAC;EACJ,OAAO,EAAE,IAAI;EACb,WAAW,EAAE,MAAM;EACnB,SAAS,EAAE,IAAI;CAChB",
+    "sources": [
+        "student-affair-report4.component.scss"
+    ],
+    "names": [],
+    "file": "student-affair-report4.component.css"
+}

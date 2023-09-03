@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "worksheet-private.component.scss"
+    ],
+    "names": [],
+    "file": "worksheet-private.component.css"
+}

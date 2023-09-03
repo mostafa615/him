@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACA,AAAA,cAAc,CAAC;EACb,MAAM,EAAE,GAAG,CAAC,MAAM,CAAC,SAAS,CAAA,UAAU;CACvC",
+    "sources": [
+        "create-balance-reset.component.scss"
+    ],
+    "names": [],
+    "file": "create-balance-reset.component.css"
+}

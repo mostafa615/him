@@ -1,0 +1,141 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbList"></app-breadcrumb>
+
+<div class="w3-display-bottomleft w3-padding" style="position: fixed;z-index: 9999">
+    <button permission="application_add" mat-fab color="primary" class="w3-large" routerLink="/adminision/application/create" style="margin: 5px">
+    <span class="fa fa-plus"></span>
+  </button>
+</div>
+<!--
+
+<div class="box box-primary  table-responsive" >
+  <div class="box-header">
+    <button class="btn btn-primary" routerLink="/adminision/application/create" style="margin: 5px"  >
+      <span class="fa fa-plus" ></span> {{ "add" | trans }}
+    </button>
+    <button *ngIf="showRemoveButton" (click)="removeResources()" class="btn btn-danger" style="margin: 5px"  >
+      <span class="fa fa-trash" ></span>
+    </button>
+  </div>
+  <br>
+</div>
+-->
+
+<input type="text" class="w3-input w3-block form-control" placeholder="{{ 'search' | trans }}" (change)="loadResources()" [(ngModel)]="search.search_key">
+<br>
+<div class="w3-row" style="padding: 5px;">
+    <div *ngIf="isLoad" class="w3-block text-center w3-padding">
+        <i class="fa fa-spin fa-refresh w3-jumbo w3-text-indigo"></i>
+    </div>
+    <ng-container *ngIf="!isLoad">
+
+        <ng-container *ngFor="let item of resources.data">
+            <div class="{{ col }} student-list-col">
+                <div class="media material-shadow w3-white w3-padding w3-display-container student-list-item w3-round">
+                    <div class="w3-display-topleft w3-padding">
+                        <div class="text-left">
+                            <a permission="application_edit" href="#" [routerLink]="['/adminision/application/', item.id]" style="margin: 5px"><i
+                  class="fa fa-edit btn btn-warning btn-sm material-shadow"></i></a>
+
+                            <a href="#" [routerLink]="['/adminision/application/show/', item.id]" style="margin: 5px"><i
+                  class="fa fa-desktop btn btn-success btn-sm material-shadow"></i></a>
+
+
+                  <button color="warn" class="btn btn-danger btn-sm material-shadow" (click)="destroy(item.id)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+
+                            <!-- <button *ngIf="item.can_convert_to_student" class="btn btn-primary btn-sm material-shadow" (click)="enrollStudent(item.id)" [disabled]="isEntrollSubmit" style="margin: 5px"><i class="fa"
+                  [ngClass]="{'fa-user-circle': !isEntrollSubmit, 'fa-spin fa-spinner': isEntrollSubmit}"></i>
+                {{ "enroll student" | trans }} </button> -->
+
+                            <!--
+                  <a
+                  *ngIf="!item.can_convert_to_student"
+                  href="#"
+                  [routerLink]="['/account/safe/', item.id]"
+                  style="margin: 5px"
+                  class="material-shadow fa fa-money btn w3-indigo btn-sm" > {{ "pay" | trans }} </a>
+                  -->
+                        </div>
+                    </div>
+
+                    <div class="media-left">
+                        <a>
+                            <img class="media-object w3-round" [src]="item.personal_photo_url" style="width: 100px;max-height: 210;">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading">{{ item.name }}..</h5>
+                        <table class="w3-tiny">
+                            <tr>
+                                <th>{{ "code" | trans }}</th>
+                                <td>{{ item.code }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "academic_year" | trans }}</th>
+                                <td>{{ item.academic_year? item.academic_year.name : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "qualification" | trans }}</th>
+                                <td>{{ item.qualification? item.qualification.name : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "level" | trans }}</th>
+                                <td>{{ item.level? item.level.name : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ "notes" | trans }}</th>
+                                <td>{{ item.notes }}</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+
+
+
+</div>
+<br>
+<div class="text-center w3-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li>
+                <a class="btn" [ngClass]="{'disabled': !resources.prev_page}" (click)="loadResources(resources.prev_page)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li *ngFor="let item of resources.pages_arr">
+                <a class="btn" [ngClass]="{'active w3-indigo': resources.current_page == item}" (click)="loadResources(item)">{{ item }}</a>
+            </li>
+            <li>
+                <a class="btn" [ngClass]="{'disabled': !resources.next_page}" (click)="loadResources(resources.next_page)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+<!-- remove modal -->
+<div class="w3-modal w3-block" *ngIf="showRemoveModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ "remove applications" | trans }}</h4>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fa fa-spinner fa-spin w3-jumbo w3-text-indigo w3-center"></i>
+                <br> {{ trashList.size() }} - {{ "removed" | trans }} {{ trashList.size() + removed.length }}
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

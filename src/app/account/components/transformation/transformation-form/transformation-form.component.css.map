@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "transformation-form.component.scss"
+    ],
+    "names": [],
+    "file": "transformation-form.component.css"
+}

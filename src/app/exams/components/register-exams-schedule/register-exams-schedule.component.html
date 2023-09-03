@@ -1,0 +1,182 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="w3-white material-shadow safe-box">
+      <div style="padding-top: 4px;" class="safe-box-header w3-xlarge">
+        {{ "register exams schedule" | trans }}
+      </div>
+      <br>
+      <div class="border-bottom-dashed"></div>
+      <br>
+      <div style="padding: 15px;"
+        class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+        <div class="custom-panel-body">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <table class="table w3-block">
+                <tr>
+                  <th>{{ "division" | trans }} *</th>
+                  <td>
+                    <select class="custom-input form-control input-sm w3-input  input-sm">
+                      <option value="0">{{"all" | trans}}</option>
+                      <option *ngFor="let division of divisions" value="{{division.id}}">{{division.name}}</option>
+                    </select>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <table class="table w3-block">
+                <tr>
+                  <th>{{ "level" | trans }} *</th>
+                  <td>
+                    <select class="custom-input form-control input-sm w3-input  input-sm">
+                      <option value="0">{{ "all" | trans }}</option>
+                      <option *ngFor="let level of levels" value="{{level.id}}">{{level.name}}</option>
+                    </select>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+
+            <div id="checkboxs" class="row">
+
+              <div class="col-lg-4 col-md-6 col-sm-12">
+
+
+                <div class="border-dashed" style="padding: 4px;">
+                  <ul class="w3-ul" style="padding-bottom: 6px;">
+                    <li>
+                      <input type="checkbox" style="margin: 0px!important" class="w3-check">
+                      <span style="padding: 4px;" class="w3-medium">
+                        {{ "plan 1" | trans }}
+                      </span>
+                    </li>
+                    <li>
+                      <input type="checkbox" style="margin: 0px!important" class="w3-check">
+                      <span style="padding: 4px;" class="w3-medium">
+                        {{ "plan 2" | trans }}
+                      </span>
+                    </li>
+                    <li>
+                      <input type="checkbox" style="margin: 0px!important" class="w3-check">
+                      <span style="padding: 4px;" class="w3-medium">
+                        {{ "plan 3" | trans }}
+                      </span>
+                    </li>
+                    <li>
+                      <input type="checkbox" style="margin: 0px!important" class="w3-check">
+                      <span style="padding: 4px;" class="w3-medium">
+                        {{ "plan 4" | trans }}
+                      </span>
+                    </li>
+                  </ul>
+
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+
+
+                <div class="border-dashed" style="padding: 4px;">
+                  <ul class="w3-ul" style="padding-bottom: 6px;">
+                    <li>
+                      <input type="checkbox" style="margin: 0px!important" class="w3-check">
+                      <span style="padding: 4px;" class="w3-medium">
+                        {{ "normal" | trans }}
+                      </span>
+                    </li>
+                    <li>
+                      <input type="checkbox" style="margin: 0px!important" class="w3-check">
+                      <span style="padding: 4px;" class="w3-medium">
+                        {{ "absences" | trans }}
+                      </span>
+                    </li>
+                    <li>
+                      <input type="checkbox" style="margin: 0px!important" class="w3-check">
+                      <span style="padding: 4px;" class="w3-medium">
+                        {{ "groups" | trans }}
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="border-dashed" style="padding: 4px; margin-top: 10px;">
+                <ul class="w3-ul" style="padding-bottom: 6px;">
+                  <li>
+                    <input type="checkbox" style="margin: 0px!important" class="w3-check">
+                    <span style="padding: 4px;" class="w3-medium">
+                      {{ "open courses" | trans }}
+                    </span>
+                  </li>
+                  <li>
+                    <input type="checkbox" style="margin: 0px!important" class="w3-check">
+                    <span style="padding: 4px;" class="w3-medium">
+                      {{ "show_registered_subjects_only" | trans }}
+                    </span>
+                  </li>
+                  <li>
+                    <input type="checkbox" style="margin: 0px!important" class="w3-check">
+                    <span style="padding: 4px;" class="w3-medium">
+                      {{ "show_both_terms_subjects" | trans }}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div style="margin-top: 10px;" class="col-sm-12">
+              <table class="table text-center">
+                <tr class="w3-light-gray">
+                  <th>#</th>
+                  <th>{{ "subject code" | trans }}</th>
+                  <th>{{ "subject name" | trans }}</th>
+                  <th>{{ "duration" | trans }}</th>
+                  <th>{{ "exam date" | trans }}</th>
+                  <th>{{ "time" | trans }}</th>
+                  <th>{{ "level" | trans }}</th>
+                  <th>{{ "division" | trans }}</th>
+                  <th></th>
+                </tr>
+                <tr class="w3-hover-light-gray" style="cursor: pointer">
+                  <td>{{ "1" | trans }}</td>
+                  <td>{{ "1665" | trans }}</td>
+                  <td>المحاسبه</td>
+                  <td>{{ "hour" | trans}}</td>
+                  <td>10/12/2021</td>
+                  <td>09:00 ص</td>
+                  <td>{{ "1" | trans }}</td>
+                  <td>{{ "1" | trans }}</td>
+                  <td>
+                    <button class="w3-red" style="padding: 0px;min-width: 50px;height: 30px;" mat-raised-button
+                      color="danger">{{ "remove" | trans }}</button>
+                  </td>
+                </tr>
+                <tr class="w3-hover-light-gray" style="cursor: pointer">
+                  <td>{{ "2" | trans }}</td>
+                  <td>{{ "1675" | trans }}</td>
+                  <td>التمويل و الاستثمار</td>
+                  <td>{{ "hour" | trans}}</td>
+                  <td>11/12/2021</td>
+                  <td>09:30 ص</td>
+                  <td>{{ "1" | trans }}</td>
+                  <td>{{ "1" | trans }}</td>
+                  <td>
+                    <button class="w3-red" style="padding: 0px;min-width: 50px;height: 30px;" mat-raised-button
+                      color="danger">{{ "remove" | trans }}</button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

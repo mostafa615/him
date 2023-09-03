@@ -1,0 +1,39 @@
+ 
+<app-breadcrumb [breadcrumbList]="breadcrumbList"></app-breadcrumb>
+
+<div class="box box-primary material-shadow w3-white table-responsive" >
+  <div class="box-header"> 
+  </div>
+  <br>
+  <div style="padding: 5px;">
+    <ul class="w3-ul">
+      <li>
+          <input type="checkbox" style="margin: 0px!important" (click)="check(true)"  class="w3-check"   > 
+          <span  style="padding: 5px;" class="w3-large" >
+              {{ "check all" | trans }}
+          </span>
+      </li>
+      <li>
+          <input type="checkbox" style="margin: 0px!important" (click)="check(false)"  class="w3-check"   > 
+          <span  style="padding: 5px;" class="w3-large" >
+              {{ "decheck all" | trans }}
+          </span>
+      </li>
+      <li *ngFor="let item of resources index as i" class="w3-display-container" >
+          <input type="checkbox" style="margin: 0px!important" [(ngModel)]="item.required" class="w3-check check-item"   >
+        
+          <span  style="padding: 5px;" class="w3-large" >
+              {{ item.display_name }}
+          </span>
+         
+      </li>
+    </ul> 
+        <br>
+        <div> 
+          <button class="btn btn-primary" [disabled]="isSubmitted" (click)="updateResources()" >{{ "save changes" | trans }}</button>
+        </div>
+  </div>
+
+</div>
+
+  

@@ -1,0 +1,215 @@
+<app-breadcrumb [breadcrumbList]="breadcrumbList"></app-breadcrumb>
+
+<div class="row">
+  <div class="col-sm-12" style="float: right !important;direction:rtl">
+      <div  >
+          <button type="button" class="btn li-active" style="font-size: 19px;background-color: #010db1a9; color:rgb(255, 255, 255); font-weight: bold;" (click)="loadResources(1)"> التحويلات الجديدة</button>
+
+          <button type="button" class="btn" style="margin-right: 50px;font-size: 19px;background-color: #066b0e;color:rgb(243, 243, 243);font-weight: bold;" (click)="loadResources(2)">التحويلات المقبولة    </button>
+          <button type="button" class="btn" style="margin-right: 50px;font-size: 19px; background-color: #b31e1e;color:rgb(241, 241, 241);font-weight: bold;" (click)="loadResources(3)">التحويلات المرفوضة  </button>
+
+
+
+      </div>
+  </div>
+</div>
+<div class="mat-elevation-z8 w3-white" style="padding: 7px ;margin-top: 20px;" >
+  <h3>{{labelx}}</h3>
+    <table mat-table [dataSource]="dataSource" matSort  class="">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="date" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "date" | trans }}</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.transformation? element.transformation.date : ''}}
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="value" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "value" | trans }}</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.transformation? element.transformation.value : ''}}
+          </td>
+        </ng-container>
+
+
+        <!-- Position Column -->
+        <!-- <ng-container matColumnDef="type" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "type" | trans }}</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.type | trans }}
+          </td>
+        </ng-container> -->
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="bank_id" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "bank" | trans }}</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.bank? element.bank.name : ''}}
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="store_id" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "store" | trans }}</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.store? element.store.name : ''}}
+          </td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <!-- <ng-container matColumnDef="notes" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "notes" | trans }}</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.notes}}
+          </td>
+        </ng-container> -->
+
+        <!-- Position Column -->
+        <!-- <ng-container matColumnDef="attachment" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "attachment" | trans }}</th>
+          <td mat-cell *matCellDef="let element">
+            <a
+            *ngIf="element.attachment"
+            [href]="element.attachment_url"
+            target="_blank" >{{ element.attachment }}</a>
+          </td>
+        </ng-container> -->
+
+        <!-- Position Column -->
+        <!-- *ngIf="flgg==1" -->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+            <td mat-cell *matCellDef="let element" >
+                <button  mat-button   *ngIf="flgg==1"  (click)="accept(element)"
+                style="margin: 5px;color:#066b0e" >
+                  قبول
+                </button>
+
+                <button  mat-button  style="color:#8f0322"*ngIf="flgg==1" class="w3-text-red"
+                style="margin: 5px;"
+
+                (click)="reject(element)">
+                  رفض
+                </button>
+            </td>
+       </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <!--
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      -->
+</div>
+
+
+
+
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document" style="width: 300px;">
+      <div class="modal-content" style="    margin-top: 150px;">
+          <div class="modal-header" style="background-color:#071ee7;">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+      <span aria-hidden="true" style="color: #fff">&times;</span>
+    </button>
+
+              <p class="modal-title" style="color: #fff">
+                  <span style="vertical-align: middle; padding-left:8px">
+تنبيه                </span>
+              </p>
+
+          </div>
+
+          <div class="modal-body">
+
+ <h3>
+
+
+  هل تريد تاكيد
+استقبال مبلغ
+:
+{{balance}}
+ </h3>
+
+</div>
+
+
+
+
+          <div class="modal-footer">
+              <button class="btn btn-white bbtclose" (click)="onCloseModal()">
+      <!-- Annulla -->
+      الغاء
+    </button>
+    <button class="btn btn_color w-40 h-12" style="color: white;
+    background-color:#0a32a1;;
+    width: 100px;
+    height: 45px;  line-height: 15px;" (click)="submit1()" >
+تاكيد
+</button>
+              <!-- Confirm -->
+
+          </div>
+
+
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display2}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document" style="width: 300px;">
+      <div class="modal-content" style="    margin-top: 150px;">
+          <div class="modal-header" style="background-color:#ad0707;">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal2()">
+      <span aria-hidden="true" style="color: #fff">&times;</span>
+    </button>
+
+              <p class="modal-title" style="color: #fff">
+                  <span style="vertical-align: middle; padding-left:8px">
+تنبيه                </span>
+              </p>
+
+          </div>
+
+          <div class="modal-body">
+
+            <h3>
+
+
+              هل تريد تاكيد
+            رفض مبلغ
+            :
+            {{balance2}}
+             </h3>
+
+</div>
+
+
+
+
+          <div class="modal-footer">
+              <button class="btn btn-white bbtclose" (click)="onCloseModal2()">
+      <!-- Annulla -->
+      الغاء
+    </button>
+    <button class="btn btn_color w-40 h-12" style="color: white;
+    background-color:#a10a2b;;
+    width: 100px;
+    height: 45px;  line-height: 15px;" (click)="submit2()" >
+تاكيد
+</button>
+              <!-- Confirm -->
+
+          </div>
+
+
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

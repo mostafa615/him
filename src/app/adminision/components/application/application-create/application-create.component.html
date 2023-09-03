@@ -1,0 +1,1121 @@
+<div class="row">
+  <div class="{{ col }}">
+    <div class="w3-white material-shadow safe-box">
+      <div class="safe-box-header w3-xlarge">
+        {{ isUpdate ? "تعديل ملف التقديم" :  "create application" | trans }}
+      </div>
+      <br />
+      <div class="border-bottom-dashed"></div>
+      <br />
+
+      <div class="safe-box-body row">
+        <div class="col-lg-3 col-md-3 col-sm-12">
+          <img
+            [src]="
+              application.personal_photo_url
+                ? application.personal_photo_url
+                : defaultImage
+            "
+            class="w3-block w3-round border-gray"
+          />
+          <br />
+          <input
+            type="file"
+            (change)="viewPersonalImage($event)"
+            accept="image/x-png,image/gif,image/jpeg"
+            class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+          />
+          <div
+            class="custom-panel w3-display-container w3-round"
+            style="padding: 5px"
+          >
+            <div
+              class="alert alert-danger w3-block btn-margin-bottom text-center"
+            >
+              {{ currentError }}
+            </div>
+
+            <button
+              class="btn btn-default w3-block small-shadow btn-margin-bottom"
+              (click)="toggle(null)"
+            >
+              {{ "all info" | trans }}
+            </button>
+
+            <button
+              class="btn btn-default w3-block small-shadow btn-margin-bottom"
+              (click)="toggle('student-info-panel')"
+            >
+              {{ "student info" | trans }}
+            </button>
+
+            <button
+              class="btn btn-default w3-block small-shadow btn-margin-bottom military-info-button"
+              (click)="toggle('military-info-panel')"
+            >
+              {{ "military info" | trans }}
+            </button>
+
+            <button
+              class="btn btn-default w3-block small-shadow btn-margin-bottom"
+              (click)="toggle('parent-info-panel')"
+            >
+              {{ "parent info" | trans }}
+            </button>
+
+            <button
+              class="btn btn-default w3-block small-shadow btn-margin-bottom"
+              (click)="toggle('additional-info-panel')"
+            >
+              {{ "additional info" | trans }}
+            </button>
+
+            <button
+              class="btn btn-default w3-block small-shadow btn-margin-bottom"
+              (click)="toggle('document-info-panel')"
+            >
+              {{ "required documents" | trans }}
+            </button>
+          </div>
+        </div>
+
+        <div class="col-lg-9 col-md-9 col-sm-12">
+          <!--
+    => student basic info
+    name	                  email
+    academic_years_id	      grade
+    registeration_date	      phone_1
+    registration_status_id	  registration_method_id
+    qualification_date1	      qualification_set_number
+    qualification_types_id	  qualification_id
+    level_id	              case_constraint_id
+    national_id	              password
+    acceptance_code	          acceptance_date
+    status	                  writen_by
+    => additional info
+    nationality_id	          gender
+    language_1_id	          language_2_id
+    city_id	                  government_id
+    country_id	              religion
+    address	                  birth_address
+    national_id_date	      national_id_place
+    => military info
+    military_status_id	      military_area_id
+    triple_number
+    => parent info               
+    parent_name	              parent_national_id
+    parent_job_id	          parent_address
+    parent_phone	          relative_relation_id
+    => personal image
+    personal_photo
+    => required document
+    -->
+          <div
+            class="custom-panel w3-display-container w3-round application-panel student-info-panel"
+          >
+            <div class="custom-panel-title">
+              {{ "student basic info" | trans }}
+            </div>
+
+            <div class="custom-panel-body">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <table class="table w3-block">
+                    <tr>
+                      <th>{{ "student name" | trans }} *</th>
+                      <td>
+                        <input
+                          class="custom-input form-control input-sm w3-input input-sm"
+                          placeholder="أدخل الأسم (إجبارى)"
+                          [ngClass]="{
+                            'border-bottom-dashed': application.name,
+                            'border-bottom-red': !application.name
+                          }"
+                          [(ngModel)]="application.name"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "national_id" | trans }} *</th>
+                      <td>
+                        <input
+                        placeholder="أدخل الرقم القومى (إجبارى)"
+
+                          type="text"
+                          (blur)="validateOnNationalId()"
+                          class="national_id custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [ngClass]="{
+                            'border-bottom-dashed': application.national_id > 0,
+                            'border-bottom-red': !application.national_id
+                          }"
+                          [(ngModel)]="application.national_id"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "birthdate" | trans }}</th>
+                      <td>
+                        <input
+                          type="date"
+                          (blur)="validateOnAge()"
+                          class="custom-input form-control input-sm w3-input input-sm"
+                          [(ngModel)]="application.birthdate"
+                        />
+
+                        <p
+                          class="w3-text-red w3-tiny"
+                          *ngIf="application.years > 0"
+                        >
+                          {{ application.years }}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "academic_years" | trans }} *</th>
+                      <td>
+                        <!-- (change)="watchLevel() -->
+                        <select
+                        (change)="watchLevel()"
+                          class="custom-input form-control input-sm w3-input input-sm"
+                          [ngClass]="{
+                            'border-bottom-dashed':
+                              application.academic_years_id,
+                            'border-bottom-red': !application.academic_years_id
+                          }"
+                          [(ngModel)]="application.academic_years_id"
+                        >
+                        <option value="" selected> اختر السنه الدراسيه </option>
+
+                          <option
+                            *ngFor="
+                              let item of applicationSettings.ACADEMIC_YEARS
+                            "
+                            value="{{ item.id }}"selected
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "qualification" | trans }} *</th>
+                      <td>
+                        <select
+                          (change)="watchLevel(); emptyData()"
+                          class="form-control input-sm"
+                          [ngClass]="{
+                            'border-bottom-dashed':
+                              application.qualification_id > 0,
+                            'border-bottom-red': !application.qualification_id
+                          }"
+                          [(ngModel)]="application.qualification_id"
+                        >
+                          <option value="" selected>اختار المؤهل</option>
+                          <option
+                            *ngFor="
+                              let item of applicationSettings.QUALIFICATIONS
+                            "
+                            value="{{ item.id }}"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "qualification_types" | trans }} *</th>
+                      <td>
+                        <select
+                          (change)="
+                            watchLevel(); checkIfAzhar(); calculatePercent()
+                          "
+                          class="custom-input form-control input-sm w3-input input-sm"
+                          [ngClass]="{
+                            'border-bottom-dashed':
+                              application.qualification_types_id > 0,
+                            'border-bottom-red':
+                              !application.qualification_types_id
+                          }"
+                          [(ngModel)]="application.qualification_types_id"
+                        >
+                          <ng-container
+                            *ngFor="
+                              let item of applicationSettings.QUALIFICATION_TYPES
+                            "
+                          >
+
+                            <option
+                              *ngIf="
+                                item.qualification_id ==
+                                  application.qualification_id &&
+                                item.academic_year_id ==
+                                  application.academic_years_id
+                              "
+                              value="{{ item.id }}"
+                            >
+                              {{ item.name }}
+                            </option>
+                          </ng-container>
+                        </select>
+                        <p
+                          class="w3-text-red w3-tiny"
+                          *ngIf="application.percent > 0"
+                        >
+                          {{ application.percent }} %
+                        </p>
+                      </td>
+                    </tr>
+                    <!-- <tr>
+                                            <th>{{ "qualification_date1" | trans }} *</th>
+                                            <td>
+                                                <input type="text" autocomplete="none" class="custom-input form-control input-sm w3-input  input-sm" [ngClass]="{'border-bottom-dashed': application.qualification_date1>0, 'border-bottom-red': !application.qualification_date1}" [(ngModel)]="application.qualification_date1">
+                                            </td>
+                                        </tr> -->
+                    <tr>
+                      <th>{{ "qualification_date" | trans }} *</th>
+                      <td>
+                        <input
+                          type="text"
+                          class="custom-input form-control input-sm w3-input input-sm"
+                          [ngClass]="{
+                            'border-bottom-dashed':
+                              application.qualification_date,
+                            'border-bottom-red': !application.qualification_date
+                          }"
+                          [(ngModel)]="application.qualification_date"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <ng-container>
+                          {{ "grade" | trans }}
+                        </ng-container>
+
+                        *
+                      </th>
+                      <td>
+                        <input
+                          (change)="watchLevel(); calculatePercent()"
+                          type="text"
+                          [readOnly]="isAzhar"
+                          class="custom-input form-control input-sm w3-input input-sm"
+                          [ngClass]="{
+                            'border-bottom-dashed': application.grade,
+                            'border-bottom-red': !application.grade
+                          }"
+                          [(ngModel)]="application.grade"
+                        />
+
+                        <p *ngIf="gradeError" class="w3-text-red w3-tiny">
+                          {{ gradeError }}
+                        </p>
+                      </td>
+                    </tr>
+                    <ng-container *ngIf="isAzhar">
+                      <tr>
+                        <th>{{ "total_grade" | trans }} *</th>
+                        <td>
+                          <input
+                            type="number"
+                            (change)="checkIfAzhar()"
+                            class="custom-input form-control input-sm w3-input input-sm"
+                            [ngClass]="{
+                              'border-bottom-dashed':
+                                application.azhar_total_grade,
+                              'border-bottom-red':
+                                !application.azhar_total_grade
+                            }"
+                            [(ngModel)]="application.azhar_total_grade"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>{{ "religious_grade_total" | trans }} *</th>
+                        <td>
+                          <input
+                            type="number"
+                            (change)="checkIfAzhar()"
+                            class="custom-input form-control input-sm w3-input input-sm"
+                            [ngClass]="{
+                              'border-bottom-dashed':
+                                application.azhar_religious_grade_total,
+                              'border-bottom-red':
+                                !application.azhar_religious_grade_total
+                            }"
+                            [(ngModel)]="
+                              application.azhar_religious_grade_total
+                            "
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>{{ "azhar_remind_grade" | trans }} *</th>
+                        <td>
+                          <input
+                            type="number"
+                            readonly
+                            class="custom-input form-control input-sm w3-input input-sm"
+                            [ngClass]="{
+                              'border-bottom-dashed':
+                                application.azhar_remind_grade,
+                              'border-bottom-red':
+                                !application.azhar_remind_grade
+                            }"
+                            [(ngModel)]="application.azhar_remind_grade"
+                          />
+                        </td>
+                      </tr>
+                    </ng-container>
+                    <tr>
+                      <th>{{ "qualification_set_number" | trans }}</th>
+                      <td>
+                        <input
+                          type="number"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.qualification_set_number"
+                        />
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <th>{{ "registration_status" | trans }} *</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input input-sm"
+                          (change)="validateOnRegisterationStatusDocument()"
+                          [ngClass]="{
+                            'border-bottom-dashed':
+                              application.registration_status_id > 0,
+                            'border-bottom-red':
+                              !application.registration_status_id
+                          }"
+                          [(ngModel)]="application.registration_status_id"
+                        >
+                          <option value="" selected>اختر طريقة التقديم</option>
+                          <option
+                            *ngFor="
+                              let item of applicationSettings.REGISTERATION_STATUS
+                            "
+                            value="{{ item.id }}"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "level" | trans }}</th>
+                      <!-- <td>
+                        <input
+                          type="text"
+                          readonly
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.level_name"
+                        />
+                        <input
+                          type="hidden"
+                          [(ngModel)]="application.level_id"
+                        />
+                      </td> -->
+                         <td>
+                          <select
+                          class="custom-input form-control input-sm w3-input input-sm"
+                          [ngClass]="{
+                            'border-bottom-dashed': application.level_id,
+                            'border-bottom-red': !application.level_id
+                          }"
+                          [(ngModel)]="application.level_id"
+                        >
+                        <option value="" disabled >اختار المستوى</option>
+
+                          <option
+                            *ngFor="let item of levels"
+                            value="{{ item.id }}" selected
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+
+                    <tr
+                      *ngIf="
+                        application.registration_status_id == 4 ||
+                        application.registration_status_id == 8 ||
+                        application.registration_status_id == 9
+                      "
+                    >
+                      <th>{{ "register_notes" | trans }}</th>
+                      <td>
+                        <textarea
+                          class="custom-input form-control input-sm w3-input input-sm"
+                          [(ngModel)]="application.register_notes"
+                        ></textarea>
+                      </td>
+                    </tr>
+                    <!--
+                  <tr>
+                    <th>{{ "case_constraint" | trans }}</th>
+                    <td>
+                      <select
+                      class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                      [ngClass]="{'border-bottom-dashed': application.case_constraint_id>0, 'border-bottom-red': !application.case_constraint_id}"
+                      [(ngModel)]="application.case_constraint_id">
+                        <option *ngFor="let item of applicationSettings.CASE_CONSTRAINTS" value="{{ item.id }}">{{ item.name }}</option>
+                      </select>
+                    </td>
+                  </tr>
+                  --></table>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <table class="table w3-block w3-block">
+                    <tr>
+                      <th>{{ "division" | trans }} *</th>
+                      <!-- <td>
+                                                <select class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                                                 [(ngModel)]="application.division_id">
+                                                <ng-container *ngFor="let item of applicationSettings.DIVISIONS">
+                                                <option  value="{{ item.id }}">{{ item.name }}</option>
+                                                </ng-container>
+                                                </select>
+                                            </td> -->
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [ngClass]="{
+                            'border-bottom-dashed': application.division_id,
+                            'border-bottom-red': !application.division_id
+                          }"
+                          [(ngModel)]="application.division_id"
+                        >
+
+                          <!-- <ng-container
+                            
+                          > -->
+                        <option value="" selected >اختار التخصص</option>
+
+                            <option *ngFor="let item of applicationSettings.DIVISIONS" value="{{ item.id }}">
+                              {{ item.name }}
+                            </option>
+                          <!-- </ng-container> -->
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "department" | trans }} *</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [ngClass]="{
+                            'border-bottom-dashed': application.department_id,
+                            'border-bottom-red': !application.department_id
+                          }"
+                          [(ngModel)]="application.department_id"
+                        >
+                        <!-- <option value="" selected>اختار التخصص</option>
+                        <option *ngFor="let item of applicationSettings.DEPARTMENTS"  value="{{ item.id }}">{{ item.name }} </option> -->
+                      <ng-container *ngFor="let item of applicationSettings.DEPARTMENTS" >
+                      <option *ngIf="application.level_id == item.level_id" value="{{ item.id }}">{{ item.name }} </option>
+                      </ng-container>
+                        </select>
+                      </td>
+                    </tr>
+                             <!-- <option value="" selected>اختار التخصص</option> -->
+
+                    <!-- <tr>
+                                          <th>{{ "stage" | trans }} *</th>
+                                          <td>
+                                              <select class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm" [(ngModel)]="application.department_id">
+                                                <option  value="1" >1</option>
+                                                <option  value="2" >2</option>
+                                              </select>
+                                          </td>
+                                      </tr> -->
+                    <tr>
+                      <th>{{ "address" | trans }}</th>
+                      <td>
+                        <input
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.address"
+                        />
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <th>{{ "phone_1" | trans }}</th>
+                      <td>
+                        <input
+                          type="text"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.phone_1"
+                        />
+                      </td>
+                    </tr>
+
+                    <!-- -->
+                    <tr>
+                      <th>{{ "registeration_date" | trans }}</th>
+                      <td>
+                        <input
+                          type="date"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.registeration_date"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "registration_method" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.registration_method_id"
+                        >
+                        <option value="" selected>اختار وسيله التعارف </option>
+
+                          <option
+                            *ngFor="
+                              let item of applicationSettings.REGISTERATION_METHODS
+                            "
+                            value="{{ item.id }}"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                    <!--
+                                    <tr>
+                                        <th>{{ "set_number" | trans }}</th>
+                                        <td>
+                                            <input type="number" class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm" [(ngModel)]="application.set_number">
+                                        </td>
+                                    </tr>
+                                    -->
+                    <tr>
+                      <th>{{ "coordination_password" | trans }}</th>
+                      <td>
+                        <input
+                          type="text"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.password"
+                        />
+                      </td>
+                    </tr>
+                    <ng-container
+                      *ngIf="application.registration_status_id != 3"
+                    >
+                      <tr>
+                        <th>{{ "acceptance_code" | trans }}</th>
+                        <td>
+                          <input
+                            type="text"
+                            class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                            [(ngModel)]="application.acceptance_code"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>{{ "acceptance_date" | trans }}</th>
+                        <td>
+                          <input
+                            type="date"
+                            class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                            [(ngModel)]="application.acceptance_date"
+                          />
+                        </td>
+                      </tr>
+                    </ng-container>
+
+                    <tr>
+                      <th>{{ "gender" | trans }}</th>
+                      <td>
+                        <select
+                          (change)="filterDataBaisedOnGender()"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.gender"
+                        >
+                          <option value="male">{{ "male" | trans }}</option>
+                          <option value="female">{{ "female" | trans }}</option>
+                        </select>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="application.gender != 'female'"
+            class="custom-panel w3-display-container w3-round application-panel military-info-panel"
+          >
+            <div class="custom-panel-title">{{ "military info" | trans }}</div>
+
+            <div class="custom-panel-body">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <table class="table w3-block">
+                    <tr>
+                      <th>{{ "military_status" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.military_status_id"
+                        >
+                        <option value="" selected>اختار حاله التجنيد </option>
+                          <option
+                            *ngFor="
+                              let item of applicationSettings.MILITARY_STATUS
+                            "
+                            value="{{ item.id }}"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "military_area" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.military_area_id"
+                        >
+                        <option value="1" selected >اختار منطقه التجنيد</option>
+
+                          <option
+                            *ngFor="
+                              let item of applicationSettings.MILITARY_AREAS
+                            "
+                            value="{{ item.id }}"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <table class="table w3-block w3-block">
+                    <tr>
+                      <th>{{ "triple_number" | trans }}</th>
+                      <td>
+                        <input
+                          type="text"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.triple_number"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "military_code" | trans }}</th>
+                      <td>
+                        <input
+                          type="text"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.military_code"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "military_date" | trans }}</th>
+                      <td>
+                        <input
+                          type="date"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.military_date"
+                        />
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="custom-panel w3-display-container w3-round application-panel parent-info-panel"
+          >
+            <div class="custom-panel-title">{{ "parent info" | trans }}</div>
+
+            <div class="custom-panel-body">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <table class="table w3-block">
+                    <tr>
+                      <th>{{ "parent_name" | trans }}</th>
+                      <td>
+                        <input
+                          type="text"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.parent_name"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "parent_national_id" | trans }}</th>
+                      <td>
+                        <input
+                          type="text"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.parent_national_id"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "parent_address" | trans }}</th>
+                      <td>
+                        <input
+                          type="text"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.parent_address"
+                        />
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <table class="table w3-block w3-block">
+                    <tr>
+                      <th>{{ "parent_phone" | trans }}</th>
+                      <td>
+                        <input
+                          type="text"
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.parent_phone"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "parent_job" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.parent_job_id"
+                        >
+                        <option value="" selected>اختار وظيفه الاب </option>
+
+                          <option
+                            *ngFor="let item of applicationSettings.PARENT_JOBS"
+                            value="{{ item.id }}"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "relative_relation" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.relative_relation_id"
+                        >
+                        <option value="" selected>اختر صله القارب</option>
+
+                          <option
+                            *ngFor="
+                              let item of applicationSettings.RELATIVE_RELATIONS
+                            "
+                            value="{{ item.id }}"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="custom-panel w3-display-container w3-round application-panel additional-info-panel"
+          >
+            <div class="custom-panel-title">
+              {{ "additional info" | trans }}
+            </div>
+
+            <div class="custom-panel-body">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <table class="table w3-block">
+                    <tr>
+                      <th>{{ "nationality" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.nationality_id"
+                        >
+                        <option value="" selected>اختار الجنسيه </option>
+
+                          <option
+                            *ngFor="
+                              let item of applicationSettings.NATIONALITIES
+                            "
+                            value="{{ item.id }}"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "language_1" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.language_1_id"
+                        >
+                        <option value="" selected>اختار اللغه الاولى</option>
+
+                          <option
+                            *ngFor="let item of applicationSettings.LANGUAGES"
+                            value="{{ item.id }}"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "language_2" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.language_2_id"
+                        >
+                        <option value="" selected>اختر اللغه التانيه</option>
+
+                          <option
+                            *ngFor="let item of applicationSettings.LANGUAGES"
+                            value="{{ item.id }}"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "country" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.country_id"
+                        >
+                        <option value="" selected>اختر الدوله</option>
+
+                          <option
+                            *ngFor="let item of applicationSettings.COUNTRIES"
+                            value="{{ item.id }}"
+                          >
+                            {{ item.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "government" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.government_id"
+                        >
+                          <ng-container
+                            *ngFor="let item of applicationSettings.GOVERNMENTS"
+                          >
+                            <option
+                              *ngIf="application.country_id == item.country_id"
+                              value="{{ item.id }}"
+                            >
+                              {{ item.name }}
+                            </option>
+                          </ng-container>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "city" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.city_id"
+                        >
+                          <ng-container
+                            *ngFor="let item of applicationSettings.CITIES"
+                          >
+                            <option
+                              *ngIf="
+                                application.government_id == item.government_id
+                              "
+                              value="{{ item.id }}"
+                            >
+                              {{ item.name }}
+                            </option>
+                          </ng-container>
+                        </select>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                  <table class="table w3-block w3-block">
+                    <tr>
+                      <th>{{ "email" | trans }}</th>
+                      <td>
+                        <input
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.email"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>{{ "religion" | trans }}</th>
+                      <td>
+                        <select
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.religion"
+                        >
+                          <option value="muslim">{{ "muslim" | trans }}</option>
+                          <option value="christian">
+                            {{ "christian" | trans }}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <th>{{ "birth_address" | trans }}</th>
+                      <td>
+                        <input
+                          class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          [(ngModel)]="application.birth_address"
+                        />
+                      </td>
+                    </tr>
+                    <!--
+                        1 => egyptian
+                        --->
+                    <ng-container
+                      *ngIf="
+                        application.nationality_id != 1 &&
+                        application.nationality_id > 0
+                      "
+                    >
+                      <tr>
+                        <th>{{ "national_id_date" | trans }}</th>
+                        <td>
+                          <input
+                            class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                            [(ngModel)]="application.national_id_date"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>{{ "national_id_place" | trans }}</th>
+                        <td>
+                          <input
+                            class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                            [(ngModel)]="application.national_id_place"
+                          />
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="custom-panel w3-display-container w3-round application-panel document-info-panel"
+          >
+            <div class="custom-panel-title">
+              {{ "required documents info" | trans }}
+            </div>
+
+            <div class="custom-panel-body">
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <table class="table w3-block">
+                    <ng-container
+                      *ngFor="
+                        let item of applicationSettings.REQUIRED_DOCUMENTS
+                      "
+                    >
+                      <tr
+                        *ngIf="requiredDocumentList.get(item.id) > 0"
+                        [ngClass]="{
+                          'w3-text-green':
+                            application['required_document_' + item.id]
+                        }"
+                      >
+                        <th>
+                          <i
+                            *ngIf="application['required_document_' + item.id]"
+                            class="fa fa-check-circle w3-text-green"
+                          ></i>
+
+                          <i
+                            *ngIf="
+                              requiredDocumentList.get(item.id) == 1 &&
+                              !application['required_document_' + item.id]
+                            "
+                            class="fa fa-exclamation-circle w3-text-red"
+                          ></i>
+                          {{ item.name }}
+                        </th>
+                        <th>{{ item.type | trans }}</th>
+                        <td>
+                          <input
+                            type="file"
+                            (change)="
+                              setFile(
+                                $event,
+                                'required_document_' + item.id,
+                                item.id
+                              )
+                            "
+                            class="custom-input form-control input-sm w3-input border-bottom-dashed input-sm"
+                          />
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="custom-panel w3-display-container w3-round">
+            <div class="custom-panel-body">
+              <button
+                mat-raised-button
+                color="primary"
+                class="w3-margin-left"
+                [disabled]="isSubmitted"
+                (click)="sendApplication()"
+              >
+                {{ "send application" | trans }}
+              </button>
+
+              <a
+                href="#"
+                class="btn btn-default small-shadow w3-margin-left"
+                routerLink="/adminision/application"
+                >{{ "exit" | trans }}</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

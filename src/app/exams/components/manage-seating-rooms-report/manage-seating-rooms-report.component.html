@@ -1,0 +1,50 @@
+<div class="w3-block">
+
+  <div class="row">
+
+    <div class="col-lg-3 w3-white material-shadow safe-box">
+      <div class="safe-box-header w3-large" style="padding: 5px!important">
+        {{ "manage seating rooms report" | trans }}
+      </div>
+      <div class="border-bottom-dashed"></div>
+      <br>
+      <div class="custom-panel w3-display-container w3-round ">
+
+        <div class="custom-panel-body table-responsive w3-padding w3-center">
+          <a href="#" routerLink='/affairs/required_documents' role="button"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow">
+            <b>{{ "create_new_seating_numbers" | trans }}</b>
+            <a href="#" class="pull-left">
+              <i class="fa fa-address-card-o"></i>
+            </a>
+          </a>
+          <a href="#" routerLink='/affairs/required_documents' role="button"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow">
+            <b>{{ "enrolled_with_no_seating_number" | trans }}</b>
+            <a href="#" class="pull-left">
+              <i class="fa fa-address-card-o"></i>
+            </a>
+          </a>
+          <a href="#" routerLink='/affairs/required_documents' role="button"
+            class="btn-margin-bottom btn btn-default w3-block small-shadow">
+            <b>{{ "signed_with_no_seating_number" | trans }}</b>
+            <a href="#" class="pull-left">
+              <i class="fa fa-address-card-o"></i>
+            </a>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-9 student-affair-container  " style="overflow: auto;">
+      <div class="table-responsive w3-padding">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+
+
+  </div>
+
+
+</div>

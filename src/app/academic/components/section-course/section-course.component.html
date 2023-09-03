@@ -1,0 +1,292 @@
+<div class="container">
+    <div class="w3-block w3-row">
+        <div class="w3-white material-shadow safe-box col-lg-12 col-md-12 col-sm-12">
+            <div class="safe-box-header w3-large" style="padding: 5px!important">
+                السكاشن
+            </div>
+            <div class="border-bottom-dashed"></div>
+            <br>
+            <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+
+                <div class="custom-panel-body table-responsive w3-padding">
+
+                    <div id="form" class="row">
+                        <div class="col-lg-2 col-md-2">
+                            <div class="form-group">
+                                <label>{{ "level" | trans }} : </label>
+                                <select class="form-control" [(ngModel)]="filter_search.level_id" id='level_id_search' (change)="getStudentNumber_search($('#division_id_search').val() , $('#level_id_search').val() )">
+                          <option value="">{{ "level" | trans }}</option>
+                  <option *ngFor="let item of levels"  value="{{ item.id }}">{{ item.name }}</option>
+                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2">
+                            <div class="form-group">
+                                <label>{{ "division" | trans }} : </label>
+                                <select class="form-control" [(ngModel)]="filter_search.division_id" id="division_id_search" (change)="getStudentNumber_search($('#division_id_search').val() , $('#level_id_search').val() )">
+                              <option value="">{{ "division" | trans }}</option>
+                      <option *ngFor="let item of divisions"  value="{{ item.id }}">{{ item.name }}</option>
+                    </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <div class="form-group">
+                                <label for="">{{ "term" | trans }}</label>
+                                <select id="term_id" name="filter_search.term_id" class="form-control" [(ngModel)]="filter_search.term_id">
+                      <option value="">الكل</option>
+                <option *ngFor="let item of terms" value="{{ item.id }}">{{item.name}}</option>
+              </select>
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-lg-2 col-md-2">
+                            <div class="form-group">
+                                <label>الماده</label>
+                                <select id="course_id" class="form-control" name="course_id" [(ngModel)]="filter.course_id">
+                                <option value="">المادة</option>
+                                <option *ngFor="let item of courses|level:level_id|division:division_id|term:term_id"  value="{{ item.id }}">{{ item.name }}</option>
+                                </select>
+                            </div>
+                        </div> -->
+
+                        <div class="col-lg-3 col-md-4">
+                            <div class="form-group">
+                                <label for="">{{ "course" | trans }}</label>
+                                <select name="filter.course_id" class="form-control" [(ngModel)]="filter.course_id">
+                                    <option value="">الكل</option>
+                                    <option *ngFor="let item of courses|level:level_id|term:term_id|division:division_id|year:year_id" value="{{ item.course_id }}">{{item.course_name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2">
+                            <div class="form-group">
+                                <label for="">{{ "academic year" | trans }}</label>
+                                <select name="filter_search.year_id" class="form-control" [(ngModel)]="filter_search.year_id">
+                    <option value="">الكل</option>
+              <option *ngFor="let item of applicationService.ACADEMIC_YEARS" value="{{ item.id }}">{{item.name}}</option>
+            </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3">
+                            <button type="button" class="btn btn-primary" (click)="load()" style='margin-top: 23px !important;margin-right: 2px;'>بحث</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1" data-whatever="@getbootstrap" style='margin-top: 23px !important;margin-right: 2px;'>اضافة
+                              سكشن</button>
+                        </div>
+                        <div class="col-lg-3 col-md-3">
+                            <h6 class="modal-title" style="color: red;text-align: center;font-weight: bolder;vertical-align: middle;margin-top: 23px !important;" *ngIf="student_number_search">عدد الطلبة فى هذا التخصص : {{student_number_search}}</h6>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                        <div class="custom-panel-body table-responsive w3-padding w3-center" style="height: 400px;">
+                            <table class=" table-bordered">
+                                <thead>
+                                    <th>الترتيب</th>
+                                    <th>المادة</th>
+                                    <th>الجروب</th>
+                                    <th>السكشن</th>
+                                    <th>المستوي</th>
+                                    <th>التخصص</th>
+                                    <th>التيرم</th>
+                                    <th>عدد الطلبة</th>
+                                    <th>العمليات</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let section of prevsections index as i">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>
+                                            {{ section.course.name }}
+                                        </td>
+                                        <td>
+                                            {{ section.group.name }}
+                                        </td>
+                                        <td>
+                                            سكشن {{ section.name }}
+                                        </td>
+                                        <td>
+                                            {{ section.level.name }}
+                                        </td>
+                                        <td>
+                                            {{ section.division.name }}
+                                        </td>
+                                        <td>
+                                            {{ section.term.name }}
+                                        </td>
+                                        <td>
+                                            {{ section.std_num }}
+                                        </td>
+                                        <td>
+                                            <button style="margin-left: 5px;" class="btn btn-success" [disabled]="isSubmitted" (click)="setCurrent(section.std_num, section.id)">
+                                          <i *ngIf="!isSubmitted" data-toggle="modal" data-target="#exampleModal2"
+                                              data-whatever="@getbootstrap" class="fa fa-pencil"></i>
+                                          <i *ngIf="isSubmitted" class="fa fa-spin fa-spinner"></i>
+                                      </button>
+                                            <button class="btn btn-danger" [disabled]="isSubmitted" (click)="destroysection(section.id)">
+                                          <i *ngIf="!isSubmitted" class="fa fa-trash"></i>
+                                          <i *ngIf="isSubmitted" class="fa fa-spin fa-spinner"></i>
+                                      </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="">
+
+    <div class="">
+
+        <div class="custom-panel-body table-responsive w3-padding">
+
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <!-- <h5 class="modal-title" id="exampleModalLabel1" style="display: inline-block;text-align: right;">اضافة سكشن</h5> -->
+                                    <h6 class="modal-title" style="color: red;text-align: center;" *ngIf="student_number">عدد الطلبة فى هذا التخصص : {{student_number}}</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <!-- <div class="form-group">
+                                            <label for="message-text" class="col-form-label">رقم السكشن :</label>
+                                            <input class="form-control" id="message-text" type="text" name='section' [(ngModel)]="section" required>
+                                        </div> -->
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">{{ "level" | trans }} :</label>
+                                            <select class="form-control" name="level_id" [(ngModel)]="filter.level_id" id="level_id" (change)="getStudentNumber($('#division_id').val() , $('#level_id').val() )">
+                                              <option value="">{{ "level" | trans }}</option>
+                                              <option *ngFor="let item of levels"  value="{{ item.id }}">{{ item.name }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">{{ "division" | trans }} :</label>
+                                            <select class="form-control" name="division_id" [(ngModel)]="filter.division_id" id="division_id" (change)="getStudentNumber($('#division_id').val() , $('#level_id').val() )">
+                                            <option value="">{{ "division" | trans }}</option>
+                                            <option *ngFor="let item of divisions"  value="{{ item.id }}">{{ item.name }}</option>
+                                          </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">{{ "term" | trans }} :</label>
+                                            <select class="form-control" name="filter.term_id" [(ngModel)]="filter.term_id">
+                                              <option value="">{{ "term" | trans }}</option>
+                                            <option *ngFor="let item of terms"  value="{{ item.id }}">{{ item.name }}</option>
+                                          </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">{{ "academic year" | trans }} :</label>
+                                            <select class="form-control" name="filter.academicYear_id" [(ngModel)]="filter.academicYear_id">
+                                              <option value="">{{ "academic year" | trans }}</option>
+                                          <option *ngFor="let item of applicationService.ACADEMIC_YEARS"  value="{{ item.id }}">{{ item.name }}</option>
+                                        </select>
+                                        </div>
+
+                                        <!-- <div class="form-group">
+                                            <label for="message-text" class="col-form-label">المادة :</label>
+                                            <select class="form-control" name="course_id" [(ngModel)]="filter.course_id">
+                                              <option value="">المادة</option>
+                                          <option *ngFor="let item of courses|levels:level_id|term:term_id|division:division_id"  value="{{ item.id }}">{{ item.name }}</option>
+                                        </select>
+                                        </div> -->
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">الجروب :</label>
+                                            <select class="form-control" name="group_id" [(ngModel)]="filter.group_id">
+                                              <option value="">الجروب</option>
+                                        <option *ngFor="let item of groups|level:level_id_filter"  value="{{ item.id }}">{{ item.name }}</option>
+                                      </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">عدد السكاشن :</label>
+                                            <input placeholder="عدد السكاشن" class="form-control" id="message-text" type="number" name='number' [(ngModel)]="filter.number" required>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id='closeNumber1' type="button" class="btn btn-secondary" data-dismiss="modal">غلق</button>
+                                    <button id='beforeLoading' (click)='createsection()' type="button" class="btn btn-primary">تأكيد</button>
+                                    <button id='buttonLoading' class="btn btn-primary" type="button" disabled>
+                                      <span class="spinner-border spinner-border-sm" role="status"
+                                          aria-hidden="true"></span>
+                                      Loading...
+                                  </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel2">تعديل سكشن</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">عدد الطلبة:</label>
+                                            <input placeholder="العدد الحالي : {{ currentsectionName }}" class="form-control" id="message-text" type="number" name='section' [(ngModel)]="section" required>
+                                        </div>
+                                        <!-- <div class="form-group">
+                                            <label for="message-text" class="col-form-label">أسم المعيد :</label>
+                                            <select class="form-control" name="term_id" [(ngModel)]="filter.term_id" id="term_id">
+                                            <option value="">الترم</option>
+                                          <option *ngFor="let item of terms"  value="{{ item.id }}">{{ item.name }}</option>
+                                        </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message-text" class="col-form-label">الترم :</label>
+                                            <select class="form-control" name="term_id" [(ngModel)]="filter.term_id" id="term_id">
+                                          <option value="">الترم</option>
+                                        <option *ngFor="let item of terms"  value="{{ item.id }}">{{ item.name }}</option>
+                                      </select>
+                                        </div> -->
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id='closeNumber2' type="button" class="btn btn-secondary" data-dismiss="modal">غلق</button>
+                                    <button id='beforeLoading' (click)='updatesection(currentsectionName, currentsectionId)' type="button" class="btn btn-primary">تعديل</button>
+                                    <button id='buttonLoading' class="btn btn-primary" type="button" disabled>
+                                      <span class="spinner-border spinner-border-sm" role="status"
+                                          aria-hidden="true"></span>
+                                      Loading...
+                                  </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="w3-block w3-row">
+    <div class="w3-white material-shadow safe-box w3-block">
+        <div class="safe-box-header w3-large" style="padding: 5px!important">
+            توزيع الطلاب المقبولين(المسجلون للمرة الاولى بالصف الأول) (مصري+وافد) وفقا للقسم / الشعبة والنوع
+        </div>
+        <div class="border-bottom-dashed"></div>
+        <br>
+
+        <div class="">
+
+            <div class="">
+                <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+
+                    <div class="custom-panel-body table-responsive w3-padding">
+
+                        <div id="form" class="row">
+
+                            <div class="col-lg-3 col-md-3">
+                                <div class="form-group">
+                                    <label>{{ "level" | trans }}</label>
+                                    <select class="form-control" [(ngModel)]="filter.level_id">
+                                  <option *ngFor="let item of levels"  value="{{ item.id }}">{{ item.name }}</option>
+                                </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3">
+                                <div class="form-group">
+                                    <label>{{ "division" | trans }}</label>
+                                    <select class="form-control" [(ngModel)]="filter.division_id">
+                                  <option *ngFor="let item of applicationService.DIVISIONS" value="{{ item.id }}">{{ item.name }}</option>
+                                </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3">
+                                <div class="form-group">
+                                    <label>{{ "academic_year" | trans }}</label>
+                                    <select class="form-control" [(ngModel)]="filter.academic_year_id">
+                                <option *ngFor="let item of applicationService.ACADEMIC_YEARS"  value="{{ item.id }}">{{ item.name }}</option>
+                              </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3">
+                                <button class="btn btn-default w3-round" (click)="load()">{{ "search" | trans }}</button>
+                                <button style="margin: 0 5px;" class="btn btn-default w3-round" (click)="printContent()">{{ "print" | trans }}</button>
+                              <button class="btn btn-default w3-round" (click)="excel()">{{ "excel" | trans }}</button>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <div class="custom-panel w3-display-container w3-round application-panel student-info-panel" id="printable">
+
+                    <div class="custom-panel-body table-responsive w3-padding" id="reportContent">
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+</div>

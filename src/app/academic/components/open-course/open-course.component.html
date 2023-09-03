@@ -1,0 +1,109 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="w3-white material-shadow safe-box">
+            <div class="safe-box-header w3-large" style="padding: 5px!important">
+                {{ "open_course_this_term" | trans }}
+            </div>
+            <div class="border-bottom-dashed"></div>
+            <br>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="">{{ "level" | trans }}</label>
+                    <select class="form-control" [(ngModel)]="filter.level_id">
+                    <option value="0">{{"all" | trans}}</option>
+                <option  *ngFor="let level of levels1" value="{{level.id}}">{{ level.name }}</option>
+              </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="">{{ "division" | trans }}</label>
+                    <select class="form-control" [(ngModel)]="filter.division_id">
+                    <option value="0">{{"all" | trans}}</option>
+                <option  *ngFor="let item of divisions" value="{{item.id}}">{{ item.name }}</option>
+              </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="">{{ "term" | trans }}</label>
+                    <select class="form-control" [(ngModel)]="filter.term" id="term_id">
+                    <option value="0">{{"all" | trans}}</option>
+                  <option  *ngFor="let item of terms" value="{{item.id}}">{{ item.name }}</option>
+              </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="">{{ "stage" | trans }}</label>
+                    <select class="form-control" [(ngModel)]="filter.stage">
+                    <option value="0">{{"all" | trans}}</option>
+                  <option  *ngFor="let item of stages" value="{{item}}">{{ item }}</option>
+              </select>
+                </div>
+            </div>
+            <div class="safe-box-body ">
+                <div>
+
+                    <b class="w3-large">{{ "open_course_this_term" | trans }}</b>
+                    <br>
+                    <table class="table text-center">
+                        <ng-container *ngFor="let item of levels index as i">
+                            <ng-container *ngIf="item.id == filter.level_id || filter.level_id == 0">
+                                <tr class="w3-light-gray">
+                                    <th>{{ i + 1 }}</th>
+                                    <th colspan="9">{{ item.name }}</th>
+                                </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{{ "code" | trans }}</th>
+                                    <th>{{ "name" | trans }}</th>
+                                    <th>{{ "credit_hour" | trans }}</th>
+                                    <th>{{ "prerequsites" | trans }}</th>
+                                    <th>{{ "book_price" | trans }}</th>
+                                    <th>{{ "division" | trans }}</th>
+                                    <th>{{ "term" | trans }}</th>
+                                    <th>{{ "stage" | trans }}</th>
+                                    <th>{{ "prerequsites_names" | trans }}</th>
+                                    <th></th>
+                                </tr>
+
+                                <ng-container *ngFor="let course of item.courses|term:term_id; index as counter">
+                                    <tr *ngIf="(course.term == filter.term || filter.term == 0) && course.stage == filter.stage || filter.stage == 0 && (course.division_id == filter.division_id || filter.division_id == 0)" (click)="course.selected = course.selected? false : true" class="w3-hover-light-gray"
+                                        style="cursor: pointer">
+                                        <td>{{ counter + 1 }}</td>
+                                        <td>{{ course.code }}</td>
+                                        <td>{{ course.name }}</td>
+                                        <td>{{ course.credit_hour }}</td>
+                                        <td>{{ course.prerequsites_names }}</td>
+                                        <td>{{ course.book_price }}</td>
+                                        <td>{{ course.division_name }}</td>
+                                        <td>{{ course.term }}</td>
+                                        <td>{{ course.stage }}</td>
+                                        <td>{{ course.prerequsites_names }}</td>
+                                        <td>
+                                            <mat-slide-toggle [(ngModel)]="course.selected" [checked]="course.selected"></mat-slide-toggle>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </ng-container>
+
+                        </ng-container>
+                    </table>
+                </div>
+
+
+                <!-- setting panel -->
+                <div class="custom-panel w3-display-container w3-round application-panel student-info-panel">
+                    <div class="custom-panel-body table-responsive">
+                        <button mat-raised-button color="primary" (click)="updateOpenCourses()" [disabled]="isSubmitted" style="margin: 5px">
+          <i *ngIf="isSubmitted"  class="fa fa-spin fa-spinner"></i>
+          <span *ngIf="!isSubmitted" >{{ "save changes" | trans}} </span>
+        </button>
+                    </div>
+                </div>
+                <br>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+</div>

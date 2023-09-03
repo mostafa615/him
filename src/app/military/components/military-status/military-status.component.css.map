@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "military-status.component.scss"
+    ],
+    "names": [],
+    "file": "military-status.component.css"
+}
